@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
-import Header from "@/components/header"
-import ProductCard from "@/components/product-card"
+import Header from "@/components/Header"
+import ProductCard from "@/components/ProductCard"
 import { getProductsByCategory, getCategories } from "@/lib/data"
 
 interface CategoryPageProps {

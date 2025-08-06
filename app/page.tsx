@@ -1,10 +1,10 @@
-import Header from "@/components/header"
-import HeroSection from "@/components/hero-section"
-import PopularBrands from "@/components/popular-brands"
-import CategoryGrid from "@/components/category-grid"
-import ProductSection from "@/components/product-section"
-import PromoBanner from "@/components/promo-banner"
-import FeaturesBar from "@/components/features-bar"
+import Header from "@/components/Header"
+import HeroSection from "@/components/HeroSection"
+import PopularBrands from "@/components/PopularBrands"
+import CategoryGrid from "@/components/CategoryGrid"
+import ProductSection from "@/components/ProductSection"
+import PromoBanner from "@/components/PromoBanner"
+import FeaturesBar from "@/components/FeatureBar"
 import { getProductsByBrand, getProducts } from "@/lib/data"
 
 export default async function HomePage() {

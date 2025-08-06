@@ -1,5 +1,5 @@
 import Link from "next/link"
-import ProductCard from "./product-card"
+import ProductCard from "./ProductCard"
 import type { Product } from "@/lib/data"
 
 interface ProductSectionProps {

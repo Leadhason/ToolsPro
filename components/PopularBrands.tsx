@@ -10,7 +10,7 @@ export default async function PopularBrands() {
         <h2 className="text-xl sm:text-2xl font-bold text-center mb-6 sm:mb-8">Popular Brands</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6 lg:gap-8">
           {brands.map((brand) => (
-            <div key={brand.id} className="bg-white p-3 sm:p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+            <div key={brand.id} className="bg-white p-3 sm:p-4 rounded-lg shadow-none hover:bg-gray-100 transition-shadow">
               <Image
                 src={brand.logo || "/placeholder.svg"}
                 alt={brand.name}
