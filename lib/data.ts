@@ -184,7 +184,7 @@ export const products: Product[] = [
     name: "Total Latex Gloves - TSP13102",
     description: "Protective latex gloves for various tasks",
     price: 20.0,
-    image: "/products/timage-10.jpeg",
+    image: "/products/imqge-9.jpeg", // Using existing image from sync
     category: "tools",
     brand: "Total Tools",
     inStock: true,
@@ -248,8 +248,8 @@ export const products: Product[] = [
     id: "15",
     name: "Karcher Stone And Paving Cleaner 5L - RM 623",
     description: "Professional stone and paving cleaner",
-      price: 370.0,
-      image: "/products/image-2.jpeg",
+    price: 370.0,
+    image: "/products/image-2.jpeg",
     category: "outdoor-equipment",
     brand: "Karcher",
     rating: 4.8,
@@ -264,6 +264,203 @@ export const products: Product[] = [
     image: "/products/image-3.jpeg",
     category: "outdoor-equipment",
     brand: "Karcher",
+    inStock: true,
+  },
+  // Building Essentials (New additions)
+  {
+    id: "17",
+    name: "Schneider 3 Pin Rounded 15AMPS Plug Top",
+    description: "High-quality electrical plug for home use",
+    price: 50.0,
+    image: "/placeholder.svg?height=300&width=300&text=Electrical+Plug",
+    category: "building-materials",
+    brand: "Schneider",
+    inStock: true,
+  },
+  {
+    id: "18",
+    name: "Black Metal Old Wood Cuboid Island Chandelier Ceiling Light 44E27 - L800mm",
+    description: "Elegant chandelier for modern homes",
+    price: 4300.0,
+    image: "/placeholder.svg?height=300&width=300&text=Chandelier",
+    category: "home-essentials",
+    brand: "Generic",
+    inStock: true,
+  },
+  {
+    id: "19",
+    name: "Tanaro Dark Grey Vintage E27 Outdoor Wall Lantern - 40W",
+    description: "Vintage outdoor wall lantern",
+    price: 420.0,
+    image: "/products/image-19.jpeg",
+    category: "home-essentials",
+    brand: "Tanaro",
+    inStock: true,
+  },
+  {
+    id: "20",
+    name: "Bosch Series 4 Semi-Integrated Dish Washer 60cm - SMI63D05GC",
+    description: "Efficient dishwasher for modern kitchens",
+    price: 16700.0,
+    image: "/placeholder.svg?height=300&width=300&text=Dishwasher",
+    category: "home-essentials",
+    brand: "Bosch",
+    inStock: true,
+  },
+  {
+    id: "21",
+    name: "Multi-Arm 13 Globe Dimpled Ceiling Light Elegant Gold",
+    description: "Elegant multi-arm ceiling light",
+    price: 2800.0,
+    image: "/placeholder.svg?height=300&width=300&text=Ceiling+Light",
+    category: "home-essentials",
+    brand: "Generic",
+    inStock: true,
+  },
+  // Karcher Additional Products (New additions)
+  {
+    id: "22",
+    name: "Karcher Cordless Battery Powered Vacuum Cleaner Premium OurFamily- VC 6",
+    description: "Cordless vacuum cleaner for home use",
+    price: 11000.0,
+    image: "/placeholder.svg?height=300&width=300&text=Vacuum+Cleaner",
+    category: "outdoor-equipment",
+    brand: "Karcher",
+    inStock: true,
+  },
+  {
+    id: "23",
+    name: "Karcher Car Shampoo RM 619, 5L",
+    description: "Professional car shampoo",
+    price: 290.0,
+    image: "/placeholder.svg?height=300&width=300&text=Car+Shampoo",
+    category: "outdoor-equipment",
+    brand: "Karcher",
+    inStock: true,
+  },
+  {
+    id: "24",
+    name: "Karcher Hose Set With Hose Hanger, 15 M",
+    description: "Complete hose set with hanger",
+    price: 920.0,
+    image: "/placeholder.svg?height=300&width=300&text=Hose+Set",
+    category: "outdoor-equipment",
+    brand: "Karcher",
+    inStock: true,
+  },
+  // Lighting Products (New additions)
+  {
+    id: "25",
+    name: "Ingco Waterproof Rechargeable LED Flashlight 460 Lumens with 6 Light Modes – HCFL1865051",
+    description: "Professional LED flashlight with multiple modes",
+    price: 380.0,
+    image: "/placeholder.svg?height=300&width=300&text=LED+Flashlight",
+    category: "tools",
+    brand: "Ingco",
+    rating: 4.5,
+    reviewCount: 8,
+    inStock: true,
+  },
+  {
+    id: "26",
+    name: "C-Torch 3W White & Warm Spotlight",
+    description: "Compact LED spotlight",
+    price: 100.0,
+    image: "/placeholder.svg?height=300&width=300&text=LED+Spotlight",
+    category: "home-essentials",
+    brand: "C-Torch",
+    rating: 4.0,
+    reviewCount: 5,
+    inStock: true,
+  },
+  {
+    id: "27",
+    name: "Artu Black And Gold Outdoor Garden Pathway Lamp Post - 3 X 40W",
+    description: "Elegant outdoor pathway lamp",
+    price: 2900.0,
+    image: "/placeholder.svg?height=300&width=300&text=Pathway+Lamp",
+    category: "home-essentials",
+    brand: "Artu",
+    inStock: true,
+  },
+  {
+    id: "28",
+    name: "C-Torch Round Surface Mount Led Panel Light",
+    description: "Modern LED panel light",
+    price: 180.0,
+    image: "/placeholder.svg?height=300&width=300&text=LED+Panel",
+    category: "home-essentials",
+    brand: "C-Torch",
+    inStock: true,
+  },
+  {
+    id: "29",
+    name: "Ingco Round LED Panel Light – 8W & 24W with Daylight Color – HDL1005081 & HDL2225241",
+    description: "Round LED panel with daylight color",
+    price: 40.0,
+    image: "/placeholder.svg?height=300&width=300&text=Round+LED+Panel",
+    category: "home-essentials",
+    brand: "Ingco",
+    rating: 4.2,
+    reviewCount: 12,
+    inStock: true,
+  },
+  // New Arrivals (New additions)
+  {
+    id: "30",
+    name: "Ingco Lithium-Ion Compact Brushless Cordless Drill 20V - CDL1205581",
+    description: "Compact brushless cordless drill",
+    price: 420.0,
+    originalPrice: 650.0,
+    discount: 35,
+    image: "/placeholder.svg?height=300&width=300&text=Cordless+Drill",
+    category: "tools",
+    brand: "Ingco",
+    isNew: true,
+    inStock: true,
+  },
+  {
+    id: "31",
+    name: "Ingco Cordless Spray Gun - CSGL12004",
+    description: "Cordless spray gun for painting",
+    price: 510.0,
+    image: "/placeholder.svg?height=300&width=300&text=Spray+Gun",
+    category: "tools",
+    brand: "Ingco",
+    isNew: true,
+    inStock: true,
+  },
+  {
+    id: "32",
+    name: "Ingco AC Voltage Detector - VD100091",
+    description: "AC voltage detector for electrical work",
+    price: 70.0,
+    originalPrice: 160.0,
+    discount: 56,
+    image: "/placeholder.svg?height=300&width=300&text=Voltage+Detector",
+    category: "tools",
+    brand: "Ingco",
+    inStock: true,
+  },
+  {
+    id: "33",
+    name: "Wadfow PH2+PH2 65mm Impact Screwdriver Bit Set - WSV3K62",
+    description: "Impact screwdriver bit set",
+    price: 10.0,
+    image: "/placeholder.svg?height=300&width=300&text=Screwdriver+Bits",
+    category: "tools",
+    brand: "Wadfow",
+    isNew: true,
+    inStock: true,
+  },
+  {
+    id: "34",
+    name: "Wadfow 31 Pieces Precision Screwdriver Set - WSS1J31",
+    description: "Precision screwdriver set",
+    price: 40.0,
+    image: "/placeholder.svg?height=300&width=300&text=Precision+Screwdrivers",
+    category: "tools",
+    brand: "Wadfow",
     inStock: true,
   },
 ]
@@ -298,4 +495,27 @@ export async function getCategories(): Promise<Category[]> {
 export async function getBrands(): Promise<Brand[]> {
   await new Promise((resolve) => setTimeout(resolve, 100))
   return brands
+}
+
+export async function getNewArrivals(): Promise<Product[]> {
+  await new Promise((resolve) => setTimeout(resolve, 100))
+  return products.filter((product) => product.isNew || product.discount)
+}
+
+export async function getBuildingEssentials(): Promise<Product[]> {
+  await new Promise((resolve) => setTimeout(resolve, 100))
+  return products
+    .filter((product) => product.category === "building-materials" || product.category === "home-essentials")
+    .slice(0, 5)
+}
+
+export async function getLightingProducts(): Promise<Product[]> {
+  await new Promise((resolve) => setTimeout(resolve, 100))
+  return products.filter(
+    (product) =>
+      product.name.toLowerCase().includes("light") ||
+      product.name.toLowerCase().includes("led") ||
+      product.name.toLowerCase().includes("lamp") ||
+      product.name.toLowerCase().includes("torch"),
+  )
 }
