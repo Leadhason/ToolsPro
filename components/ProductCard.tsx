@@ -1,21 +1,40 @@
+'use client'
+
 import Image from "next/image"
 import Link from "next/link"
 import { Star } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import type { Product } from "@/lib/data"
+import { useState } from "react" // Import useState
 
 interface ProductCardProps {
 product: Product
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const [currentImage, setCurrentImage] = useState(product.image);
+
+  const handleMouseEnter = () => {
+    if (product.hoverImage) {
+      setCurrentImage(product.hoverImage);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setCurrentImage(product.image);
+  };
+
 return (
-  <div className="bg-white rounded-lg border hover:shadow-lg transition-shadow duration-200 w-full">
-    <div className="relative">
+  <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 w-full">
+    <div
+      className="relative border-b border-gray-200" // Added border-b here
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <Link href={`/product/${product.id}`}>
         <Image
-          src={product.image || "/placeholder.svg"}
+          src={currentImage || "/placeholder.svg"} // Use currentImage
           alt={product.name}
           width={300}
           height={300}
@@ -53,7 +72,7 @@ return (
         </div>
       )}
 
-      <div className="flex items-center gap-1 sm:gap-2 mb-3">
+      <div className="flex flex-col gap-0.5 mb-3"> {/* Changed to flex-col for prices */}
         <span className="font-bold text-sm sm:text-base lg:text-lg">GH₵{product.price.toFixed(2)}</span>
         {product.originalPrice && (
           <span className="text-xs sm:text-sm text-gray-500 line-through">GH₵{product.originalPrice.toFixed(2)}</span>
@@ -87,7 +106,7 @@ return (
             Choose options
           </Button>
         ) : (
-          <Button className="w-full bg-gray-800 hover:bg-gray-900 text-xs sm:text-sm h-8 sm:h-9">Add to cart</Button>
+          <Button variant="outline" className="w-full text-xs sm:text-sm h-8 sm:h-9 hover:bg-gray-800 hover:text-white">Add to cart</Button>
         )}
       </div>
     </div>

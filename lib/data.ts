@@ -6,6 +6,7 @@ export interface Product {
   originalPrice?: number
   discount?: number
   image: string
+  hoverImage?: string // Added hoverImage property
   category: string
   brand: string
   rating?: number
@@ -83,6 +84,7 @@ export const products: Product[] = [
     description: "High-quality peripheral water pump for residential use",
     price: 670.0,
     image: "/products/image-1.jpeg",
+    hoverImage: "/products/image-2.jpeg", // Added hover image
     category: "outdoor-equipment",
     brand: "Ingco",
     rating: 4.5,
@@ -95,6 +97,7 @@ export const products: Product[] = [
     description: "Durable brass padlock for industrial applications",
     price: 220.0,
     image: "/products/image-2.jpeg",
+    hoverImage: "/products/image-1.jpeg", // Added hover image
     category: "tools",
     brand: "Ingco",
     inStock: true,
@@ -105,6 +108,7 @@ export const products: Product[] = [
     description: "Powerful grass trimmer for lawn maintenance",
     price: 2030.0,
     image: "/products/image-3.jpeg",
+    hoverImage: "/products/image-4.jpeg", // Added hover image
     category: "outdoor-equipment",
     brand: "Ingco",
     rating: 4.0,
@@ -117,6 +121,7 @@ export const products: Product[] = [
     description: "Professional safety helmets in multiple colors",
     price: 50.0,
     image: "/products/image-4.jpeg",
+    hoverImage: "/products/image-5.jpeg", // Added hover image
     category: "tools",
     brand: "Ingco",
     colors: ["yellow", "blue", "white", "red"],
@@ -128,6 +133,7 @@ export const products: Product[] = [
     description: "Comfortable work gloves with PVC dots for grip",
     price: 7.0,
     image: "/products/image-5.jpeg",
+    hoverImage: "/products/image-3.jpeg", // Added hover image
     category: "tools",
     brand: "Ingco",
     rating: 5.0,
@@ -141,6 +147,7 @@ export const products: Product[] = [
     description: "Powerful gasoline generator for backup power",
     price: 13750.0,
     image: "/products/image-6.jpeg",
+    hoverImage: "/products/image-7.jpeg", // Added hover image
     category: "outdoor-equipment",
     brand: "Total Tools",
     inStock: true,
@@ -151,6 +158,7 @@ export const products: Product[] = [
     description: "Professional rotary hammer for drilling",
     price: 820.0,
     image: "/products/image-7.jpeg",
+    hoverImage: "/products/image-8.jpeg", // Added hover image
     category: "tools",
     brand: "Total Tools",
     rating: 4.5,
@@ -163,6 +171,7 @@ export const products: Product[] = [
     description: "High-pressure washer for cleaning tasks",
     price: 1090.0,
     image: "/products/image-8.jpeg",
+    hoverImage: "/products/image-9.jpeg", // Added hover image
     category: "outdoor-equipment",
     brand: "Total Tools",
     rating: 4.0,
@@ -175,6 +184,7 @@ export const products: Product[] = [
     description: "Wire brush for surface preparation",
     price: 30.0,
     image: "/products/image-9.jpeg",
+    hoverImage: "/products/imqge-9.jpeg", // Added hover image
     category: "tools",
     brand: "Total Tools",
     inStock: true,
@@ -185,6 +195,7 @@ export const products: Product[] = [
     description: "Protective latex gloves for various tasks",
     price: 20.0,
     image: "/products/imqge-9.jpeg", // Using existing image from sync
+    hoverImage: "/products/image-9.jpeg", // Added hover image
     category: "tools",
     brand: "Total Tools",
     inStock: true,
@@ -198,6 +209,7 @@ export const products: Product[] = [
     originalPrice: 800.0,
     discount: 36,
     image: "/products/image-3.jpeg",
+    hoverImage: "/products/image-6.jpeg", // Added hover image
     category: "home-essentials",
     brand: "Decakila",
     isNew: true,
@@ -211,6 +223,7 @@ export const products: Product[] = [
     originalPrice: 3444.0,
     discount: 30,
     image: "/products/image-6.jpeg",
+    hoverImage: "/products/image-7.jpeg", // Added hover image
     category: "home-essentials",
     brand: "Ariston",
     rating: 4.5,
@@ -225,6 +238,7 @@ export const products: Product[] = [
     originalPrice: 33600.0,
     discount: 17,
     image: "/products/image-7.jpeg",
+    hoverImage: "/products/image-1.jpeg", // Added hover image
     category: "home-essentials",
     brand: "Ariston",
     inStock: true,
@@ -237,6 +251,7 @@ export const products: Product[] = [
     originalPrice: 130.0,
     discount: 31,
     image: "/products/image-1.jpeg",
+    hoverImage: "/products/image-2.jpeg", // Added hover image
     category: "home-essentials",
     brand: "Decakila",
     rating: 4.2,
@@ -250,6 +265,7 @@ export const products: Product[] = [
     description: "Professional stone and paving cleaner",
     price: 370.0,
     image: "/products/image-2.jpeg",
+    hoverImage: "/products/image-3.jpeg", // Added hover image
     category: "outdoor-equipment",
     brand: "Karcher",
     rating: 4.8,
@@ -262,6 +278,7 @@ export const products: Product[] = [
     description: "High-pressure washer for home use",
     price: 4000.0,
     image: "/products/image-3.jpeg",
+    hoverImage: "/products/image-4.jpeg", // Added hover image
     category: "outdoor-equipment",
     brand: "Karcher",
     inStock: true,
@@ -273,6 +290,7 @@ export const products: Product[] = [
     description: "High-quality electrical plug for home use",
     price: 50.0,
     image: "/placeholder.svg?height=300&width=300&text=Electrical+Plug",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=Electrical+Plug+Hover", // Added hover image
     category: "building-materials",
     brand: "Schneider",
     inStock: true,
@@ -283,6 +301,7 @@ export const products: Product[] = [
     description: "Elegant chandelier for modern homes",
     price: 4300.0,
     image: "/placeholder.svg?height=300&width=300&text=Chandelier",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=Chandelier+Hover", // Added hover image
     category: "home-essentials",
     brand: "Generic",
     inStock: true,
@@ -293,6 +312,7 @@ export const products: Product[] = [
     description: "Vintage outdoor wall lantern",
     price: 420.0,
     image: "/products/image-19.jpeg",
+    hoverImage: "/products/image-1.jpeg", // Added hover image
     category: "home-essentials",
     brand: "Tanaro",
     inStock: true,
@@ -303,6 +323,7 @@ export const products: Product[] = [
     description: "Efficient dishwasher for modern kitchens",
     price: 16700.0,
     image: "/placeholder.svg?height=300&width=300&text=Dishwasher",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=Dishwasher+Hover", // Added hover image
     category: "home-essentials",
     brand: "Bosch",
     inStock: true,
@@ -313,6 +334,7 @@ export const products: Product[] = [
     description: "Elegant multi-arm ceiling light",
     price: 2800.0,
     image: "/placeholder.svg?height=300&width=300&text=Ceiling+Light",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=Ceiling+Light+Hover", // Added hover image
     category: "home-essentials",
     brand: "Generic",
     inStock: true,
@@ -324,6 +346,7 @@ export const products: Product[] = [
     description: "Cordless vacuum cleaner for home use",
     price: 11000.0,
     image: "/placeholder.svg?height=300&width=300&text=Vacuum+Cleaner",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=Vacuum+Cleaner+Hover", // Added hover image
     category: "outdoor-equipment",
     brand: "Karcher",
     inStock: true,
@@ -334,6 +357,7 @@ export const products: Product[] = [
     description: "Professional car shampoo",
     price: 290.0,
     image: "/placeholder.svg?height=300&width=300&text=Car+Shampoo",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=Car+Shampoo+Hover", // Added hover image
     category: "outdoor-equipment",
     brand: "Karcher",
     inStock: true,
@@ -344,6 +368,7 @@ export const products: Product[] = [
     description: "Complete hose set with hanger",
     price: 920.0,
     image: "/placeholder.svg?height=300&width=300&text=Hose+Set",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=Hose+Set+Hover", // Added hover image
     category: "outdoor-equipment",
     brand: "Karcher",
     inStock: true,
@@ -355,6 +380,7 @@ export const products: Product[] = [
     description: "Professional LED flashlight with multiple modes",
     price: 380.0,
     image: "/placeholder.svg?height=300&width=300&text=LED+Flashlight",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=LED+Flashlight+Hover", // Added hover image
     category: "tools",
     brand: "Ingco",
     rating: 4.5,
@@ -367,6 +393,7 @@ export const products: Product[] = [
     description: "Compact LED spotlight",
     price: 100.0,
     image: "/placeholder.svg?height=300&width=300&text=LED+Spotlight",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=LED+Spotlight+Hover", // Added hover image
     category: "home-essentials",
     brand: "C-Torch",
     rating: 4.0,
@@ -379,6 +406,7 @@ export const products: Product[] = [
     description: "Elegant outdoor pathway lamp",
     price: 2900.0,
     image: "/placeholder.svg?height=300&width=300&text=Pathway+Lamp",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=Pathway+Lamp+Hover", // Added hover image
     category: "home-essentials",
     brand: "Artu",
     inStock: true,
@@ -389,6 +417,7 @@ export const products: Product[] = [
     description: "Modern LED panel light",
     price: 180.0,
     image: "/placeholder.svg?height=300&width=300&text=LED+Panel",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=LED+Panel+Hover", // Added hover image
     category: "home-essentials",
     brand: "C-Torch",
     inStock: true,
@@ -399,6 +428,7 @@ export const products: Product[] = [
     description: "Round LED panel with daylight color",
     price: 40.0,
     image: "/placeholder.svg?height=300&width=300&text=Round+LED+Panel",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=Round+LED+Panel+Hover", // Added hover image
     category: "home-essentials",
     brand: "Ingco",
     rating: 4.2,
@@ -414,6 +444,7 @@ export const products: Product[] = [
     originalPrice: 650.0,
     discount: 35,
     image: "/placeholder.svg?height=300&width=300&text=Cordless+Drill",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=Cordless+Drill+Hover", // Added hover image
     category: "tools",
     brand: "Ingco",
     isNew: true,
@@ -425,6 +456,7 @@ export const products: Product[] = [
     description: "Cordless spray gun for painting",
     price: 510.0,
     image: "/placeholder.svg?height=300&width=300&text=Spray+Gun",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=Spray+Gun+Hover", // Added hover image
     category: "tools",
     brand: "Ingco",
     isNew: true,
@@ -438,6 +470,7 @@ export const products: Product[] = [
     originalPrice: 160.0,
     discount: 56,
     image: "/placeholder.svg?height=300&width=300&text=Voltage+Detector",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=Voltage+Detector+Hover", // Added hover image
     category: "tools",
     brand: "Ingco",
     inStock: true,
@@ -448,6 +481,7 @@ export const products: Product[] = [
     description: "Impact screwdriver bit set",
     price: 10.0,
     image: "/placeholder.svg?height=300&width=300&text=Screwdriver+Bits",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=Screwdriver+Bits+Hover", // Added hover image
     category: "tools",
     brand: "Wadfow",
     isNew: true,
@@ -459,6 +493,7 @@ export const products: Product[] = [
     description: "Precision screwdriver set",
     price: 40.0,
     image: "/placeholder.svg?height=300&width=300&text=Precision+Screwdrivers",
+    hoverImage: "/placeholder.svg?height=300&width=300&text=Precision+Screwdrivers+Hover", // Added hover image
     category: "tools",
     brand: "Wadfow",
     inStock: true,
