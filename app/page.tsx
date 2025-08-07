@@ -5,9 +5,8 @@ import CategoryGrid from "@/components/CategoryGrid"
 import ProductSection from "@/components/ProductSection"
 import PromoBanner from "@/components/PromoBanner"
 import FeaturesBar from "@/components/FeatureBar"
-import NewArrivalsSection from "@/components/new-arrivals-section"
+import NewArrivalsSection from "@/components/NewArrrivals"
 import Footer from "@/components/footer"
-import SMClubButton from "@/components/sm-club-button"
 import { getProductsByBrand, getProducts, getNewArrivals, getBuildingEssentials, getLightingProducts } from "@/lib/data"
 
 export default async function HomePage() {
@@ -87,7 +86,6 @@ export default async function HomePage() {
       <FeaturesBar />
 
       <Footer />
-      <SMClubButton />
     </div>
   )
 }
