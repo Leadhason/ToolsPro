@@ -5,7 +5,7 @@ import "./globals.css"
 
 const barlow = Barlow({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600",],
 })
 
 export const metadata: Metadata = {

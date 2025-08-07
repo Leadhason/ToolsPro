@@ -6,7 +6,7 @@ import ProductSection from "@/components/ProductSection"
 import PromoBanner from "@/components/PromoBanner"
 import FeaturesBar from "@/components/FeatureBar"
 import NewArrivalsSection from "@/components/NewArrrivals"
-import Footer from "@/components/footer"
+import Footer from "@/components/Footer"
 import { getProductsByBrand, getProducts, getNewArrivals, getBuildingEssentials, getLightingProducts } from "@/lib/data"
 
 export default async function HomePage() {
@@ -40,16 +40,21 @@ export default async function HomePage() {
       <PromoBanner
         title="Fast and Reliable Delivery"
         description="Get your orders delivered to your doorstep within 48-Hours & Pay on delivery!"
-        bgColor="bg-gray-800"
+        bgColor="bg-gray-600"
       />
 
       <ProductSection
         title="Best Deals on Home & Kitchen Appliances"
         products={homeAppliances}
         viewAllLink="/category/home-essentials"
+        className="border-b-[1.5px] border-gray-300"
       />
 
-      <ProductSection title="Power Up with Total Tools" products={totalProducts} viewAllLink="/brand/total-tools" />
+      <ProductSection title="Power Up with Total Tools"
+        products={totalProducts} 
+        viewAllLink="/brand/total-tools"
+        className="border-b-[1.5px] border-gray-300"
+      />
 
       <ProductSection
         title="Building Essentials Picks: Bath, Kitchen & Lights"
@@ -60,13 +65,14 @@ export default async function HomePage() {
       <PromoBanner
         title="Vast Selection"
         description="Discover thousands of products from top brands all in one place!"
-        bgColor="bg-gray-800"
+        bgColor="bg-gray-600"
       />
 
       <ProductSection
         title="Get Karcher Cleaning Equipment & Pressure Washers"
         products={karcherProducts}
         viewAllLink="/brand/karcher"
+        className="border-b-[1.5px] border-gray-300"
       />
 
       <ProductSection
@@ -78,7 +84,7 @@ export default async function HomePage() {
       <PromoBanner
         title="Shop Smart, Save More"
         description="Skip the traffic, parking, and long lines by choosing our convenient online shopping experience"
-        bgColor="bg-gray-800"
+        bgColor="bg-gray-600"
       />
 
       <NewArrivalsSection products={newArrivals} />

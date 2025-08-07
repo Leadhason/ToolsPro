@@ -12,7 +12,7 @@ export default function NewArrivalsSection({ products }: NewArrivalsSectionProps
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-6 sm:mb-8">
           <h2 className="text-lg sm:text-xl lg:text-2xl font-bold">What's New: Fresh Stock & Hot Deals!</h2>
-          <Link href="/fresh-stock" className="text-blue-600 hover:underline text-sm sm:text-base">
+          <Link href="/fresh-stock" className="text-black underline text-sm font-light">
             View all
           </Link>
         </div>

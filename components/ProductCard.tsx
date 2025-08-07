@@ -26,9 +26,9 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
 return (
-  <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 w-full">
+  <div className=" flex flex-col items-center justify-between bg-white rounded-xl border  duration-200 w-full">
     <div
-      className="relative border-b border-gray-200" // Added border-b here
+      className="relative" // Added border-b here
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

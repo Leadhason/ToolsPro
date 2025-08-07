@@ -52,7 +52,7 @@ const categoryCards = [
 
 export default function CategoryGrid() {
   return (
-    <section className="py-6 sm:py-8">
+    <section className="py-6 sm:py-8 border-b-[1.5px] border-gray-300">
       <div className="container mx-auto px-4">
         {/* Mobile: Stack all cards vertically */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">

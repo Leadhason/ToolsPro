@@ -6,16 +6,17 @@ interface ProductSectionProps {
   title: string
   products: Product[]
   viewAllLink?: string
+  className?: string
 }
 
-export default function ProductSection({ title, products, viewAllLink }: ProductSectionProps) {
+export default function ProductSection({ title, products, viewAllLink, className }: ProductSectionProps) {
   return (
-    <section className="py-8 sm:py-12">
+    <section className={`py-8 sm:py-12 ${className}`}>
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center mb-6 sm:mb-8">
-          <h2 className="text-lg sm:text-xl lg:text-2xl font-bold">{title}</h2>
+        <div className="flex justify-between items-center mb-4 sm:mb-5">
+          <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold">{title}</h2>
           {viewAllLink && (
-            <Link href={viewAllLink} className="text-blue-600 hover:underline text-sm sm:text-base">
+            <Link href={viewAllLink} className="text-black underline text-sm font-light">
               View all
             </Link>
           )}

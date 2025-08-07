@@ -1,43 +1,49 @@
-import { Truck, CreditCard, Clock, Award } from "lucide-react"
-
-const features = [
-  {
-    icon: Award,
-    title: "Top-Quality Products",
-    description: "Premium tools and materials",
-  },
-  {
-    icon: CreditCard,
-    title: "Unbeatable Prices",
-    description: "Best value for your money",
-  },
-  {
-    icon: Truck,
-    title: "Shop Anytime, Anywhere",
-    description: "24/7 online shopping",
-  },
-  {
-    icon: Clock,
-    title: "Lightning-Fast Delivery",
-    description: "Quick and reliable shipping",
-  },
-]
+import { Facebook, Youtube, Instagram, MessageCircle, Twitter, Linkedin, Undo2, Container, BadgeCheck } from 'lucide-react'
+import Link from "next/link"
 
 export default function FeaturesBar() {
   return (
-    <section className="bg-gray-900 text-white py-6 sm:py-8">
+    <section className="bg-gray-100 py-4 border border-gray-200 text-black sm:py-6">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-          {features.map((feature, index) => (
-            <div key={index} className="flex items-center gap-3 sm:gap-4 text-center sm:text-left">
-              <feature.icon className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-400 flex-shrink-0" />
-              <div>
-                <h3 className="font-semibold text-sm sm:text-base">{feature.title}</h3>
-                <p className="text-xs sm:text-sm text-gray-300">{feature.description}</p>
-              </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+              <MessageCircle className="w-6 h-6" />
             </div>
-          ))}
+            <Link href="/support" className="flex flex-col">
+              <h3 className="font-semibold">Visit our support center</h3>
+              <p className="text-sm text-gray-600">Expert help & advice</p>
+            </Link>
+          </div>
+          <Link href="/top-sellers" className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+              <BadgeCheck className="w-6 h-6 " />
+            </div>
+            <div>
+              <h3 className="font-semibold">Shop Best Sellers</h3>
+              <p className="text-sm text-gray-600">Explore our top-selling products</p>
+            </div>
+          </Link>
+          <Link href="/returns" className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+              <Undo2 className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-semibold">Returns & exchanges</h3>
+              <p className="text-sm text-gray-600">All you need to know</p>
+            </div>
+          </Link>
+          <Link href="" className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+              <Container className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-semibold">Become our Supplier</h3>
+              <p className="text-sm text-gray-600">Sell on ToolsPro</p>
+            </div>
+          </Link>
         </div>
+        
       </div>
     </section>
   )

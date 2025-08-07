@@ -42,8 +42,8 @@ export default function Header() {
       </div>
 
       {/* Main header */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-3 sm:py-4">
+      <div className="bg-white">
+        <div className="container mx-auto -mb-4 px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between gap-2 sm:gap-4">
             {/* Mobile menu trigger */}
             <Sheet>
@@ -105,7 +105,7 @@ export default function Header() {
             {/* Search - Desktop */}
             <div className="hidden lg:flex flex-1 max-w-4xl mx-4 bg-white p-1 rounded-md">
               <div className="flex w-full">
-                <select className="border-none outline-none rounded-l-md px-3 bg-gray-100 text-sm min-w-[190px]">
+                <select className="border-none outline-none rounded-l-md px-3 bg-gray-100 text-sm min-w-[120px]">
                   <option>All</option>
                   <option>Tools</option>
                   <option>Outdoor</option>
@@ -167,10 +167,10 @@ export default function Header() {
       </div>
 
       {/* Navigation - Desktop only */}
-      <div className="bg-white border-b hidden md:block">
+      <div className="bg-white hidden md:block">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between p-2 ">
-            <div className="flex-col w-full p-2">
+            <div className="flex-col w-full">
               <div className="flex md:flex-1 justify-between items-center w-full">
                 <NavigationMenu>
                 <NavigationMenuList className="flex gap-4 lg:gap-8">
@@ -713,7 +713,7 @@ export default function Header() {
                 </div>
               </div>
 
-              <div className="flex flex-col items-center justify-between mt-4">
+              <div className="flex flex-col mt-2">
                 <NavigationMenu>
                   <NavigationMenuList>
                     <NavigationMenuItem>
