@@ -21,102 +21,119 @@ import CustomerReviewsSection from "@/components/customer-reviews-section"
 import SellProductsBanner from "@/components/sell-products-banner"
 import SimilarProductsCarousel from "@/components/similar-products-carousel"
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
+import Footer from "@/components/Footer" // Import Footer component
 
-interface ProductPageProps \{
-  params: \{
+interface ProductPageProps {
+  params: {
     id: string
-\}
-\}
-\
-export default async function ProductPage(\{ params \}: ProductPageProps)
-\
-{
-  const product = await getProduct(params.id)
-  const categories = await getCategories()
-  const similarProducts = await getSimilarProducts(params.id)
+  }
+}
 
-  const category = categories.find((cat) => cat.slug === product?.category)
+export default function ProductPage({ params }: ProductPageProps) {
+  const [product, setProduct] = useState<any>(null)
+  const [categories, setCategories] = useState<any[]>([])
+  const [similarProducts, setSimilarProducts] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [timeLeft, setTimeLeft] = useState<any>({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    days: 0,
+    targetMonth: "",
+    targetDay: 0,
+  })
 
-  if (!product) \
-    notFound()
-  \
-\
-  const calculateTimeLeft = () => \{
-    const now = new Date();
-    const targetDate = new Date();
-    targetDate.setDate(now.getDate() + (now.getHours() < 16 ? 0 : 1)); // If past 4 PM, target next day
-    targetDate.setHours(16, 0, 0, 0); // Set target to 4 PM today or tomorrow
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true)
+      const fetchedProduct = await getProduct(params.id)
+      const fetchedCategories = await getCategories()
+      const fetchedSimilarProducts = await getSimilarProducts(params.id)
 
-    const difference = targetDate.getTime() - now.getTime();
-\
-    let timeLeft = \
-      hours: 0,\
-      minutes: 0,\
-      seconds: 0,\
-      days: 0,\
-      targetMonth: '',\
-      targetDay: 0,
-    \;
+      setProduct(fetchedProduct)
+      setCategories(fetchedCategories)
+      setSimilarProducts(fetchedSimilarProducts)
+      setLoading(false)
+    }
+    fetchData()
+  }, [params.id])
 
-    if (difference > 0) \\
-      timeLeft = \{
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),\
-        minutes: Math.floor((difference / 1000 / 60) % 60),\
-        seconds: Math.floor((difference / 1000) % 60),\
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),\
-        targetMonth: targetDate.toLocaleString('default\', \{ month: \'long\' \}),\
-        targetDay: targetDate.getDate(),\
-      \};\
-    \} else \{
-      // If the target time has passed for today, set it for tomorrow\
-      targetDate.setDate(now.getDate() + 1);
-      targetDate.setHours(16, 0, 0, 0);
-      const newDifference = targetDate.getTime() - now.getTime();\
-      timeLeft = \
-        hours: Math.floor((newDifference / (1000 * 60 * 60)) % 24),\
-        minutes: Math.floor((newDifference / 1000 / 60) % 60),\
-        seconds: Math.floor((newDifference / 1000) % 60),\
-        days: Math.floor(newDifference / (1000 * 60 * 60 * 24)),\
-        targetMonth: targetDate.toLocaleString('default\', \{ month: \'long\' \}),\
-        targetDay: targetDate.getDate(),\
-      \};
-    \}
-    return timeLeft;
-  \;
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date()
+      const targetDate = new Date()
+      targetDate.setDate(now.getDate() + (now.getHours() < 16 ? 0 : 1)) // If past 4 PM, target next day
+      targetDate.setHours(16, 0, 0, 0) // Set target to 4 PM today or tomorrow
 
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+      let difference = targetDate.getTime() - now.getTime()
 
-  useEffect(() => \{
-    const timer = setTimeout(() => \{
-      setTimeLeft(calculateTimeLeft());
-    \}, 1000);
+      let timeLeft = {
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        days: 0,
+        targetMonth: "",
+        targetDay: 0,
+      }
 
-    return () => clearTimeout(timer);
-  \);
+      if (difference <= 0) {
+        // If the target time has passed for today, set it for tomorrow
+        targetDate.setDate(now.getDate() + 1)
+        targetDate.setHours(16, 0, 0, 0)
+        difference = targetDate.getTime() - now.getTime()
+      }
 
-  const timerComponents: JSX.Element[] = [];
+      timeLeft = {
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        targetMonth: targetDate.toLocaleString("default", { month: "long" }),
+        targetDay: targetDate.getDate(),
+      }
 
-  if (timeLeft.hours > 0) \
+      return timeLeft
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft())
+    }, 1000)
+
+    return () => clearInterval(timer) // Use clearInterval for cleanup
+  }, []) // Empty dependency array means this effect runs once on mount and cleans up on unmount
+
+  const timerComponents: React.ReactNode[] = []
+
+  if (timeLeft.hours > 0) {
     timerComponents.push(
       <span key="hours" className="font-bold text-green-600">
-        \{timeLeft.hours\} \{timeLeft.hours === 1 ? 'hour' : 'hours'\}
-      </span>
-    );
-  \
-  if (timeLeft.minutes > 0 || timeLeft.hours > 0) \
+        {timeLeft.hours} {timeLeft.hours === 1 ? "hour" : "hours"}
+      </span>,
+    )
+  }
+  if (timeLeft.minutes > 0 || timeLeft.hours > 0) {
     timerComponents.push(
       <span key="minutes" className="font-bold text-green-600">
-        \{timeLeft.minutes\} \{timeLeft.minutes === 1 ? 'minute' : 'minutes'\}
-      </span>
-    );
-  \
+        {timeLeft.minutes} {timeLeft.minutes === 1 ? "minute" : "minutes"}
+      </span>,
+    )
+  }
   timerComponents.push(
     <span key="seconds" className="font-bold text-green-600">
-      \{timeLeft.seconds\} \{timeLeft.seconds === 1 ? 'second' : 'seconds'\}
-    </span>
-  );
+      {timeLeft.seconds} {timeLeft.seconds === 1 ? "second" : "seconds"}
+    </span>,
+  )
 
+  if (loading) {
+    return <div className="min-h-screen bg-white flex items-center justify-center">Loading product details...</div>
+  }
+
+  if (!product) {
+    notFound()
+  }
+
+  const category = categories.find((cat) => cat.slug === product?.category)
 
   return (
     <div className="min-h-screen bg-white">
@@ -129,97 +146,102 @@ export default async function ProductPage(\{ params \}: ProductPageProps)
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            \{category && (
+            {category && (
               <>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href=\{`/category/$\{category.slug\}`\}>\{category.name\}</BreadcrumbLink>
+                  <BreadcrumbLink href={`/category/${category.slug}`}>{category.name}</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
               </>
-            )\}
+            )}
             <BreadcrumbItem>
-              <BreadcrumbPage>\{product.name\}</BreadcrumbPage>
+              <BreadcrumbPage>{product.name}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
 
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
-          \{/* Product Images */\}
+          {/* Product Images */}
           <div className="space-y-4">
             <div className="relative">
               <Image
                 src={product.image || "/placeholder.svg"}
-                alt=\{product.name\}
-                width=\{600\}
-                height=\{600\}
+                alt={product.name}
+                width={600}
+                height={600}
                 className="w-full rounded-lg"
               />
-              \{product.detailImageOverlay && (
+              {product.detailImageOverlay && (
                 <Image
                   src={product.detailImageOverlay || "/placeholder.svg"}
                   alt="Product details overlay"
-                  width=\{300\}
-                  height=\{100\}
+                  width={300}
+                  height={100}
                   className="absolute bottom-4 left-4 w-auto h-auto max-w-[80%] object-contain"
                 />
-              )\}
-              \{product.discount && (
-                <Badge className="absolute top-4 left-4 bg-red-500 text-white">\{product.discount\}% off</Badge>
-              )\}
-              \{product.isNew && <Badge className="absolute top-4 right-4 bg-green-500 text-white">New arrival</Badge>\}
+              )}
+              {product.discount && (
+                <Badge className="absolute top-4 left-4 bg-red-500 text-white">{product.discount}% off</Badge>
+              )}
+              {product.isNew && <Badge className="absolute top-4 right-4 bg-green-500 text-white">New arrival</Badge>}
             </div>
           </div>
 
-          \{/* Product Info */\}
+          {/* Product Info */}
           <div className="space-y-4 sm:space-y-6">
             <div>
               <div className="text-sm text-gray-600 mb-2">SM Essential Bundles</div>
-              <div className="text-sm text-gray-800 mb-4">\{product.brand\}</div>
+              <div className="text-sm text-gray-800 mb-4">{product.brand}</div>
 
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 leading-tight">\{product.name\}</h1>
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 leading-tight">{product.name}</h1>
 
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-6">
                 <div className="flex items-center gap-2">
-                  <span className="text-2xl sm:text-3xl font-bold">GH₵\{product.price.toFixed(2)\}</span>
-                  \{product.originalPrice && (
-                    <span className="text-lg text-gray-500 line-through">GH₵\{product.originalPrice.toFixed(2)\}</span>
-                  )\}
+                  <span className="text-2xl sm:text-3xl font-bold">GH₵{product.price.toFixed(2)}</span>
+                  {product.originalPrice && (
+                    <span className="text-lg text-gray-500 line-through">GH₵{product.originalPrice.toFixed(2)}</span>
+                  )}
                 </div>
               </div>
 
-              \{product.rating && (
+              {product.rating && (
                 <div className="flex items-center gap-2 mb-6">
                   <div className="flex">
-                    \{[...Array(5)].map((_, i) => (
+                    {[...Array(5)].map((_, i) => (
                       <Star
-                        key=\{i\}
-                        className=\{`w-4 h-4 $\{
+                        key={i}
+                        className={`w-4 h-4 ${
                           i < Math.floor(product.rating!) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
-                        \}`\}
+                        }`}
                       />
-                    ))\}
+                    ))}
                   </div>
-                  \{product.reviewCount && (
-                    <span className="text-sm text-gray-600">(\{product.reviewCount\} reviews)</span>
-                  )\}
+                  {product.reviewCount && (
+                    <span className="text-sm text-gray-600">({product.reviewCount} reviews)</span>
+                  )}
                 </div>
-              )\}
+              )}
             </div>
 
-            \{/* Delivery Countdown */\}
+            {/* Delivery Countdown */}
             <div className="mb-6 text-sm text-gray-700">
               <p>
-                Order within \{timerComponents.map((comp, index) => (
-                  <React.Fragment key=\{index\}>
-                    \{comp\}
-                    \{index < timerComponents.length - 1 && ' '\}
+                Order within{" "}
+                {timerComponents.map((comp, index) => (
+                  <React.Fragment key={index}>
+                    {comp}
+                    {index < timerComponents.length - 1 && " "}
                   </React.Fragment>
-                ))\}\{' '\}
-                to get it by <span className="font-bold text-red-600">\{timeLeft.targetMonth\} \{timeLeft.targetDay\}</span>!
+                ))}{" "}
+                to get it by{" "}
+                <span className="font-bold text-red-600">
+                  {timeLeft.targetMonth} {timeLeft.targetDay}
+                </span>
+                !
               </p>
             </div>
 
-            \{/* Quantity and Add to Cart */\}
+            {/* Quantity and Add to Cart */}
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex items-center border rounded-md w-fit">
@@ -239,67 +261,81 @@ export default async function ProductPage(\{ params \}: ProductPageProps)
               <Button variant="outline" className="w-full bg-transparent">
                 Buy it now
               </Button>
-              <Link href="/wishlist" className="flex items-center justify-center gap-2 text-blue-600 hover:underline text-sm">
+              <Link
+                href="/wishlist"
+                className="flex items-center justify-center gap-2 text-blue-600 hover:underline text-sm"
+              >
                 <Heart className="h-4 w-4" />
                 Add to Wishlist
               </Link>
             </div>
 
-            \{/* Delivery Guarantees */\}
+            {/* Delivery Guarantees */}
             <div className="pt-4 border-t space-y-2 text-sm text-gray-700">
-              <p><span className="font-semibold">Pay on Delivery</span> | <span className="font-semibold">Next-Day Delivery</span> | <span className="font-semibold">Free Delivery Over GH₵500</span></p>
-              <p className="text-xs text-gray-500">Add to cart, checkout, and receive it at your door - pay on delivery!</p>
+              <p>
+                <span className="font-semibold">Pay on Delivery</span> |{" "}
+                <span className="font-semibold">Next-Day Delivery</span> |{" "}
+                <span className="font-semibold">Free Delivery Over GH₵500</span>
+              </p>
+              <p className="text-xs text-gray-500">
+                Add to cart, checkout, and receive it at your door - pay on delivery!
+              </p>
               <p className="text-xs text-gray-500">Over 75,000+ orders delivered across Ghana.</p>
             </div>
 
-            \{/* Accordion Sections */\}
+            {/* Accordion Sections */}
             <div className="pt-4 border-t">
-              <ProductDetailAccordion title="How to Place an Order" defaultOpen=\{true\}>
+              <ProductDetailAccordion title="How to Place an Order" defaultOpen={true}>
                 <p>
-                  Placing an order is simple! Browse our categories, add desired products to your cart, and proceed to checkout. Follow the prompts to enter your delivery details and choose your payment method.
+                  Placing an order is simple! Browse our categories, add desired products to your cart, and proceed to
+                  checkout. Follow the prompts to enter your delivery details and choose your payment method.
                 </p>
               </ProductDetailAccordion>
               <ProductDetailAccordion title="Pay on Delivery Options">
                 <p>
-                  We offer convenient Pay on Delivery options for most locations. You can pay with cash, mobile money (MTN, Vodafone, AirtelTigo), or card upon receiving your order.
+                  We offer convenient Pay on Delivery options for most locations. You can pay with cash, mobile money
+                  (MTN, Vodafone, AirtelTigo), or card upon receiving your order.
                 </p>
               </ProductDetailAccordion>
               <ProductDetailAccordion title="Description">
-                <p>\{product.description\}</p>
+                <p>{product.description}</p>
                 <p className="mt-2">
-                  This \{product.name\} from \{product.brand\} is designed for optimal performance and durability. Ideal for both professional and DIY use.
+                  This {product.name} from {product.brand} is designed for optimal performance and durability. Ideal for
+                  both professional and DIY use.
                 </p>
               </ProductDetailAccordion>
               <ProductDetailAccordion title="Processing & Fulfillment">
                 <p>
-                  Orders are typically processed within 24 hours. Delivery within Accra is usually within 48 hours, while regional deliveries may take 3-5 business days. Weekend orders are processed on Mondays.
+                  Orders are typically processed within 24 hours. Delivery within Accra is usually within 48 hours,
+                  while regional deliveries may take 3-5 business days. Weekend orders are processed on Mondays.
                 </p>
               </ProductDetailAccordion>
               <ProductDetailAccordion title="Free Shipping and Other Policies">
                 <p>
-                  Enjoy free delivery on all orders over GH₵500 within Accra. For our full shipping, return, and privacy policies, please visit our dedicated policy pages linked in the footer.
+                  Enjoy free delivery on all orders over GH₵500 within Accra. For our full shipping, return, and privacy
+                  policies, please visit our dedicated policy pages linked in the footer.
                 </p>
               </ProductDetailAccordion>
             </div>
 
-            \{/* Secure Payment Section */\}
+            {/* Secure Payment Section */}
             <PaymentMethodsSection />
           </div>
         </div>
       </div>
 
-      \{/* Customer Reviews Section */\}
+      {/* Customer Reviews Section */}
       <div className="container mx-auto px-4 py-8">
         <CustomerReviewsSection />
       </div>
 
-      \{/* Sell Products Banner */\}
+      {/* Sell Products Banner */}
       <SellProductsBanner />
 
-      \{/* Compare with Similar Items */\}
-      <SimilarProductsCarousel products=\{similarProducts\} />
+      {/* Compare with Similar Items */}
+      <SimilarProductsCarousel products={similarProducts} />
 
       <Footer />
     </div>
   )
-\}
+}
