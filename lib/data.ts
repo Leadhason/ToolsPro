@@ -52,7 +52,8 @@ export const categories: Category[] = [
     image: "/category-images/construction-worker-image-2.png",
     subcategories: ["Hand Tools", "Power Tools", "Measuring Tools"],
     bannerImage: "/category-images/mechanic-image.png",
-    bannerDescription: "Explore a comprehensive range of hand and power tools for every project, from DIY home repairs to professional construction. Find drills, saws, wrenches, and more from top brands."
+    bannerDescription:
+      "Explore a comprehensive range of hand and power tools for every project, from DIY home repairs to professional construction. Find drills, saws, wrenches, and more from top brands.",
   },
   {
     id: "2",
@@ -62,7 +63,8 @@ export const categories: Category[] = [
     image: "/category-images/man-and-woman.png",
     subcategories: ["Generators", "Water Pumps", "Garden Tools"],
     bannerImage: "/category-images/man-and-woman-painting.png",
-    bannerDescription: "Equip yourself for any outdoor task with our robust selection of generators, water pumps, and garden tools. Power your projects and maintain your landscape with ease."
+    bannerDescription:
+      "Equip yourself for any outdoor task with our robust selection of generators, water pumps, and garden tools. Power your projects and maintain your landscape with ease.",
   },
   {
     id: "3",
@@ -72,7 +74,8 @@ export const categories: Category[] = [
     image: "/category-images/construction-worker-image-1.png",
     subcategories: ["Plumbing", "Electrical", "Hardware"],
     bannerImage: "/category-images/construction-worker-image-1.png",
-    bannerDescription: "Build strong and reliable structures with our high-quality building materials. From plumbing and electrical supplies to essential hardware, we have everything you need for your construction projects."
+    bannerDescription:
+      "Build strong and reliable structures with our high-quality building materials. From plumbing and electrical supplies to essential hardware, we have everything you need for your construction projects.",
   },
   {
     id: "4",
@@ -81,8 +84,9 @@ export const categories: Category[] = [
     description: "Bath, Kitchen, Lighting & More",
     image: "/category-images/in kitchen.png",
     subcategories: ["Kitchen", "Bathroom", "Lighting"],
-    bannerImage: "/category-images/in kitchen.png",
-    bannerDescription: "Transform your living space with our collection of home essentials and decor. Discover stylish and functional items for your kitchen, bathroom, and lighting needs to create the perfect ambiance."
+    bannerImage: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-KTmSHw0FsNP9tNJ6eHKyZjfCIZ6SuV.png", // Using the provided image for Pressure Washers as a generic example
+    bannerDescription:
+      "Transform your living space with our collection of home essentials and decor. Discover stylish and functional items for your kitchen, bathroom, and lighting needs to create the perfect ambiance.",
   },
 ]
 

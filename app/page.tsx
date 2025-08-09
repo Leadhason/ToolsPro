@@ -40,6 +40,7 @@ export default async function HomePage() {
       <PromoBanner
         title="Fast and Reliable Delivery"
         description="Get your orders delivered to your doorstep within 48-Hours & Pay on delivery!"
+        bgColor="bg-gray-600"
       />
 
       <ProductSection
@@ -64,6 +65,7 @@ export default async function HomePage() {
       <PromoBanner
         title="Vast Selection"
         description="Discover thousands of products from top brands all in one place!"
+        bgColor="bg-gray-600"
       />
 
       <ProductSection
@@ -82,6 +84,7 @@ export default async function HomePage() {
       <PromoBanner
         title="Shop Smart, Save More"
         description="Skip the traffic, parking, and long lines by choosing our convenient online shopping experience"
+        bgColor="bg-gray-600"
       />
 
       <NewArrivalsSection products={newArrivals} />

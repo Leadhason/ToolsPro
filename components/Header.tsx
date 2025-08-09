@@ -709,7 +709,7 @@ export default function Header() {
                     <Link href="/loyalty" className="text-gray-600 hover:text-red-600 text-sm">
                       Loyalty Program
                     </Link>
-                    <Button className="bg-emerald-900 hover:bg-emerald-700 rounded-full text-sm cursor-pointer">Contact Us</Button>
+                    <Button className="bg-gray-800 hover:bg-gray-700 rounded-full text-sm cursor-pointer">Contact Us</Button>
                 </div>
               </div>
 
@@ -780,7 +780,7 @@ export default function Header() {
       </div>
 
       {/* Promo bar - Responsive */}
-      <div className="bg-emerald-900 text-white py-2">
+      <div className="bg-gray-800 text-white py-2">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center lg:justify-between text-xs sm:text-sm w-full">
             <div className="flex items-center gap-8 sm:gap-6 lg:gap-12 justify-between w-full">

@@ -1,43 +1,42 @@
-'use client'
+"use client"
 
 import Image from "next/image"
 import Link from "next/link"
-import { Star } from 'lucide-react'
+import { Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Checkbox } from "@/components/ui/checkbox" // Import Checkbox
+import { Checkbox } from "@/components/ui/checkbox"
 import type { Product } from "@/lib/data"
 import { useState } from "react"
 
 interface ProductCardProps {
   product: Product
-  showCompare?: boolean // New prop for compare checkbox
+  showCompare?: boolean
 }
 
 export default function ProductCard({ product, showCompare = false }: ProductCardProps) {
-  const [currentImage, setCurrentImage] = useState(product.image);
+  const [currentImage, setCurrentImage] = useState(product.image)
 
   const handleMouseEnter = () => {
     if (product.hoverImage) {
-      setCurrentImage(product.hoverImage);
+      setCurrentImage(product.hoverImage)
     }
-  };
+  }
 
   const handleMouseLeave = () => {
-    setCurrentImage(product.image);
-  };
+    setCurrentImage(product.image)
+  }
 
   return (
     <div className="flex flex-col items-center justify-between bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 w-full">
-      <div
-        className="relative w-full"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
+      <div className="relative w-full" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         {showCompare && (
-          <div className="absolute top-2 left-2 z-10 flex items-center space-x-2">
-            <Checkbox id={`compare-${product.id}`} />
-            <label htmlFor={`compare-${product.id}`} className="text-white text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          <div className="absolute top-2 left-2 z-10 flex items-center space-x-2 bg-white/80 px-2 py-1 rounded-md">
+            <Checkbox id={`compare-${product.id}`} className="h-4 w-4" />
+            <label
+              htmlFor={`compare-${product.id}`}
+              className="text-gray-800 text-xs font-medium leading-none cursor-pointer"
+            >
               Compare
             </label>
           </div>
@@ -48,7 +47,7 @@ export default function ProductCard({ product, showCompare = false }: ProductCar
             alt={product.name}
             width={300}
             height={300}
-            className="w-full h-36 sm:h-40 lg:h-48 object-cover rounded-t-xl border-b border-gray-200" // Added border-b here
+            className="w-full h-36 sm:h-40 lg:h-48 object-cover rounded-t-xl border-b border-gray-200"
           />
         </Link>
         {product.discount && (
@@ -116,7 +115,12 @@ export default function ProductCard({ product, showCompare = false }: ProductCar
               Choose options
             </Button>
           ) : (
-            <Button variant="outline" className="w-full text-xs sm:text-sm h-8 sm:h-9 hover:bg-gray-800 hover:text-white">Add to cart</Button>
+            <Button
+              variant="outline"
+              className="w-full text-xs sm:text-sm h-8 sm:h-9 hover:bg-gray-800 hover:text-white bg-transparent"
+            >
+              Add to cart
+            </Button>
           )}
         </div>
       </div>

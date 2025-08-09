@@ -5,6 +5,14 @@ import { getProductsByCategory, getCategories } from "@/lib/data"
 import CategoryHero from "@/components/CategoryHero"
 import FilterSidebar from "@/components/FilterSidebar"
 import TopControls from "@/components/TopControls"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 
 interface CategoryPageProps {
   params: {
@@ -27,7 +35,19 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       <CategoryHero category={category} />
 
       <div className="container mx-auto px-4 py-6 sm:py-8">
-        <div className="flex flex-col lg:flex-row gap-6">
+        <Breadcrumb className="mb-6">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{category.name}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+
+        <div className="flex flex-col lg:flex-row gap-8">
           {/* Filter Sidebar */}
           <div className="lg:w-1/4">
             <FilterSidebar />
