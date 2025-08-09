@@ -51,7 +51,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filter Sidebar */}
-          <div className="lg:w-1/4">
+          <div className="lg:w-1/4 sticky top-8 h-[calc(100vh-6rem)]">
+            {" "}
+            {/* Added sticky positioning and fixed height */}
             <FilterSidebar />
           </div>
 
