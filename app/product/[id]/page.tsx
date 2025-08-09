@@ -174,7 +174,7 @@ export default function ProductPage({ params }: ProductPageProps) {
         </Breadcrumb>
 
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
-          {/* Product Images and Accordions/Payment Section */}
+          {/* Product Images Column */}
           <div className="space-y-4">
             <div className="relative">
               <Image
@@ -220,20 +220,8 @@ export default function ProductPage({ params }: ProductPageProps) {
               ))}
             </div>
 
-            {/* Accordion Sections (Moved) */}
-            <div className="pt-4 border-t">
-              <ProductDetailAccordion title="How to Place an Order" defaultOpen={true}>
-                <p>
-                  Placing an order is simple! Browse our categories, add desired products to your cart, and proceed to
-                  checkout. Follow the prompts to enter your delivery details and choose your payment method.
-                </p>
-              </ProductDetailAccordion>
-              <ProductDetailAccordion title="Pay on Delivery Options">
-                <p>
-                  We offer convenient Pay on Delivery options for most locations. You can pay with cash, mobile money
-                  (MTN, Vodafone, AirtelTigo), or card upon receiving your order.
-                </p>
-              </ProductDetailAccordion>
+            {/* Accordion Sections (Description, Processing, Free Shipping) and Payment Section - Visible on large screens, hidden on small */}
+            <div className="pt-4 border-t hidden lg:block">
               <ProductDetailAccordion title="Description">
                 <p>{product.description}</p>
                 <p className="mt-2">
@@ -255,11 +243,12 @@ export default function ProductPage({ params }: ProductPageProps) {
               </ProductDetailAccordion>
             </div>
 
-            {/* Secure Payment Section (Moved) */}
-            <PaymentMethodsSection />
+            <div className="hidden lg:block">
+              <PaymentMethodsSection />
+            </div>
           </div>
 
-          {/* Product Info */}
+          {/* Product Info Column */}
           <div className="space-y-4 sm:space-y-6">
             <div>
               <div className="text-sm text-gray-600 mb-2">SM Essential Bundles</div>
@@ -354,6 +343,49 @@ export default function ProductPage({ params }: ProductPageProps) {
               </p>
               <p className="text-xs text-gray-500">Over 75,000+ orders delivered across Ghana.</p>
             </div>
+
+            {/* Accordion Sections (How to Place Order, Pay on Delivery) - Always visible in this column */}
+            <div className="pt-4 border-t">
+              <ProductDetailAccordion title="How to Place an Order" defaultOpen={true}>
+                <p>
+                  Placing an order is simple! Browse our categories, add desired products to your cart, and proceed to
+                  checkout. Follow the prompts to enter your delivery details and choose your payment method.
+                </p>
+              </ProductDetailAccordion>
+              <ProductDetailAccordion title="Pay on Delivery Options">
+                <p>
+                  We offer convenient Pay on Delivery options for most locations. You can pay with cash, mobile money
+                  (MTN, Vodafone, AirtelTigo), or card upon receiving your order.
+                </p>
+              </ProductDetailAccordion>
+            </div>
+
+            {/* Accordion Sections (Description, Processing, Free Shipping) and Payment Section - Visible on small screens, hidden on large */}
+            <div className="pt-4 border-t block lg:hidden">
+              <ProductDetailAccordion title="Description">
+                <p>{product.description}</p>
+                <p className="mt-2">
+                  This {product.name} from {product.brand} is designed for optimal performance and durability. Ideal for
+                  both professional and DIY use.
+                </p>
+              </ProductDetailAccordion>
+              <ProductDetailAccordion title="Processing & Fulfillment">
+                <p>
+                  Orders are typically processed within 24 hours. Delivery within Accra is usually within 48 hours,
+                  while regional deliveries may take 3-5 business days. Weekend orders are processed on Mondays.
+                </p>
+              </ProductDetailAccordion>
+              <ProductDetailAccordion title="Free Shipping and Other Policies">
+                <p>
+                  Enjoy free delivery on all orders over GH₵500 within Accra. For our full shipping, return, and privacy
+                  policies, please visit our dedicated policy pages linked in the footer.
+                </p>
+              </ProductDetailAccordion>
+            </div>
+
+            <div className="block lg:hidden">
+              <PaymentMethodsSection />
+            </div>
           </div>
         </div>
       </div>
@@ -366,7 +398,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       {/* Compare with Similar Items */}
       <SimilarProductsCarousel products={similarProducts} />
 
-      {/* Sell Products Banner (Moved) */}
+      {/* Sell Products Banner (Remains after Similar Products Carousel) */}
       <SellProductsBanner />
 
       <Footer />
