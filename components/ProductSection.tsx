@@ -23,7 +23,7 @@ export default function ProductSection({ title, products, viewAllLink, className
         </div>
 
         {/* Responsive grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 sm:gap-4 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 sm:gap-y-8 lg:gap-8">
           {products.slice(0, 6).map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
