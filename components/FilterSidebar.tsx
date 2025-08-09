@@ -34,7 +34,7 @@ export default function FilterSidebar() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 294330])
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 h-full overflow-y-auto">
+    <div className="bg-white p-6 rounded-none border-x-1 h-full overflow-y-auto">
       {" "}
       {/* Reverted styling and added scroll */}
       <h2 className="text-2xl font-bold mb-6 text-gray-900">Filters</h2>

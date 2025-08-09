@@ -10,58 +10,20 @@ export default function TopControls() {
   const [viewMode, setViewMode] = useState("grid") // 'grid' or 'list'
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4 py-4 border-b border-gray-200 mb-6">
+    <div className="flex flex-wrap p-3 -mt-3 items-center justify-between gap-4 py-4 border-y-1 border-gray-200 mb-6">
       {/* Filter button (for mobile/tablet sidebar toggle) */}
       <Button
         variant="outline"
-        className="lg:hidden flex items-center gap-2 text-gray-700 hover:bg-gray-100 bg-transparent"
+        className="lg:hidden flex items-center outline-none gap-2 text-gray-700 hover:bg-gray-100 bg-transparent"
       >
         <Filter className="h-4 w-4" />
         Filter
       </Button>
 
-      {/* Sort by dropdown */}
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-gray-600">Sort by:</span>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="flex items-center gap-1 text-gray-800 hover:bg-gray-100 bg-transparent"
-            >
-              Featured <ChevronDown className="h-4 w-4 ml-1" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuItem>Featured</DropdownMenuItem>
-            <DropdownMenuItem>Price: Low to High</DropdownMenuItem>
-            <DropdownMenuItem>Price: High to Low</DropdownMenuItem>
-            <DropdownMenuItem>Newest Arrivals</DropdownMenuItem>
-            <DropdownMenuItem>Top Rated</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-
       {/* Compare toggle and View as */}
-      <div className="flex items-center gap-4 ml-auto">
+      <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Compare</span>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsCompareActive(!isCompareActive)}
-            className="p-0 h-auto w-auto"
-          >
-            {isCompareActive ? (
-              <ToggleRight className="h-6 w-6 text-blue-600" />
-            ) : (
-              <ToggleLeft className="h-6 w-6 text-gray-400" />
-            )}
-          </Button>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">View as</span>
+          <span className="text-sm font-bold text-gray-600">View as</span>
           <Button
             variant="ghost"
             size="icon"
@@ -79,7 +41,47 @@ export default function TopControls() {
             <List className="h-5 w-5" />
           </Button>
         </div>
+
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-600">Compare</span>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsCompareActive(!isCompareActive)}
+            className="p-0 h-auto w-auto"
+          >
+            {isCompareActive ? (
+              <ToggleRight className="h-6 w-6 text-blue-600" />
+            ) : (
+              <ToggleLeft className="h-6 w-6 text-gray-400" />
+            )}
+          </Button>
+        </div>
       </div>
+
+      {/* Sort by dropdown */}
+      <div className="flex items-center gap-2">
+        <span className="text-sm font-bold text-gray-600">Sort by:</span>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="flex items-center gap-1 text-gray-800 hover:bg-gray-100 bg-transparent"
+            >
+              Featured <ChevronDown className="h-4 w-4 ml-1" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuItem>Featured</DropdownMenuItem>
+            <DropdownMenuItem>Price: Low to High</DropdownMenuItem>
+            <DropdownMenuItem>Price: High to Low</DropdownMenuItem>
+            <DropdownMenuItem>Newest Arrivals</DropdownMenuItem>
+            <DropdownMenuItem>Top Rated</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+
     </div>
   )
 }
