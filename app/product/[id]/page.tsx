@@ -43,6 +43,7 @@ export default function ProductPage({ params }: ProductPageProps) {
     targetMonth: "",
     targetDay: 0,
   })
+  const [mainImage, setMainImage] = useState<string>("")
 
   useEffect(() => {
     async function fetchData() {
@@ -54,6 +55,9 @@ export default function ProductPage({ params }: ProductPageProps) {
       setProduct(fetchedProduct)
       setCategories(fetchedCategories)
       setSimilarProducts(fetchedSimilarProducts)
+      if (fetchedProduct) {
+        setMainImage(fetchedProduct.image || "/placeholder.svg")
+      }
       setLoading(false)
     }
     fetchData()
@@ -135,6 +139,15 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   const category = categories.find((cat) => cat.slug === product?.category)
 
+  // Define additional placeholder images for demonstration
+  const additionalImages = [
+    product.hoverImage || "/product-image-2.png",
+    "/product-image-3.png",
+    "/product-image-4.png",
+  ]
+
+  const allProductImages = [product.image, ...additionalImages].filter(Boolean)
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -161,15 +174,15 @@ export default function ProductPage({ params }: ProductPageProps) {
         </Breadcrumb>
 
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
-          {/* Product Images */}
+          {/* Product Images and Accordions/Payment Section */}
           <div className="space-y-4">
             <div className="relative">
               <Image
-                src={product.image || "/placeholder.svg"}
+                src={mainImage || "/placeholder.svg"}
                 alt={product.name}
                 width={600}
                 height={600}
-                className="w-full rounded-lg"
+                className="w-full rounded-lg object-contain max-h-[600px]"
               />
               {product.detailImageOverlay && (
                 <Image
@@ -185,6 +198,65 @@ export default function ProductPage({ params }: ProductPageProps) {
               )}
               {product.isNew && <Badge className="absolute top-4 right-4 bg-green-500 text-white">New arrival</Badge>}
             </div>
+
+            {/* Thumbnail Images */}
+            <div className="grid grid-cols-4 gap-2">
+              {allProductImages.map((imgSrc: string, index: number) => (
+                <div
+                  key={index}
+                  className={`relative w-full h-24 cursor-pointer rounded-lg overflow-hidden border-2 ${
+                    mainImage === imgSrc ? "border-gray-800" : "border-transparent"
+                  }`}
+                  onClick={() => setMainImage(imgSrc)}
+                >
+                  <Image
+                    src={imgSrc || "/placeholder.svg"}
+                    alt={`Product thumbnail ${index + 1}`}
+                    fill
+                    style={{ objectFit: "cover" }}
+                    className="hover:opacity-75 transition-opacity"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Accordion Sections (Moved) */}
+            <div className="pt-4 border-t">
+              <ProductDetailAccordion title="How to Place an Order" defaultOpen={true}>
+                <p>
+                  Placing an order is simple! Browse our categories, add desired products to your cart, and proceed to
+                  checkout. Follow the prompts to enter your delivery details and choose your payment method.
+                </p>
+              </ProductDetailAccordion>
+              <ProductDetailAccordion title="Pay on Delivery Options">
+                <p>
+                  We offer convenient Pay on Delivery options for most locations. You can pay with cash, mobile money
+                  (MTN, Vodafone, AirtelTigo), or card upon receiving your order.
+                </p>
+              </ProductDetailAccordion>
+              <ProductDetailAccordion title="Description">
+                <p>{product.description}</p>
+                <p className="mt-2">
+                  This {product.name} from {product.brand} is designed for optimal performance and durability. Ideal for
+                  both professional and DIY use.
+                </p>
+              </ProductDetailAccordion>
+              <ProductDetailAccordion title="Processing & Fulfillment">
+                <p>
+                  Orders are typically processed within 24 hours. Delivery within Accra is usually within 48 hours,
+                  while regional deliveries may take 3-5 business days. Weekend orders are processed on Mondays.
+                </p>
+              </ProductDetailAccordion>
+              <ProductDetailAccordion title="Free Shipping and Other Policies">
+                <p>
+                  Enjoy free delivery on all orders over GH₵500 within Accra. For our full shipping, return, and privacy
+                  policies, please visit our dedicated policy pages linked in the footer.
+                </p>
+              </ProductDetailAccordion>
+            </div>
+
+            {/* Secure Payment Section (Moved) */}
+            <PaymentMethodsSection />
           </div>
 
           {/* Product Info */}
@@ -282,44 +354,6 @@ export default function ProductPage({ params }: ProductPageProps) {
               </p>
               <p className="text-xs text-gray-500">Over 75,000+ orders delivered across Ghana.</p>
             </div>
-
-            {/* Accordion Sections */}
-            <div className="pt-4 border-t">
-              <ProductDetailAccordion title="How to Place an Order" defaultOpen={true}>
-                <p>
-                  Placing an order is simple! Browse our categories, add desired products to your cart, and proceed to
-                  checkout. Follow the prompts to enter your delivery details and choose your payment method.
-                </p>
-              </ProductDetailAccordion>
-              <ProductDetailAccordion title="Pay on Delivery Options">
-                <p>
-                  We offer convenient Pay on Delivery options for most locations. You can pay with cash, mobile money
-                  (MTN, Vodafone, AirtelTigo), or card upon receiving your order.
-                </p>
-              </ProductDetailAccordion>
-              <ProductDetailAccordion title="Description">
-                <p>{product.description}</p>
-                <p className="mt-2">
-                  This {product.name} from {product.brand} is designed for optimal performance and durability. Ideal for
-                  both professional and DIY use.
-                </p>
-              </ProductDetailAccordion>
-              <ProductDetailAccordion title="Processing & Fulfillment">
-                <p>
-                  Orders are typically processed within 24 hours. Delivery within Accra is usually within 48 hours,
-                  while regional deliveries may take 3-5 business days. Weekend orders are processed on Mondays.
-                </p>
-              </ProductDetailAccordion>
-              <ProductDetailAccordion title="Free Shipping and Other Policies">
-                <p>
-                  Enjoy free delivery on all orders over GH₵500 within Accra. For our full shipping, return, and privacy
-                  policies, please visit our dedicated policy pages linked in the footer.
-                </p>
-              </ProductDetailAccordion>
-            </div>
-
-            {/* Secure Payment Section */}
-            <PaymentMethodsSection />
           </div>
         </div>
       </div>
@@ -329,11 +363,11 @@ export default function ProductPage({ params }: ProductPageProps) {
         <CustomerReviewsSection />
       </div>
 
-      {/* Sell Products Banner */}
-      <SellProductsBanner />
-
       {/* Compare with Similar Items */}
       <SimilarProductsCarousel products={similarProducts} />
+
+      {/* Sell Products Banner (Moved) */}
+      <SellProductsBanner />
 
       <Footer />
     </div>
