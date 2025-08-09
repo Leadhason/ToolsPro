@@ -5,6 +5,8 @@ import { getProductsByCategory, getCategories } from "@/lib/data"
 import CategoryHero from "@/components/CategoryHero"
 import FilterSidebar from "@/components/FilterSidebar"
 import TopControls from "@/components/TopControls"
+import Footer from "@/components/Footer"
+import FeatureBar from "@/components/FeatureBar"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -71,6 +73,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </div>
         </div>
       </div>
+      <FeatureBar />
+      <Footer />
     </div>
   )
 }

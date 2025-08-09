@@ -84,7 +84,7 @@ export const categories: Category[] = [
     description: "Bath, Kitchen, Lighting & More",
     image: "/category-images/in kitchen.png",
     subcategories: ["Kitchen", "Bathroom", "Lighting"],
-    bannerImage: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-KTmSHw0FsNP9tNJ6eHKyZjfCIZ6SuV.png", // Using the provided image for Pressure Washers as a generic example
+    bannerImage: ".png", // Using the provided image for Pressure Washers as a generic example
     bannerDescription:
       "Transform your living space with our collection of home essentials and decor. Discover stylish and functional items for your kitchen, bathroom, and lighting needs to create the perfect ambiance.",
   },

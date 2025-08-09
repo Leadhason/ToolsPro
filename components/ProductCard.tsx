@@ -117,7 +117,7 @@ export default function ProductCard({ product, showCompare = false }: ProductCar
           ) : (
             <Button
               variant="outline"
-              className="w-full text-xs sm:text-sm h-8 sm:h-9 hover:bg-gray-800 hover:text-white bg-transparent"
+              className="w-full text-xs sm:text-sm h-8 sm:h-9 hover:bg-emerald-800 hover:text-white bg-transparent"
             >
               Add to cart
             </Button>

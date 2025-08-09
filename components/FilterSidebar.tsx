@@ -34,12 +34,10 @@ export default function FilterSidebar() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 294330])
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-      <h2 className="text-2xl font-bold mb-6 text-gray-900">Filters</h2>
-
+    <div className="bg-white p-6 rounded-none border-x-1 z-10">
       <Accordion type="multiple" defaultValue={["availability", "product-type", "price", "brand"]} className="w-full">
         <AccordionItem value="availability">
-          <AccordionTrigger className="text-lg font-semibold text-gray-800 hover:no-underline">
+          <AccordionTrigger className="text-md font-semibold text-gray-800 hover:no-underline">
             Availability
             <span className="text-gray-500 text-sm ml-2">
               ({availabilityOptions.reduce((sum, opt) => sum + opt.count, 0)})
@@ -60,7 +58,7 @@ export default function FilterSidebar() {
         </AccordionItem>
 
         <AccordionItem value="product-type">
-          <AccordionTrigger className="text-lg font-semibold text-gray-800 hover:no-underline">
+          <AccordionTrigger className="text-md font-semibold text-gray-800 hover:no-underline">
             Product Type
             <span className="text-gray-500 text-sm ml-2">
               ({productTypeOptions.reduce((sum, opt) => sum + opt.count, 0)})
@@ -81,7 +79,7 @@ export default function FilterSidebar() {
         </AccordionItem>
 
         <AccordionItem value="price">
-          <AccordionTrigger className="text-lg font-semibold text-gray-800 hover:no-underline">Price</AccordionTrigger>
+          <AccordionTrigger className="text-md font-semibold text-gray-800 hover:no-underline">Price</AccordionTrigger>
           <AccordionContent className="pt-2">
             <div className="flex items-center gap-3 mb-4">
               <Input
@@ -112,7 +110,7 @@ export default function FilterSidebar() {
         </AccordionItem>
 
         <AccordionItem value="brand">
-          <AccordionTrigger className="text-lg font-semibold text-gray-800 hover:no-underline">
+          <AccordionTrigger className="text-md font-semibold text-gray-800 hover:no-underline">
             Brand
             <span className="text-gray-500 text-sm ml-2">
               ({brandOptions.reduce((sum, opt) => sum + opt.count, 0)})

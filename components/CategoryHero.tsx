@@ -7,25 +7,25 @@ interface CategoryHeroProps {
 
 export default function CategoryHero({ category }: CategoryHeroProps) {
   return (
-    <section className="relative bg-gray-100 py-12 sm:py-16 lg:py-20 overflow-hidden">
+    <section className="relative my-10 bg-emerald-500 py-4 sm:py-6 lg:py-8 overflow-hidden mx-8">
       <div className="container mx-auto px-4 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-8 lg:gap-16">
           <div className="lg:w-2/3 text-center lg:text-left">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4 leading-tight">
+            <h1 className="text-2xl sm:text-xl lg:text-2xl font-extrabold text-gray-900 mb-4 leading-tight">
               {category.name}
             </h1>
-            <p className="text-lg sm:text-xl text-gray-700 max-w-2xl mx-auto lg:mx-0">
+            <p className="text-xl sm:text-xl text-gray-700 max-w-2xl mx-auto lg:mx-0 font-light">
               {category.bannerDescription || category.description}
             </p>
           </div>
-          <div className="lg:w-1/3 flex justify-center lg:justify-end">
+          <div className="lg:w-1/3 h-full flex justify-end">
             {category.bannerImage && (
               <Image
                 src={category.bannerImage || "/placeholder.svg"}
                 alt={category.name}
                 width={500}
                 height={350}
-                className="rounded-lg shadow-lg object-cover max-h-[250px] sm:max-h-[300px] lg:max-h-[350px] w-full lg:w-auto transform transition-transform duration-500 hover:scale-105"
+                className="rounded-lg shadow-lg object-cover min-h-full sm:max-h-[300px] lg:min-h-full w-full lg:w-auto transform transition-transform duration-500 hover:scale-105"
               />
             )}
           </div>
