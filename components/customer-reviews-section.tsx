@@ -14,7 +14,7 @@ export default function CustomerReviewsSection() {
         </div>
         <p className="text-gray-700">Be the first to write a review</p>
       </div>
-      <Button className="bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-md">Write a review</Button>
+      <Button className="bg-gray-800 cursor-pointer hover:bg-gray-900 text-white px-6 py-3 rounded-md">Write a review</Button>
     </div>
   )
 }
