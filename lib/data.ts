@@ -14,6 +14,7 @@ export interface Product {
   inStock: boolean
   isNew?: boolean
   colors?: string[]
+  detailImageOverlay?: string // New: for product detail page image overlay
 }
 
 export interface Category {
@@ -198,7 +199,7 @@ export const products: Product[] = [
     description: "Wire brush for surface preparation",
     price: 30.0,
     image: "/products/image-9.jpeg",
-    hoverImage: "/products/imqge-9.jpeg", // Added hover image
+    hoverImage: "/products/image-9.jpeg", // Added hover image
     category: "tools",
     brand: "Total Tools",
     inStock: true,
@@ -208,7 +209,7 @@ export const products: Product[] = [
     name: "Total Latex Gloves - TSP13102",
     description: "Protective latex gloves for various tasks",
     price: 20.0,
-    image: "/products/imqge-9.jpeg", // Using existing image from sync
+    image: "/products/image-9.jpeg", // Using existing image from sync
     hoverImage: "/products/image-9.jpeg", // Added hover image
     category: "tools",
     brand: "Total Tools",
@@ -512,6 +513,59 @@ export const products: Product[] = [
     brand: "Wadfow",
     inStock: true,
   },
+  {
+    id: "35",
+    name: "Total High Pressure Washer 2500W - TGT11246",
+    description: "Powerful high pressure washer with induction motor",
+    price: 3320.0,
+    image: "/products/timage-10.png",
+    detailImageOverlay: "/product-details/total-pressure-washer-overlay.png", // Specific overlay image
+    category: "outdoor-equipment",
+    brand: "Total Tools",
+    rating: 4.5,
+    reviewCount: 896,
+    inStock: true,
+  },
+  {
+    id: "36",
+    name: "Total 5m Quick Connect High-Pressure Hose - TGTHPH526",
+    description: "5-meter quick connect high-pressure hose",
+    price: 140.0,
+    image: "/placeholder.svg?height=300&width=300&text=High-Pressure+Hose",
+    category: "outdoor-equipment",
+    brand: "Total Tools",
+    inStock: true,
+  },
+  {
+    id: "37",
+    name: "Total Gasoline High Pressure Washer 282Bar 8.5HP - TGT250306",
+    description: "Gasoline high pressure washer for heavy duty use",
+    price: 10000.0,
+    image: "/placeholder.svg?height=300&width=300&text=Gasoline+Pressure+Washer",
+    category: "outdoor-equipment",
+    brand: "Total Tools",
+    inStock: true,
+  },
+  {
+    id: "38",
+    name: "Silverline High Pressure Washer 2100W 165Bar - 943676",
+    description: "High pressure washer with powerful motor",
+    price: 7700.0,
+    image: "/placeholder.svg?height=300&width=300&text=Silverline+Pressure+Washer",
+    category: "outdoor-equipment",
+    brand: "Silverline",
+    inStock: true,
+  },
+  {
+    id: "39",
+    name: "Total Li-ion Cordless High Pressure Washer 24.8 Bar 20V - TPWLI20084",
+    description: "Cordless high pressure washer for portable cleaning",
+    price: 1500.0,
+    image: "/placeholder.svg?height=300&width=300&text=Cordless+Pressure+Washer",
+    category: "outdoor-equipment",
+    brand: "Total Tools",
+    inStock: true,
+  },
 ]
 
 // API functions
@@ -567,4 +621,13 @@ export async function getLightingProducts(): Promise<Product[]> {
       product.name.toLowerCase().includes("lamp") ||
       product.name.toLowerCase().includes("torch"),
   )
+}
+
+export async function getSimilarProducts(productId: string): Promise<Product[]> {
+  await new Promise((resolve) => setTimeout(resolve, 100))
+  const currentProduct = products.find((p) => p.id === productId)
+  if (!currentProduct) return []
+
+  // Return products from the same category, excluding the current product
+  return products.filter((p) => p.category === currentProduct.category && p.id !== productId).slice(0, 5) // Limit to 5 similar products
 }
