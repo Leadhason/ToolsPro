@@ -8,7 +8,7 @@ interface NewArrivalsSectionProps {
 
 export default function NewArrivalsSection({ products }: NewArrivalsSectionProps) {
   return (
-    <section className="py-8 sm:py-12">
+    <section className="py-8 mx- sm:py-12">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-6 sm:mb-8">
           <h2 className="text-lg sm:text-xl lg:text-2xl font-bold">What's New: Fresh Stock & Hot Deals!</h2>
