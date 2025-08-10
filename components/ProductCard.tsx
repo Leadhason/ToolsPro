@@ -2,12 +2,14 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { Star } from "lucide-react"
+import { Star, Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import type { Product } from "@/lib/data"
 import { useState } from "react"
+import { useCart } from "@/context/cart-context"
+import { useWishlist } from "@/context/wishlist-context"
 
 interface ProductCardProps {
   product: Product
@@ -16,6 +18,9 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, showCompare = false }: ProductCardProps) {
   const [currentImage, setCurrentImage] = useState(product.image)
+  const { addToCart } = useCart()
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist()
+  const isProductInWishlist = isInWishlist(product.id)
 
   const handleMouseEnter = () => {
     if (product.hoverImage) {
@@ -25,6 +30,32 @@ export default function ProductCard({ product, showCompare = false }: ProductCar
 
   const handleMouseLeave = () => {
     setCurrentImage(product.image)
+  }
+
+  const handleAddToCart = () => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      brand: product.brand,
+    })
+  }
+
+  const handleToggleWishlist = () => {
+    if (isProductInWishlist) {
+      removeFromWishlist(product.id)
+    } else {
+      addToWishlist({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        brand: product.brand,
+        rating: product.rating,
+        reviewCount: product.reviewCount,
+      })
+    }
   }
 
   return (
@@ -41,6 +72,16 @@ export default function ProductCard({ product, showCompare = false }: ProductCar
             </label>
           </div>
         )}
+
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute top-2 right-2 z-10 bg-white rounded-full shadow-md hover:bg-gray-100"
+          onClick={handleToggleWishlist}
+        >
+          <Heart className={`h-4 w-4 ${isProductInWishlist ? "fill-red-500 text-red-500" : "text-gray-500"}`} />
+        </Button>
+
         <Link href={`/product/${product.id}`}>
           <Image
             src={currentImage || "/placeholder.svg"}
@@ -51,9 +92,9 @@ export default function ProductCard({ product, showCompare = false }: ProductCar
           />
         </Link>
         {product.discount && (
-          <Badge className="absolute top-2 right-2 bg-red-500 text-white text-xs">{product.discount}% off</Badge>
+          <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs">{product.discount}% off</Badge>
         )}
-        {product.isNew && <Badge className="absolute top-2 right-2 bg-green-500 text-white text-xs">New arrival</Badge>}
+        {product.isNew && <Badge className="absolute top-2 left-2 bg-green-500 text-white text-xs">New arrival</Badge>}
       </div>
 
       <div className="p-3 sm:p-4 w-full">
@@ -118,6 +159,7 @@ export default function ProductCard({ product, showCompare = false }: ProductCar
             <Button
               variant="outline"
               className="w-full text-xs sm:text-sm h-8 sm:h-9 hover:bg-emerald-800 hover:text-white bg-transparent"
+              onClick={handleAddToCart}
             >
               Add to cart
             </Button>

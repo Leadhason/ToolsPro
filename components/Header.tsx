@@ -1,14 +1,14 @@
 "use client"
 
-import { Search, User, Heart, ShoppingCart, ChevronDown, Camera, Menu } from "lucide-react"
+import { Search, Heart, ShoppingCart, Camera, Menu } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Truck } from 'lucide-react'
-import { Package } from 'lucide-react'
-import { CreditCard } from 'lucide-react'
-import { Headset } from 'lucide-react'
+import { Truck } from "lucide-react"
+import { Package } from "lucide-react"
+import { CreditCard } from "lucide-react"
+import { Headset } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import {
   NavigationMenu,
@@ -18,10 +18,15 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
-
+import { useCart } from "@/context/cart-context"
+import { useWishlist } from "@/context/wishlist-context"
+import { CartSidebar } from "./cart-sidebar"
 
 export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false)
+  const { itemCount: cartItemCount } = useCart()
+  const { itemCount: wishlistItemCount } = useWishlist()
 
   return (
     <header className="w-full">
@@ -135,19 +140,30 @@ export default function Header() {
 
             {/* User actions */}
             <div className="flex items-center gap-1 sm:gap-2">
-              <Button variant="ghost" size="default" className="relative rounded-full bg-gray-100">
+              <Button
+                variant="ghost"
+                size="default"
+                className="relative rounded-full bg-gray-100"
+                onClick={() => setIsCartSidebarOpen(true)}
+              >
                 <ShoppingCart className="h-8 w-8" />
-                <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
-                  0
-                </span>
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
+                    {cartItemCount}
+                  </span>
+                )}
               </Button>
-              <Button variant="ghost" size="default" className="relative rounded-full bg-gray-100">
-                <Heart className="h-8 w-8 " />
-                <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
-                  0
-                </span>
-              </Button>
-              
+              <Link href="/wishlist">
+                <Button variant="ghost" size="default" className="relative rounded-full bg-gray-100">
+                  <Heart className="h-8 w-8 " />
+                  {wishlistItemCount > 0 && (
+                    <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
+                      {wishlistItemCount}
+                    </span>
+                  )}
+                </Button>
+              </Link>
+
               <Link href="/login" className="hidden sm:flex">
                 <Button variant="ghost" className="rounded-full bg-gray-100">
                   Login
@@ -179,543 +195,542 @@ export default function Header() {
             <div className="flex-col w-full">
               <div className="flex md:flex-1 justify-between items-center w-full">
                 <NavigationMenu>
-                <NavigationMenuList className="flex gap-4 lg:gap-8">
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger className="text-sm lg:text-base font-medium">
-                      Tools
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <div className="w-[800px] p-6">
-                        <div className="grid grid-cols-4 gap-8">
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Hand Tools</h3>
-                            <div className="space-y-2">
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Screwdrivers
-                              </Link>
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Hammers
-                              </Link>
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Wrenches
-                              </Link>
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Pliers
-                              </Link>
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Tool Sets
-                              </Link>
+                  <NavigationMenuList className="flex gap-4 lg:gap-8">
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger className="text-sm lg:text-base font-medium">Tools</NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="w-[800px] p-6">
+                          <div className="grid grid-cols-4 gap-8">
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Hand Tools</h3>
+                              <div className="space-y-2">
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Screwdrivers
+                                </Link>
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Hammers
+                                </Link>
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Wrenches
+                                </Link>
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Pliers
+                                </Link>
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Tool Sets
+                                </Link>
+                              </div>
                             </div>
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Power Tools</h3>
-                            <div className="space-y-2">
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Drills
-                              </Link>
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Grinders
-                              </Link>
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Saws
-                              </Link>
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Sanders
-                              </Link>
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Rotary Hammers
-                              </Link>
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Power Tools</h3>
+                              <div className="space-y-2">
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Drills
+                                </Link>
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Grinders
+                                </Link>
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Saws
+                                </Link>
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Sanders
+                                </Link>
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Rotary Hammers
+                                </Link>
+                              </div>
                             </div>
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Measuring Tools</h3>
-                            <div className="space-y-2">
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Tape Measures
-                              </Link>
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Levels
-                              </Link>
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Calipers
-                              </Link>
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Squares
-                              </Link>
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Measuring Tools</h3>
+                              <div className="space-y-2">
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Tape Measures
+                                </Link>
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Levels
+                                </Link>
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Calipers
+                                </Link>
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Squares
+                                </Link>
+                              </div>
                             </div>
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Safety Equipment</h3>
-                            <div className="space-y-2">
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Safety Helmets
-                              </Link>
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Work Gloves
-                              </Link>
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Safety Glasses
-                              </Link>
-                              <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
-                                Ear Protection
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger className="text-sm lg:text-base font-medium">
-                      Outdoor Equipment
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <div className="w-[800px] p-6">
-                        <div className="grid grid-cols-4 gap-8">
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Generators</h3>
-                            <div className="space-y-2">
-                              <Link
-                                href="/category/outdoor-equipment"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Gasoline Generators
-                              </Link>
-                              <Link
-                                href="/category/outdoor-equipment"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Diesel Generators
-                              </Link>
-                              <Link
-                                href="/category/outdoor-equipment"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Inverter Generators
-                              </Link>
-                              <Link
-                                href="/category/outdoor-equipment"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Portable Generators
-                              </Link>
-                            </div>
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Water Pumps</h3>
-                            <div className="space-y-2">
-                              <Link
-                                href="/category/outdoor-equipment"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Peripheral Pumps
-                              </Link>
-                              <Link
-                                href="/category/outdoor-equipment"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Centrifugal Pumps
-                              </Link>
-                              <Link
-                                href="/category/outdoor-equipment"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Submersible Pumps
-                              </Link>
-                              <Link
-                                href="/category/outdoor-equipment"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Pressure Washers
-                              </Link>
-                            </div>
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Garden Tools</h3>
-                            <div className="space-y-2">
-                              <Link
-                                href="/category/outdoor-equipment"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Grass Trimmers
-                              </Link>
-                              <Link
-                                href="/category/outdoor-equipment"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Lawn Mowers
-                              </Link>
-                              <Link
-                                href="/category/outdoor-equipment"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Hedge Trimmers
-                              </Link>
-                              <Link
-                                href="/category/outdoor-equipment"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Chainsaws
-                              </Link>
-                            </div>
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Cleaning Equipment</h3>
-                            <div className="space-y-2">
-                              <Link
-                                href="/category/outdoor-equipment"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Pressure Washers
-                              </Link>
-                              <Link
-                                href="/category/outdoor-equipment"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Vacuum Cleaners
-                              </Link>
-                              <Link
-                                href="/category/outdoor-equipment"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Steam Cleaners
-                              </Link>
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Safety Equipment</h3>
+                              <div className="space-y-2">
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Safety Helmets
+                                </Link>
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Work Gloves
+                                </Link>
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Safety Glasses
+                                </Link>
+                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                  Ear Protection
+                                </Link>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
 
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger className="text-sm lg:text-base font-medium">
-                      Building Materials
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <div className="w-[1000px] p-6">
-                        <div className="grid grid-cols-5 gap-6">
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Plumbing & Swimming Pool</h3>
-                            <div className="space-y-2">
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Drains
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Taps & Faucet
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Plumbing Parts & Fittings
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Plumbing Accessories
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Water Filtration & Treatment
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Swimming Pool
-                              </Link>
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger className="text-sm lg:text-base font-medium">
+                        Outdoor Equipment
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="w-[800px] p-6">
+                          <div className="grid grid-cols-4 gap-8">
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Generators</h3>
+                              <div className="space-y-2">
+                                <Link
+                                  href="/category/outdoor-equipment"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Gasoline Generators
+                                </Link>
+                                <Link
+                                  href="/category/outdoor-equipment"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Diesel Generators
+                                </Link>
+                                <Link
+                                  href="/category/outdoor-equipment"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Inverter Generators
+                                </Link>
+                                <Link
+                                  href="/category/outdoor-equipment"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Portable Generators
+                                </Link>
+                              </div>
                             </div>
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Electrical</h3>
-                            <div className="space-y-2">
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Power Management & Protection
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Smart Home
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Switches & Sockets
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Cables & Wires
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Electrical Accessories
-                              </Link>
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Water Pumps</h3>
+                              <div className="space-y-2">
+                                <Link
+                                  href="/category/outdoor-equipment"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Peripheral Pumps
+                                </Link>
+                                <Link
+                                  href="/category/outdoor-equipment"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Centrifugal Pumps
+                                </Link>
+                                <Link
+                                  href="/category/outdoor-equipment"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Submersible Pumps
+                                </Link>
+                                <Link
+                                  href="/category/outdoor-equipment"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Pressure Washers
+                                </Link>
+                              </div>
                             </div>
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Paints, Chemicals, and Adhesives</h3>
-                            <div className="space-y-2">
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Adhesive & Glue
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Caulk & Sealants
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Paint
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Paint Tools & Equipment
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Waterproofing Products
-                              </Link>
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Garden Tools</h3>
+                              <div className="space-y-2">
+                                <Link
+                                  href="/category/outdoor-equipment"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Grass Trimmers
+                                </Link>
+                                <Link
+                                  href="/category/outdoor-equipment"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Lawn Mowers
+                                </Link>
+                                <Link
+                                  href="/category/outdoor-equipment"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Hedge Trimmers
+                                </Link>
+                                <Link
+                                  href="/category/outdoor-equipment"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Chainsaws
+                                </Link>
+                              </div>
                             </div>
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Hardware Accessories</h3>
-                            <div className="space-y-2">
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Adhesives & Tapes
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Hanging & Mounting
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Padlocks & Accessories
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Security & Surveillance Systems
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Ladder & Access Equipment
-                              </Link>
-                            </div>
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Door & Window Hardware</h3>
-                            <div className="space-y-2">
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Door Handles & Knobs
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Door Locks
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Window Hardware
-                              </Link>
-                              <Link
-                                href="/category/building-materials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Hinges & Brackets
-                              </Link>
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Cleaning Equipment</h3>
+                              <div className="space-y-2">
+                                <Link
+                                  href="/category/outdoor-equipment"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Pressure Washers
+                                </Link>
+                                <Link
+                                  href="/category/outdoor-equipment"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Vacuum Cleaners
+                                </Link>
+                                <Link
+                                  href="/category/outdoor-equipment"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Steam Cleaners
+                                </Link>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
 
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger className="text-sm lg:text-base font-medium">
-                      Home Essentials & Decor
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <div className="w-[800px] p-6">
-                        <div className="grid grid-cols-4 gap-8">
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Kitchen Appliances</h3>
-                            <div className="space-y-2">
-                              <Link
-                                href="/category/home-essentials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Electric Kettles
-                              </Link>
-                              <Link
-                                href="/category/home-essentials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Hot Plates
-                              </Link>
-                              <Link
-                                href="/category/home-essentials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Blenders
-                              </Link>
-                              <Link
-                                href="/category/home-essentials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Rice Cookers
-                              </Link>
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger className="text-sm lg:text-base font-medium">
+                        Building Materials
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="w-[1000px] p-6">
+                          <div className="grid grid-cols-5 gap-6">
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Plumbing & Swimming Pool</h3>
+                              <div className="space-y-2">
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Drains
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Taps & Faucet
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Plumbing Parts & Fittings
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Plumbing Accessories
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Water Filtration & Treatment
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Swimming Pool
+                                </Link>
+                              </div>
                             </div>
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Bathroom</h3>
-                            <div className="space-y-2">
-                              <Link
-                                href="/category/home-essentials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Water Heaters
-                              </Link>
-                              <Link
-                                href="/category/home-essentials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Shower Systems
-                              </Link>
-                              <Link
-                                href="/category/home-essentials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Bathroom Accessories
-                              </Link>
-                              <Link
-                                href="/category/home-essentials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Soap Dispensers
-                              </Link>
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Electrical</h3>
+                              <div className="space-y-2">
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Power Management & Protection
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Smart Home
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Switches & Sockets
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Cables & Wires
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Electrical Accessories
+                                </Link>
+                              </div>
                             </div>
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Lighting</h3>
-                            <div className="space-y-2">
-                              <Link
-                                href="/category/home-essentials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                LED Bulbs
-                              </Link>
-                              <Link
-                                href="/category/home-essentials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Ceiling Lights
-                              </Link>
-                              <Link
-                                href="/category/home-essentials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Wall Lights
-                              </Link>
-                              <Link
-                                href="/category/home-essentials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Outdoor Lighting
-                              </Link>
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Paints, Chemicals, and Adhesives</h3>
+                              <div className="space-y-2">
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Adhesive & Glue
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Caulk & Sealants
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Paint
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Paint Tools & Equipment
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Waterproofing Products
+                                </Link>
+                              </div>
                             </div>
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-gray-900 mb-3">Home Decor</h3>
-                            <div className="space-y-2">
-                              <Link
-                                href="/category/home-essentials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Wall Art
-                              </Link>
-                              <Link
-                                href="/category/home-essentials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Mirrors
-                              </Link>
-                              <Link
-                                href="/category/home-essentials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Storage Solutions
-                              </Link>
-                              <Link
-                                href="/category/home-essentials"
-                                className="block text-sm text-gray-600 hover:text-red-600"
-                              >
-                                Curtains & Blinds
-                              </Link>
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Hardware Accessories</h3>
+                              <div className="space-y-2">
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Adhesives & Tapes
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Hanging & Mounting
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Padlocks & Accessories
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Security & Surveillance Systems
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Ladder & Access Equipment
+                                </Link>
+                              </div>
+                            </div>
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Door & Window Hardware</h3>
+                              <div className="space-y-2">
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Door Handles & Knobs
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Door Locks
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Window Hardware
+                                </Link>
+                                <Link
+                                  href="/category/building-materials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Hinges & Brackets
+                                </Link>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
 
-                </NavigationMenuList>
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger className="text-sm lg:text-base font-medium">
+                        Home Essentials & Decor
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="w-[800px] p-6">
+                          <div className="grid grid-cols-4 gap-8">
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Kitchen Appliances</h3>
+                              <div className="space-y-2">
+                                <Link
+                                  href="/category/home-essentials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Electric Kettles
+                                </Link>
+                                <Link
+                                  href="/category/home-essentials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Hot Plates
+                                </Link>
+                                <Link
+                                  href="/category/home-essentials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Blenders
+                                </Link>
+                                <Link
+                                  href="/category/home-essentials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Rice Cookers
+                                </Link>
+                              </div>
+                            </div>
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Bathroom</h3>
+                              <div className="space-y-2">
+                                <Link
+                                  href="/category/home-essentials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Water Heaters
+                                </Link>
+                                <Link
+                                  href="/category/home-essentials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Shower Systems
+                                </Link>
+                                <Link
+                                  href="/category/home-essentials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Bathroom Accessories
+                                </Link>
+                                <Link
+                                  href="/category/home-essentials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Soap Dispensers
+                                </Link>
+                              </div>
+                            </div>
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Lighting</h3>
+                              <div className="space-y-2">
+                                <Link
+                                  href="/category/home-essentials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  LED Bulbs
+                                </Link>
+                                <Link
+                                  href="/category/home-essentials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Ceiling Lights
+                                </Link>
+                                <Link
+                                  href="/category/home-essentials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Wall Lights
+                                </Link>
+                                <Link
+                                  href="/category/home-essentials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Outdoor Lighting
+                                </Link>
+                              </div>
+                            </div>
+                            <div>
+                              <h3 className="font-semibold text-gray-900 mb-3">Home Decor</h3>
+                              <div className="space-y-2">
+                                <Link
+                                  href="/category/home-essentials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Wall Art
+                                </Link>
+                                <Link
+                                  href="/category/home-essentials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Mirrors
+                                </Link>
+                                <Link
+                                  href="/category/home-essentials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Storage Solutions
+                                </Link>
+                                <Link
+                                  href="/category/home-essentials"
+                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                >
+                                  Curtains & Blinds
+                                </Link>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
                 </NavigationMenu>
                 <div className="hidden lg:flex items-center gap-6 ml-6">
-                    <Link href="/reviews" className="text-gray-600 hover:text-red-600 text-sm">
+                  <Link href="/reviews" className="text-gray-600 hover:text-red-600 text-sm">
                     Reviews
-                    </Link>
-                    <Link href="/divisions" className="text-gray-600 hover:text-red-600 text-sm">
-                      Divisions
-                    </Link>
-                    <Link href="/loyalty" className="text-gray-600 hover:text-red-600 text-sm">
-                      Loyalty Program
-                    </Link>
-                    <Button className="bg-emerald-900 hover:bg-emerald-700 rounded-full text-sm cursor-pointer">Contact Us</Button>
+                  </Link>
+                  <Link href="/divisions" className="text-gray-600 hover:text-red-600 text-sm">
+                    Divisions
+                  </Link>
+                  <Link href="/loyalty" className="text-gray-600 hover:text-red-600 text-sm">
+                    Loyalty Program
+                  </Link>
+                  <Button className="bg-emerald-900 hover:bg-emerald-700 rounded-full text-sm cursor-pointer">
+                    Contact Us
+                  </Button>
                 </div>
               </div>
 
@@ -782,7 +797,7 @@ export default function Header() {
               </div>
             </div>
           </div>
-        </div>   
+        </div>
       </div>
 
       {/* Promo bar - Responsive */}
@@ -821,6 +836,8 @@ export default function Header() {
           </div>
         </div>
       </div>
+
+      <CartSidebar isOpen={isCartSidebarOpen} onClose={() => setIsCartSidebarOpen(false)} />
     </header>
   )
 }

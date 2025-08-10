@@ -1,18 +1,16 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Barlow } from "next/font/google"
+import { Inter } from "next/font/google"
 import "./globals.css"
+import { ThemeProvider } from "@/components/theme-provider"
+import { CartProvider } from "@/context/cart-context"
+import { WishlistProvider } from "@/context/wishlist-context"
 
-const barlow = Barlow({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600",],
-})
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Supply Master - Ghana's #1 for Tools & Building Materials",
-  description:
-    "Shop the best tools and building materials in Ghana. Trusted by 60,000+ Ghanaians with 75,000+ orders delivered. Fast delivery, unbeatable prices.",
-  keywords: "tools, building materials, Ghana, Ingco, Total Tools, Karcher, hardware store",
+  title: "ToolsPro - Ghana's #1 for Tools & Building Materials",
+  description: "Shop Ghana's largest selection of tools and building materials with fast delivery",
     generator: 'v0.dev'
 }
 
@@ -23,7 +21,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={barlow.className}>{children}</body>
+      <body className={inter.className}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+          <CartProvider>
+            <WishlistProvider>{children}</WishlistProvider>
+          </CartProvider>
+        </ThemeProvider>
+      </body>
     </html>
   )
 }
