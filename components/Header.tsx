@@ -135,18 +135,24 @@ export default function Header() {
 
             {/* User actions */}
             <div className="flex items-center gap-1 sm:gap-2">
-              <Button variant="ghost" size="icon" className="hidden sm:flex">
-                <User className="h-8 w-8" />
-              </Button>
-              <Button variant="ghost" size="icon">
-                <Heart className="h-8 w-8 " />
-              </Button>
-              <Button variant="ghost" size="icon" className="relative">
+              <Button variant="ghost" size="default" className="relative rounded-full bg-gray-100">
                 <ShoppingCart className="h-8 w-8" />
-                {/*<span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex //items-center justify-center text-[10px]">
+                <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
                   0
-                </span>*/}
+                </span>
               </Button>
+              <Button variant="ghost" size="default" className="relative rounded-full bg-gray-100">
+                <Heart className="h-8 w-8 " />
+                <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
+                  0
+                </span>
+              </Button>
+              
+              <Link href="/login" className="hidden sm:flex">
+                <Button variant="ghost" className="rounded-full bg-gray-100">
+                  Login
+                </Button>
+              </Link>
             </div>
           </div>
 
