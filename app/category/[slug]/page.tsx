@@ -23,9 +23,12 @@ interface CategoryPageProps {
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  const [categories, products] = await Promise.all([getCategories(), getProductsByCategory(params.slug)])
+  const { slug } = await params;
+  const [categories, products] = await Promise.all([
+    getCategories(), getProductsByCategory(slug)
+  ])
 
-  const category = categories.find((cat) => cat.slug === params.slug)
+  const category = categories.find((cat) => cat.slug === slug)
 
   if (!category) {
     notFound()

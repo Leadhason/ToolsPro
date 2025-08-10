@@ -21,7 +21,7 @@ import CustomerReviewsSection from "@/components/customer-reviews-section"
 import SellProductsBanner from "@/components/sell-products-banner"
 import SimilarProductsCarousel from "@/components/similar-products-carousel"
 import Link from "next/link"
-import React, { useState, useEffect } from "react"
+import React, { use, useState, useEffect } from "react"
 import Footer from "@/components/Footer" // Import Footer component
 
 interface ProductPageProps {
@@ -44,13 +44,14 @@ export default function ProductPage({ params }: ProductPageProps) {
     targetDay: 0,
   })
   const [mainImage, setMainImage] = useState<string>("")
+  const {id} = use(params);
 
-  useEffect(() => {
+   useEffect(() => {
     async function fetchData() {
       setLoading(true)
-      const fetchedProduct = await getProduct(params.id)
+      const fetchedProduct = await getProduct(id)
       const fetchedCategories = await getCategories()
-      const fetchedSimilarProducts = await getSimilarProducts(params.id)
+      const fetchedSimilarProducts = await getSimilarProducts(id)
 
       setProduct(fetchedProduct)
       setCategories(fetchedCategories)
@@ -61,7 +62,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       setLoading(false)
     }
     fetchData()
-  }, [params.id])
+  }, [id])
 
   useEffect(() => {
     const calculateTimeLeft = () => {

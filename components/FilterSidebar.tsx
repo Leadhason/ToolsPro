@@ -34,15 +34,13 @@ export default function FilterSidebar() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 294330])
 
   return (
-    <div className="bg-white p-6 rounded-none border-x-1 h-full overflow-y-auto">
+    <div className="bg-white p-6 rounded-none h-full overflow-y-auto scrollbar-hide">
       {" "}
       {/* Reverted styling and added scroll */}
-      <h2 className="text-2xl font-bold mb-6 text-gray-900">Filters</h2>
       <Accordion type="multiple" defaultValue={["availability", "product-type", "price", "brand"]} className="w-full">
         <AccordionItem value="availability">
-          <AccordionTrigger className="text-lg font-semibold text-gray-800 hover:no-underline">
+          <AccordionTrigger className="text-md font-semibold text-gray-800 hover:no-underline">
             {" "}
-            {/* Changed to text-lg */}
             Availability
             <span className="text-gray-500 text-sm ml-2">
               ({availabilityOptions.reduce((sum, opt) => sum + opt.count, 0)})
@@ -53,7 +51,7 @@ export default function FilterSidebar() {
               {availabilityOptions.map((option) => (
                 <div key={option.value} className="flex items-center space-x-3">
                   <Checkbox id={`availability-${option.value}`} className="h-4 w-4" />
-                  <label htmlFor={`availability-${option.value}`} className="text-base text-gray-700 cursor-pointer">
+                  <label htmlFor={`availability-${option.value}`} className="text-sm text-gray-700 cursor-pointer">
                     {option.label} ({option.count})
                   </label>
                 </div>
@@ -63,7 +61,7 @@ export default function FilterSidebar() {
         </AccordionItem>
 
         <AccordionItem value="product-type">
-          <AccordionTrigger className="text-lg font-semibold text-gray-800 hover:no-underline">
+          <AccordionTrigger className="text-md font-semibold text-gray-800 hover:no-underline">
             {" "}
             {/* Changed to text-lg */}
             Product Type
@@ -76,7 +74,7 @@ export default function FilterSidebar() {
               {productTypeOptions.map((option) => (
                 <div key={option.value} className="flex items-center space-x-3">
                   <Checkbox id={`product-type-${option.value}`} className="h-4 w-4" />
-                  <label htmlFor={`product-type-${option.value}`} className="text-base text-gray-700 cursor-pointer">
+                  <label htmlFor={`product-type-${option.value}`} className="text-sm text-gray-700 cursor-pointer">
                     {option.label} ({option.count})
                   </label>
                 </div>
@@ -86,7 +84,7 @@ export default function FilterSidebar() {
         </AccordionItem>
 
         <AccordionItem value="price">
-          <AccordionTrigger className="text-lg font-semibold text-gray-800 hover:no-underline">Price</AccordionTrigger>{" "}
+          <AccordionTrigger className="text-md font-semibold text-gray-800 hover:no-underline">Price</AccordionTrigger>{" "}
           {/* Changed to text-lg */}
           <AccordionContent className="pt-2">
             <div className="flex items-center gap-3 mb-4">
@@ -94,7 +92,7 @@ export default function FilterSidebar() {
                 type="number"
                 value={priceRange[0]}
                 onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
-                className="w-full text-base border-gray-300 focus:border-gray-500 focus:ring-0"
+                className="w-full text-sm border-gray-300 focus:border-gray-500 focus:ring-0"
                 placeholder="Min"
               />
               <span className="text-gray-500">-</span>
@@ -102,7 +100,7 @@ export default function FilterSidebar() {
                 type="number"
                 value={priceRange[1]}
                 onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
-                className="w-full text-base border-gray-300 focus:border-gray-500 focus:ring-0"
+                className="w-full text-sm border-gray-300 focus:border-gray-500 focus:ring-0"
                 placeholder="Max"
               />
             </div>
@@ -118,7 +116,7 @@ export default function FilterSidebar() {
         </AccordionItem>
 
         <AccordionItem value="brand">
-          <AccordionTrigger className="text-lg font-semibold text-gray-800 hover:no-underline">
+          <AccordionTrigger className="text-md font-semibold text-gray-800 hover:no-underline">
             {" "}
             {/* Changed to text-lg */}
             Brand
@@ -131,7 +129,7 @@ export default function FilterSidebar() {
               {brandOptions.map((option) => (
                 <div key={option.value} className="flex items-center space-x-3">
                   <Checkbox id={`brand-${option.value}`} className="h-4 w-4" />
-                  <label htmlFor={`brand-${option.value}`} className="text-base text-gray-700 cursor-pointer">
+                  <label htmlFor={`brand-${option.value}`} className="text-sm text-gray-700 cursor-pointer">
                     {option.label} ({option.count})
                   </label>
                 </div>

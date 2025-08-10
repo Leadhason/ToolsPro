@@ -10,7 +10,7 @@ export default function TopControls() {
   const [viewMode, setViewMode] = useState("grid") // 'grid' or 'list'
 
   return (
-    <div className="flex flex-wrap p-3 -mt-3 items-center justify-between gap-4 py-4 border-y-1 border-gray-200 mb-6">
+    <div className="flex flex-wrap p-3 mt-3 items-center justify-between gap-4 py-4 border-b border-gray-200 mb-6">
       {/* Filter button (for mobile/tablet sidebar toggle) */}
       <Button
         variant="outline"
