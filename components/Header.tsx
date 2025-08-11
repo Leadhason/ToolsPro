@@ -32,7 +32,7 @@ export default function Header() {
     <header className="w-full">
       {/* Top bar - hidden on mobile */}
       <div className="bg-black text-white font-light text-xs sm:text-sm py-2 hidden md:block">
-        <div className="container mx-auto px-4 flex justify-between items-center">
+        <div className="container mx-auto px-4 text-sm flex justify-between items-center">
           <span className="truncate">Weekend orders are processed on Mondays!</span>
           <div className="flex gap-2 sm:gap-4 text-xs">
             <Link href="#" className="hover:underline whitespace-nowrap">
@@ -195,82 +195,82 @@ export default function Header() {
             <div className="flex-col w-full">
               <div className="flex md:flex-1 justify-between items-center w-full">
                 <NavigationMenu>
-                  <NavigationMenuList className="flex gap-4 lg:gap-8">
+                  <NavigationMenuList className="flex gap-4 lg:gap-8 text-sm">
                     <NavigationMenuItem>
-                      <NavigationMenuTrigger className="text-sm lg:text-base font-medium">Tools</NavigationMenuTrigger>
+                      <NavigationMenuTrigger className="text-sm font-medium">Tools</NavigationMenuTrigger>
                       <NavigationMenuContent>
                         <div className="w-[800px] p-6">
                           <div className="grid grid-cols-4 gap-8">
                             <div>
-                              <h3 className="font-semibold text-gray-900 mb-3">Hand Tools</h3>
+                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Hand Tools</h3>
                               <div className="space-y-2">
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Screwdrivers
                                 </Link>
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Hammers
                                 </Link>
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Wrenches
                                 </Link>
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Pliers
                                 </Link>
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Tool Sets
                                 </Link>
                               </div>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-gray-900 mb-3">Power Tools</h3>
+                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Power Tools</h3>
                               <div className="space-y-2">
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Drills
                                 </Link>
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Grinders
                                 </Link>
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Saws
                                 </Link>
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Sanders
                                 </Link>
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Rotary Hammers
                                 </Link>
                               </div>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-gray-900 mb-3">Measuring Tools</h3>
+                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Measuring Tools</h3>
                               <div className="space-y-2">
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Tape Measures
                                 </Link>
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Levels
                                 </Link>
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Calipers
                                 </Link>
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Squares
                                 </Link>
                               </div>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-gray-900 mb-3">Safety Equipment</h3>
+                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Safety Equipment</h3>
                               <div className="space-y-2">
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Safety Helmets
                                 </Link>
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Work Gloves
                                 </Link>
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Safety Glasses
                                 </Link>
-                                <Link href="/category/tools" className="block text-sm text-gray-600 hover:text-red-600">
+                                <Link href="/category/tools" className="block text-xs text-gray-600 hover:text-red-600">
                                   Ear Protection
                                 </Link>
                               </div>
@@ -281,7 +281,7 @@ export default function Header() {
                     </NavigationMenuItem>
 
                     <NavigationMenuItem>
-                      <NavigationMenuTrigger className="text-sm lg:text-base font-medium">
+                      <NavigationMenuTrigger className="text-sm font-medium">
                         Outdoor Equipment
                       </NavigationMenuTrigger>
                       <NavigationMenuContent>
