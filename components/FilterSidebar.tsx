@@ -172,14 +172,14 @@ export default function FilterSidebar({ allProducts = [] }: FilterSidebarProps) 
     filters.priceRange[1] !== 300000
 
   return (
-    <div className="bg-white p-6 rounded-none h-full overflow-y-auto scrollbar-hide">
+    <div className="bg-white p-6 rounded-none h-full overflow-y-auto scrollbar-hide sticky top-4">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-medium text-gray-800">Filters</h3>
         {hasActiveFilters && (
           <Button
             variant="ghost"
             size="sm"
-            onClick={clearFilters}
+            onClick={clearFilters}  
             className="text-xs font-light text-blue-600 hover:text-blue-800 p-0 h-auto"
           >
             Clear all
@@ -197,7 +197,7 @@ export default function FilterSidebar({ allProducts = [] }: FilterSidebarProps) 
         <AccordionItem value="availability">
           <AccordionTrigger className="text-sm font-medium text-gray-800 hover:no-underline">
             Availability
-            <span className="text-gray-500 text-xs font-light ml-2">
+            <span className="text-gray-500 text-sm font-light ml-2">
               ({availabilityOptions.reduce((sum, opt) => sum + opt.count, 0)})
             </span>
           </AccordionTrigger>
@@ -213,7 +213,7 @@ export default function FilterSidebar({ allProducts = [] }: FilterSidebarProps) 
                   />
                   <label
                     htmlFor={`availability-${option.value}`}
-                    className="text-xs font-light text-gray-700 cursor-pointer"
+                    className="text-sm font-light text-gray-700 cursor-pointer"
                   >
                     {option.label} ({option.count})
                   </label>
@@ -226,7 +226,7 @@ export default function FilterSidebar({ allProducts = [] }: FilterSidebarProps) 
         <AccordionItem value="product-type">
           <AccordionTrigger className="text-sm font-medium text-gray-800 hover:no-underline">
             Product Type
-            <span className="text-gray-500 text-xs font-light ml-2">
+            <span className="text-gray-500 text-sm font-light ml-2">
               ({productTypeOptions.reduce((sum, opt) => sum + opt.count, 0)})
             </span>
           </AccordionTrigger>
@@ -242,7 +242,7 @@ export default function FilterSidebar({ allProducts = [] }: FilterSidebarProps) 
                   />
                   <label
                     htmlFor={`product-type-${option.value}`}
-                    className="text-xs font-light text-gray-700 cursor-pointer"
+                    className="text-sm font-light text-gray-700 cursor-pointer"
                   >
                     {option.label} ({option.count})
                   </label>
@@ -287,7 +287,7 @@ export default function FilterSidebar({ allProducts = [] }: FilterSidebarProps) 
         <AccordionItem value="brand">
           <AccordionTrigger className="text-sm font-medium text-gray-800 hover:no-underline">
             Brand
-            <span className="text-gray-500 text-xs font-light ml-2">
+            <span className="text-gray-500 text-sm font-light ml-2">
               ({brandOptions.reduce((sum, opt) => sum + opt.count, 0)})
             </span>
           </AccordionTrigger>
@@ -301,7 +301,7 @@ export default function FilterSidebar({ allProducts = [] }: FilterSidebarProps) 
                     checked={filters.brands.includes(option.value)}
                     onCheckedChange={(checked) => handleBrandChange(option.value, checked as boolean)}
                   />
-                  <label htmlFor={`brand-${option.value}`} className="text-xs font-light text-gray-700 cursor-pointer">
+                  <label htmlFor={`brand-${option.value}`} className="text-sm font-light text-gray-700 cursor-pointer">
                     {option.label} ({option.count})
                   </label>
                 </div>
