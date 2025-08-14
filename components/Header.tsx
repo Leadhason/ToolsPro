@@ -110,7 +110,7 @@ export default function Header() {
             {/* Search - Desktop */}
             <div className="hidden lg:flex flex-1 max-w-4xl mx-4 bg-white p-1 rounded-md">
               <div className="flex w-full">
-                <select className="border-none outline-none rounded-l-md px-3 bg-gray-100 text-sm min-w-[120px]">
+                <select className="border-none outline-none rounded-l-md px-3 bg-gray-100 text-xs min-w-[120px]">
                   <option>All</option>
                   <option>Tools</option>
                   <option>Outdoor</option>
@@ -120,7 +120,7 @@ export default function Header() {
                   <div className="relative flex-1 ">
                     <Input
                       placeholder="Search by name or brand"
-                      className="rounded-none border-none outline-none focus:ring-0 pr-10 shadow-none"
+                      className="rounded-none border-none outline-none pr-10 shadow-none"
                     />
                   </div>
                   <Button className="bg-transparent text-black mr-5 shadow-none">
@@ -716,7 +716,7 @@ export default function Header() {
                     </NavigationMenuItem>
                   </NavigationMenuList>
                 </NavigationMenu>
-                <div className="hidden lg:flex items-center gap-6 ml-6">
+                <div className="hidden lg:flex items-center gap-6 ml-6 font-light">
                   <Link href="/reviews" className="text-gray-600 hover:text-red-600 text-sm">
                     Reviews
                   </Link>
@@ -726,7 +726,7 @@ export default function Header() {
                   <Link href="/loyalty" className="text-gray-600 hover:text-red-600 text-sm">
                     Loyalty Program
                   </Link>
-                  <Button className="bg-emerald-900 hover:bg-emerald-700 rounded-full text-sm cursor-pointer">
+                  <Button className="bg-emerald-900 hover:bg-emerald-700 rounded-full font-light text-sm cursor-pointer">
                     Contact Us
                   </Button>
                 </div>
@@ -800,7 +800,7 @@ export default function Header() {
       <div className="bg-emerald-900 text-white py-2">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center lg:justify-between text-xs sm:text-sm w-full">
-            <div className="flex items-center gap-8 sm:gap-6 lg:gap-12 justify-between w-full">
+            <div className="flex items-center gap-8 text-xs sm:gap-6 lg:gap-12 justify-between w-full">
               <div className="flex items-center gap-1 sm:gap-2 whitespace-nowrap">
                 <div className="bg-transparent rounded-full flex items-center justify-center flex-shrink-0">
                   <Truck className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />

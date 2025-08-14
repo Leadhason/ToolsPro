@@ -11,10 +11,10 @@ export default function CategoryHero({ category }: CategoryHeroProps) {
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row justify-between items-center gap-8 lg:gap-16">
           <div className="lg:w-2/3 text-center lg:text-left">
-            <h1 className="text-2xl sm:text-xl lg:text-2xl font-extrabold text-gray-900 mb-4 leading-tight">
+            <h1 className="text-xl sm:text-lg lg:text-xl font-bold text-gray-900 mb-4 leading-tight">
               {category.name}
             </h1>
-            <p className="text-xl sm:text-xl text-gray-700 max-w-2xl mx-auto lg:mx-0 font-light">
+            <p className="text-medium font-light text-gray-700 max-w-2xl mx-auto lg:mx-0">
               {category.bannerDescription || category.description}
             </p>
           </div>

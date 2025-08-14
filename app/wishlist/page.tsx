@@ -30,11 +30,11 @@ export default function WishlistPage() {
         <Header />
         <div className="container mx-auto px-4 py-16">
           <div className="text-center">
-            <h1 className="text-3xl font-bold mb-8">Wishlist</h1>
             <Heart className="h-24 w-24 text-gray-300 mx-auto mb-6" />
-            <p className="text-gray-600 mb-8">Your wishlist is empty</p>
+            <h1 className="text-2xl font-bold mb-4">Your wishlist is empty</h1>
+            <p className="text-gray-600 mb-8">Looks like you haven't added anything to your wishlist yet.</p>
             <Link href="/">
-              <Button className="bg-black hover:bg-gray-800">Discover more</Button>
+              <Button className="bg-gray-800 hover:bg-gray-900">Continue Shopping</Button>
             </Link>
           </div>
         </div>
@@ -48,7 +48,7 @@ export default function WishlistPage() {
       <Header />
 
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8 text-center">Wishlist</h1>
+        <h1 className="text-2xl text-sm font-bold mb-8 text-center">Wishlist</h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {items.map((item) => (
