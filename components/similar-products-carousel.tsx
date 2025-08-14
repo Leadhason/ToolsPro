@@ -31,7 +31,7 @@ export default function SimilarProductsCarousel({ products }: SimilarProductsCar
     <section className="py-8 sm:py-12">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-6 sm:mb-8">
-          <h2 className="text-lg sm:text-xl lg:text-2xl font-bold">Compare with similar items</h2>
+          <h2 className="text-base sm:text-lg lg:text-xl font-medium">Compare with similar items</h2>
         </div>
 
         <div className="relative">

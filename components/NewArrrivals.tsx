@@ -11,8 +11,8 @@ export default function NewArrivalsSection({ products }: NewArrivalsSectionProps
     <section className="py-8 mx- sm:py-12">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-6 sm:mb-8">
-          <h2 className="text-lg sm:text-xl lg:text-2xl font-bold">What's New: Fresh Stock & Hot Deals!</h2>
-          <Link href="/fresh-stock" className="text-black underline text-sm font-light">
+          <h2 className="text-base sm:text-lg lg:text-xl font-medium">What's New: Fresh Stock & Hot Deals!</h2>
+          <Link href="/fresh-stock" className="text-xs font-light underline">
             View all
           </Link>
         </div>

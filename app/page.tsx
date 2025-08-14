@@ -49,8 +49,9 @@ export default async function HomePage() {
         className="border-b-[1.5px] border-gray-300"
       />
 
-      <ProductSection title="Power Up with Total Tools"
-        products={totalProducts} 
+      <ProductSection
+        title="Power Up with Total Tools"
+        products={totalProducts}
         viewAllLink="/brand/total-tools"
         className="border-b-[1.5px] border-gray-300"
       />

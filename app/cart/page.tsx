@@ -21,8 +21,10 @@ export default function CartPage() {
         <div className="container mx-auto px-4 py-16">
           <div className="text-center">
             <ShoppingBag className="h-24 w-24 text-gray-300 mx-auto mb-6" />
-            <h1 className="text-2xl font-bold mb-4">Your cart is empty</h1>
-            <p className="text-gray-600 mb-8">Looks like you haven't added anything to your cart yet.</p>
+            <h1 className="text-xl font-medium mb-4">Your cart is empty</h1>
+            <p className="text-gray-600 text-sm font-light mb-8">
+              Looks like you haven't added anything to your cart yet.
+            </p>
             <Link href="/">
               <Button className="bg-gray-800 hover:bg-gray-900">Continue Shopping</Button>
             </Link>
@@ -38,12 +40,12 @@ export default function CartPage() {
       <Header />
 
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-8">Your cart</h1>
+        <h1 className="text-xl font-medium mb-8">Your cart</h1>
 
         {/* Free shipping progress */}
         {total < freeShippingThreshold && (
           <div className="mb-8 p-4 bg-green-50 rounded-lg">
-            <p className="text-sm text-green-800 mb-2">Your order is eligible for free shipping!</p>
+            <p className="text-xs font-light text-green-800 mb-2">Your order is eligible for free shipping!</p>
             <div className="w-full bg-green-200 rounded-full h-2">
               <div
                 className="bg-green-600 h-2 rounded-full transition-all duration-300"
@@ -55,7 +57,9 @@ export default function CartPage() {
 
         {total >= freeShippingThreshold && (
           <div className="mb-8 p-4 bg-green-50 rounded-lg">
-            <p className="text-sm text-green-800 font-medium">🎉 Your order is eligible for free shipping!</p>
+            <p className="text-xs font-light text-green-800 font-medium">
+              🎉 Your order is eligible for free shipping!
+            </p>
           </div>
         )}
 
@@ -74,9 +78,9 @@ export default function CartPage() {
                 <div className="flex-1">
                   <div className="flex justify-between items-start mb-2">
                     <div>
-                      <p className="text-sm text-gray-600">{item.brand}</p>
-                      <h3 className="font-medium">{item.name}</h3>
-                      <p className="text-sm text-gray-600">GH₵{item.price.toFixed(2)}</p>
+                      <p className="text-xs font-light text-gray-600">{item.brand}</p>
+                      <h3 className="font-light text-sm">{item.name}</h3>
+                      <p className="text-xs font-light text-gray-600">GH₵{item.price.toFixed(2)}</p>
                     </div>
                     <p className="font-semibold">GH₵{(item.price * item.quantity).toFixed(2)}</p>
                   </div>
@@ -118,7 +122,7 @@ export default function CartPage() {
           {/* Order summary */}
           <div className="lg:col-span-1">
             <div className="border rounded-lg p-6 sticky top-4">
-              <h2 className="text-lg font-semibold mb-4">Order summary</h2>
+              <h2 className="text-base font-medium mb-4">Order summary</h2>
 
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between">
@@ -127,7 +131,7 @@ export default function CartPage() {
                 </div>
               </div>
 
-              <div className="text-sm text-gray-600 mb-4">
+              <div className="text-xs font-light text-gray-600 mb-4">
                 <p>Taxes, discounts and shipping calculated at checkout.</p>
               </div>
 

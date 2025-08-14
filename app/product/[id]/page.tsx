@@ -44,9 +44,9 @@ export default function ProductPage({ params }: ProductPageProps) {
     targetDay: 0,
   })
   const [mainImage, setMainImage] = useState<string>("")
-  const {id} = use(params);
+  const { id } = use(params)
 
-   useEffect(() => {
+  useEffect(() => {
     async function fetchData() {
       setLoading(true)
       const fetchedProduct = await getProduct(id)
@@ -223,20 +223,20 @@ export default function ProductPage({ params }: ProductPageProps) {
 
             {/* Accordion Sections (Description, Processing, Free Shipping) and Payment Section - Visible on large screens, hidden on small */}
             <div className="pt-4 border-t hidden lg:block">
-              <ProductDetailAccordion title="Description">
+              <ProductDetailAccordion title="Description" className="text-sm font-medium">
                 <p>{product.description}</p>
                 <p className="mt-2">
                   This {product.name} from {product.brand} is designed for optimal performance and durability. Ideal for
                   both professional and DIY use.
                 </p>
               </ProductDetailAccordion>
-              <ProductDetailAccordion title="Processing & Fulfillment">
+              <ProductDetailAccordion title="Processing & Fulfillment" className="text-sm font-medium">
                 <p>
                   Orders are typically processed within 24 hours. Delivery within Accra is usually within 48 hours,
                   while regional deliveries may take 3-5 business days. Weekend orders are processed on Mondays.
                 </p>
               </ProductDetailAccordion>
-              <ProductDetailAccordion title="Free Shipping and Other Policies">
+              <ProductDetailAccordion title="Free Shipping and Other Policies" className="text-sm font-medium">
                 <p>
                   Enjoy free delivery on all orders over GH₵500 within Accra. For our full shipping, return, and privacy
                   policies, please visit our dedicated policy pages linked in the footer.
@@ -252,16 +252,16 @@ export default function ProductPage({ params }: ProductPageProps) {
           {/* Product Info Column */}
           <div className="space-y-4 sm:space-y-6">
             <div>
-              <div className="text-sm text-gray-600 mb-2">SM Essential Bundles</div>
-              <div className="text-sm text-gray-800 mb-4">{product.brand}</div>
+              <div className="text-xs font-light mb-2">SM Essential Bundles</div>
+              <div className="text-xs font-light mb-4">{product.brand}</div>
 
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 leading-tight">{product.name}</h1>
+              <h1 className="text-lg sm:text-xl lg:text-2xl font-medium mb-4 leading-tight">{product.name}</h1>
 
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-6">
                 <div className="flex items-center gap-2">
-                  <span className="text-2xl sm:text-3xl font-bold">GH₵{product.price.toFixed(2)}</span>
+                  <span className="text-xl sm:text-2xl font-medium">GH₵{product.price.toFixed(2)}</span>
                   {product.originalPrice && (
-                    <span className="text-lg text-gray-500 line-through">GH₵{product.originalPrice.toFixed(2)}</span>
+                    <span className="text-base font-light line-through">GH₵{product.originalPrice.toFixed(2)}</span>
                   )}
                 </div>
               </div>
@@ -278,15 +278,13 @@ export default function ProductPage({ params }: ProductPageProps) {
                       />
                     ))}
                   </div>
-                  {product.reviewCount && (
-                    <span className="text-sm text-gray-600">({product.reviewCount} reviews)</span>
-                  )}
+                  {product.reviewCount && <span className="text-xs font-light">({product.reviewCount} reviews)</span>}
                 </div>
               )}
             </div>
 
             {/* Delivery Countdown */}
-            <div className="mb-6 text-sm text-gray-700">
+            <div className="mb-6 text-xs font-light">
               <p>
                 Order within{" "}
                 {timerComponents.map((comp, index) => (
@@ -333,7 +331,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             </div>
 
             {/* Delivery Guarantees */}
-            <div className="pt-4 border-t space-y-2 text-sm text-gray-700">
+            <div className="pt-4 border-t space-y-2 text-[10px] font-light">
               <p>
                 <span className="font-semibold">Pay on Delivery</span> |{" "}
                 <span className="font-semibold">Next-Day Delivery</span> |{" "}
@@ -347,13 +345,13 @@ export default function ProductPage({ params }: ProductPageProps) {
 
             {/* Accordion Sections (How to Place Order, Pay on Delivery) - Always visible in this column */}
             <div className="pt-4 border-t">
-              <ProductDetailAccordion title="How to Place an Order" defaultOpen={true}>
+              <ProductDetailAccordion title="How to Place an Order" defaultOpen={true} className="text-sm font-medium">
                 <p>
                   Placing an order is simple! Browse our categories, add desired products to your cart, and proceed to
                   checkout. Follow the prompts to enter your delivery details and choose your payment method.
                 </p>
               </ProductDetailAccordion>
-              <ProductDetailAccordion title="Pay on Delivery Options">
+              <ProductDetailAccordion title="Pay on Delivery Options" className="text-sm font-medium">
                 <p>
                   We offer convenient Pay on Delivery options for most locations. You can pay with cash, mobile money
                   (MTN, Vodafone, AirtelTigo), or card upon receiving your order.
@@ -363,20 +361,20 @@ export default function ProductPage({ params }: ProductPageProps) {
 
             {/* Accordion Sections (Description, Processing, Free Shipping) and Payment Section - Visible on small screens, hidden on large */}
             <div className="pt-4 border-t block lg:hidden">
-              <ProductDetailAccordion title="Description">
+              <ProductDetailAccordion title="Description" className="text-sm font-medium">
                 <p>{product.description}</p>
                 <p className="mt-2">
                   This {product.name} from {product.brand} is designed for optimal performance and durability. Ideal for
                   both professional and DIY use.
                 </p>
               </ProductDetailAccordion>
-              <ProductDetailAccordion title="Processing & Fulfillment">
+              <ProductDetailAccordion title="Processing & Fulfillment" className="text-sm font-medium">
                 <p>
                   Orders are typically processed within 24 hours. Delivery within Accra is usually within 48 hours,
                   while regional deliveries may take 3-5 business days. Weekend orders are processed on Mondays.
                 </p>
               </ProductDetailAccordion>
-              <ProductDetailAccordion title="Free Shipping and Other Policies">
+              <ProductDetailAccordion title="Free Shipping and Other Policies" className="text-sm font-medium">
                 <p>
                   Enjoy free delivery on all orders over GH₵500 within Accra. For our full shipping, return, and privacy
                   policies, please visit our dedicated policy pages linked in the footer.

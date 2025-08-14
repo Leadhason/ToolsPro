@@ -23,7 +23,7 @@ export default function TopControls() {
       {/* Compare toggle and View as */}
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-bold text-gray-600">View as</span>
+          <span className="text-xs font-medium text-gray-600">View as</span>
           <Button
             variant="ghost"
             size="icon"
@@ -43,7 +43,7 @@ export default function TopControls() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Compare</span>
+          <span className="text-xs font-light text-gray-600">Compare</span>
           <Button
             variant="ghost"
             size="icon"
@@ -61,12 +61,12 @@ export default function TopControls() {
 
       {/* Sort by dropdown */}
       <div className="flex items-center gap-2">
-        <span className="text-sm font-bold text-gray-600">Sort by:</span>
+        <span className="text-xs font-medium text-gray-600">Sort by:</span>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              className="flex items-center gap-1 text-gray-800 hover:bg-gray-100 bg-transparent"
+              className="flex items-center gap-1 text-gray-800 hover:bg-gray-100 bg-transparent text-xs font-light"
             >
               Featured <ChevronDown className="h-4 w-4 ml-1" />
             </Button>
@@ -80,8 +80,6 @@ export default function TopControls() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-
-
     </div>
   )
 }

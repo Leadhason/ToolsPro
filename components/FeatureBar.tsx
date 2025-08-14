@@ -1,4 +1,4 @@
-import { Facebook, Youtube, Instagram, MessageCircle, Twitter, Linkedin, Undo2, Container, BadgeCheck } from 'lucide-react'
+import { MessageCircle, Undo2, Container, BadgeCheck } from "lucide-react"
 import Link from "next/link"
 
 export default function FeaturesBar() {
@@ -11,8 +11,8 @@ export default function FeaturesBar() {
               <MessageCircle className="w-6 h-6" />
             </div>
             <Link href="/support" className="flex flex-col">
-              <h3 className="font-semibold">Visit our support center</h3>
-              <p className="text-sm text-gray-600">Expert help & advice</p>
+              <h3 className="font-medium text-sm">Visit our support center</h3>
+              <p className="text-xs font-light text-gray-600">Expert help & advice</p>
             </Link>
           </div>
           <Link href="/top-sellers" className="flex items-center gap-4">
@@ -20,8 +20,8 @@ export default function FeaturesBar() {
               <BadgeCheck className="w-6 h-6 " />
             </div>
             <div>
-              <h3 className="font-semibold">Shop Best Sellers</h3>
-              <p className="text-sm text-gray-600">Explore our top-selling products</p>
+              <h3 className="font-medium text-sm">Shop Best Sellers</h3>
+              <p className="text-xs font-light text-gray-600">Explore our top-selling products</p>
             </div>
           </Link>
           <Link href="/returns" className="flex items-center gap-4">
@@ -29,8 +29,8 @@ export default function FeaturesBar() {
               <Undo2 className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-semibold">Returns & exchanges</h3>
-              <p className="text-sm text-gray-600">All you need to know</p>
+              <h3 className="font-medium text-sm">Returns & exchanges</h3>
+              <p className="text-xs font-light text-gray-600">All you need to know</p>
             </div>
           </Link>
           <Link href="" className="flex items-center gap-4">
@@ -38,12 +38,11 @@ export default function FeaturesBar() {
               <Container className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-semibold">Become our Supplier</h3>
-              <p className="text-sm text-gray-600">Sell on ToolsPro</p>
+              <h3 className="font-medium text-sm">Become our Supplier</h3>
+              <p className="text-xs font-light text-gray-600">Sell on ToolsPro</p>
             </div>
           </Link>
         </div>
-        
       </div>
     </section>
   )

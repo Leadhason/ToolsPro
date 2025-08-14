@@ -31,8 +31,10 @@ export default function WishlistPage() {
         <div className="container mx-auto px-4 py-16">
           <div className="text-center">
             <Heart className="h-24 w-24 text-gray-300 mx-auto mb-6" />
-            <h1 className="text-2xl font-bold mb-4">Your wishlist is empty</h1>
-            <p className="text-gray-600 mb-8">Looks like you haven't added anything to your wishlist yet.</p>
+            <h1 className="text-xl font-medium mb-4">Your wishlist is empty</h1>
+            <p className="text-gray-600 text-sm font-light mb-8">
+              Looks like you haven't added anything to your wishlist yet.
+            </p>
             <Link href="/">
               <Button className="bg-gray-800 hover:bg-gray-900">Continue Shopping</Button>
             </Link>
@@ -48,7 +50,7 @@ export default function WishlistPage() {
       <Header />
 
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl text-sm font-bold mb-8 text-center">Wishlist</h1>
+        <h1 className="text-xl font-medium mb-8 text-center">Wishlist</h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {items.map((item) => (
@@ -73,9 +75,9 @@ export default function WishlistPage() {
               </Link>
 
               <div className="space-y-2">
-                <p className="text-sm text-gray-600">{item.brand}</p>
+                <p className="text-xs font-light text-gray-600">{item.brand}</p>
                 <Link href={`/product/${item.id}`}>
-                  <h3 className="font-medium line-clamp-2 hover:text-red-600">{item.name}</h3>
+                  <h3 className="font-light text-sm line-clamp-2 hover:text-red-600">{item.name}</h3>
                 </Link>
 
                 {item.rating && (
@@ -94,7 +96,7 @@ export default function WishlistPage() {
                   </div>
                 )}
 
-                <p className="font-bold text-lg">GH₵{item.price.toFixed(2)}</p>
+                <p className="font-medium text-base">GH₵{item.price.toFixed(2)}</p>
 
                 <div className="space-y-2 pt-2">
                   <Button className="w-full bg-gray-800 hover:bg-gray-900" onClick={() => handleAddToCart(item)}>

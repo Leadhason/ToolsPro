@@ -64,10 +64,7 @@ export default function ProductCard({ product, showCompare = false }: ProductCar
         {showCompare && (
           <div className="absolute top-2 left-2 z-10 flex items-center space-x-2 bg-white/80 px-2 py-1 rounded-md">
             <Checkbox id={`compare-${product.id}`} className="h-4 w-4" />
-            <label
-              htmlFor={`compare-${product.id}`}
-              className="text-gray-800 text-xs font-medium leading-none cursor-pointer"
-            >
+            <label htmlFor={`compare-${product.id}`} className="text-[10px] font-light cursor-pointer">
               Compare
             </label>
           </div>
@@ -98,10 +95,10 @@ export default function ProductCard({ product, showCompare = false }: ProductCar
       </div>
 
       <div className="p-3 sm:p-4 w-full">
-        <div className="text-xs sm:text-sm text-gray-600 mb-1">{product.brand}</div>
+        <div className="text-[10px] sm:text-xs text-gray-600 mb-1 font-light">{product.brand}</div>
 
         <Link href={`/product/${product.id}`}>
-          <h3 className="font-medium text-xs sm:text-sm mb-2 line-clamp-2 hover:text-red-600 leading-tight">
+          <h3 className="font-medium text-[10px] sm:text-xs mb-2 line-clamp-2 hover:text-red-600 leading-tight font-light">
             {product.name}
           </h3>
         </Link>
@@ -123,9 +120,11 @@ export default function ProductCard({ product, showCompare = false }: ProductCar
         )}
 
         <div className="flex flex-col gap-0.5 mb-3">
-          <span className="font-bold text-sm sm:text-base lg:text-lg">GH₵{product.price.toFixed(2)}</span>
+          <span className="font-bold text-xs sm:text-sm lg:text-base font-medium">GH₵{product.price.toFixed(2)}</span>
           {product.originalPrice && (
-            <span className="text-xs sm:text-sm text-gray-500 line-through">GH₵{product.originalPrice.toFixed(2)}</span>
+            <span className="text-[10px] sm:text-xs text-gray-500 line-through font-light">
+              GH₵{product.originalPrice.toFixed(2)}
+            </span>
           )}
         </div>
 
@@ -152,13 +151,13 @@ export default function ProductCard({ product, showCompare = false }: ProductCar
 
         <div className="space-y-2">
           {product.colors ? (
-            <Button variant="outline" className="w-full text-xs sm:text-sm bg-transparent h-8 sm:h-9">
+            <Button variant="outline" className="w-full text-[10px] sm:text-xs font-light bg-transparent h-8 sm:h-9">
               Choose options
             </Button>
           ) : (
             <Button
               variant="outline"
-              className="w-full text-xs sm:text-sm h-8 sm:h-9 hover:bg-emerald-800 hover:text-white bg-transparent"
+              className="w-full text-[10px] sm:text-xs font-light bg-transparent h-8 sm:h-9 hover:bg-emerald-800 hover:text-white"
               onClick={handleAddToCart}
             >
               Add to cart

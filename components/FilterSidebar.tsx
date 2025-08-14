@@ -39,10 +39,10 @@ export default function FilterSidebar() {
       {/* Reverted styling and added scroll */}
       <Accordion type="multiple" defaultValue={["availability", "product-type", "price", "brand"]} className="w-full">
         <AccordionItem value="availability">
-          <AccordionTrigger className="text-md font-semibold text-gray-800 hover:no-underline">
+          <AccordionTrigger className="text-sm font-medium text-gray-800 hover:no-underline">
             {" "}
             Availability
-            <span className="text-gray-500 text-sm ml-2">
+            <span className="text-gray-500 text-xs font-light ml-2">
               ({availabilityOptions.reduce((sum, opt) => sum + opt.count, 0)})
             </span>
           </AccordionTrigger>
@@ -51,7 +51,10 @@ export default function FilterSidebar() {
               {availabilityOptions.map((option) => (
                 <div key={option.value} className="flex items-center space-x-3">
                   <Checkbox id={`availability-${option.value}`} className="h-4 w-4" />
-                  <label htmlFor={`availability-${option.value}`} className="text-sm text-gray-700 cursor-pointer">
+                  <label
+                    htmlFor={`availability-${option.value}`}
+                    className="text-xs font-light text-gray-700 cursor-pointer"
+                  >
                     {option.label} ({option.count})
                   </label>
                 </div>
@@ -61,11 +64,10 @@ export default function FilterSidebar() {
         </AccordionItem>
 
         <AccordionItem value="product-type">
-          <AccordionTrigger className="text-md font-semibold text-gray-800 hover:no-underline">
+          <AccordionTrigger className="text-sm font-medium text-gray-800 hover:no-underline">
             {" "}
-            {/* Changed to text-lg */}
             Product Type
-            <span className="text-gray-500 text-sm ml-2">
+            <span className="text-gray-500 text-xs font-light ml-2">
               ({productTypeOptions.reduce((sum, opt) => sum + opt.count, 0)})
             </span>
           </AccordionTrigger>
@@ -74,7 +76,10 @@ export default function FilterSidebar() {
               {productTypeOptions.map((option) => (
                 <div key={option.value} className="flex items-center space-x-3">
                   <Checkbox id={`product-type-${option.value}`} className="h-4 w-4" />
-                  <label htmlFor={`product-type-${option.value}`} className="text-sm text-gray-700 cursor-pointer">
+                  <label
+                    htmlFor={`product-type-${option.value}`}
+                    className="text-xs font-light text-gray-700 cursor-pointer"
+                  >
                     {option.label} ({option.count})
                   </label>
                 </div>
@@ -84,8 +89,7 @@ export default function FilterSidebar() {
         </AccordionItem>
 
         <AccordionItem value="price">
-          <AccordionTrigger className="text-md font-semibold text-gray-800 hover:no-underline">Price</AccordionTrigger>{" "}
-          {/* Changed to text-lg */}
+          <AccordionTrigger className="text-sm font-medium text-gray-800 hover:no-underline">Price</AccordionTrigger>{" "}
           <AccordionContent className="pt-2">
             <div className="flex items-center gap-3 mb-4">
               <Input
@@ -116,11 +120,10 @@ export default function FilterSidebar() {
         </AccordionItem>
 
         <AccordionItem value="brand">
-          <AccordionTrigger className="text-md font-semibold text-gray-800 hover:no-underline">
+          <AccordionTrigger className="text-sm font-medium text-gray-800 hover:no-underline">
             {" "}
-            {/* Changed to text-lg */}
             Brand
-            <span className="text-gray-500 text-sm ml-2">
+            <span className="text-gray-500 text-xs font-light ml-2">
               ({brandOptions.reduce((sum, opt) => sum + opt.count, 0)})
             </span>
           </AccordionTrigger>
@@ -129,7 +132,7 @@ export default function FilterSidebar() {
               {brandOptions.map((option) => (
                 <div key={option.value} className="flex items-center space-x-3">
                   <Checkbox id={`brand-${option.value}`} className="h-4 w-4" />
-                  <label htmlFor={`brand-${option.value}`} className="text-sm text-gray-700 cursor-pointer">
+                  <label htmlFor={`brand-${option.value}`} className="text-xs font-light text-gray-700 cursor-pointer">
                     {option.label} ({option.count})
                   </label>
                 </div>

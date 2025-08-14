@@ -3,8 +3,8 @@ import Image from "next/image"
 export default function PaymentMethodsSection() {
   return (
     <div className="border rounded-lg p-6 bg-gray-50">
-      <h3 className="text-lg font-semibold mb-4 text-gray-800">Secure Payment - Powered by Paystack</h3>
-      <p className="text-sm text-gray-600 mb-4">
+      <h3 className="text-base font-medium mb-4 text-gray-800">Secure Payment - Powered by Paystack</h3>
+      <p className="text-xs font-light mb-4">
         {"100% Guarantee: If you don't receive your product as described, we'll refund you in full."}
       </p>
       <div className="flex flex-wrap gap-4 items-center">
