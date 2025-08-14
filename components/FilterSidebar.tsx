@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+
 import { useState, useEffect } from "react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -171,7 +172,7 @@ export default function FilterSidebar({ allProducts = [] }: FilterSidebarProps) 
     filters.priceRange[1] !== 300000
 
   return (
-    <div className="bg-white p-6 rounded-none h-full overflow-y-auto scrollbar-hide relative">
+    <div className="bg-white p-6 rounded-none h-full overflow-y-auto scrollbar-hide">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-medium text-gray-800">Filters</h3>
         {hasActiveFilters && (
