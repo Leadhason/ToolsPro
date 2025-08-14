@@ -4,17 +4,16 @@ export interface Product {
   description: string
   price: number
   originalPrice?: number
-  discount?: number
   image: string
-  hoverImage?: string // Added hoverImage property
-  category: string
+  hoverImage?: string
   brand: string
+  category: string
   rating?: number
   reviewCount?: number
-  inStock: boolean
-  isNew?: boolean
   colors?: string[]
-  detailImageOverlay?: string // New: for product detail page image overlay
+  discount?: number
+  isNew?: boolean
+  inStock: boolean
 }
 
 export interface Category {
@@ -23,611 +22,260 @@ export interface Category {
   slug: string
   description: string
   image: string
-  subcategories: string[]
-  bannerImage?: string // New: for category hero banner
-  bannerDescription?: string // New: for category hero banner
+  productCount: number
 }
 
 export interface Brand {
   id: string
   name: string
   logo: string
+  productCount: number
 }
 
-// Mock data
-export const brands: Brand[] = [
-  { id: "1", name: "Honeywell", logo: "/brands/honeywell.png" },
-  { id: "2", name: "Mercado", logo: "/brands/logo.svg" },
-  { id: "3", name: "Cuentas", logo: "/brands/ipsum.svg" },
-  { id: "4", name: "Trendyol", logo: "/brands/trendyol.svg" },
-  { id: "5", name: "LogoIpsum", logo: "/brands/logoipsum.svg" },
-  { id: "6", name: "Logoip", logo: "/brands/logoip.svg" },
-]
-
-export const categories: Category[] = [
+const categories: Category[] = [
   {
     id: "1",
-    name: "Tools",
-    slug: "tools",
-    description: "Hand & Power Tools",
-    image: "/category-images/construction-worker-image-2.png",
-    subcategories: ["Hand Tools", "Power Tools", "Measuring Tools"],
-    bannerImage: "/category-images/mechanic-image.png",
-    bannerDescription:
-      "Explore a comprehensive range of hand and power tools for every project, from DIY home repairs to professional construction. Find drills, saws, wrenches, and more from top brands.",
-  },
-  {
-    id: "2",
-    name: "Outdoor Equipment",
-    slug: "outdoor-equipment",
-    description: "Water Pumps, Generators & More",
-    image: "/category-images/man-and-woman.png",
-    subcategories: ["Generators", "Water Pumps", "Garden Tools"],
-    bannerImage: "/category-images/man-and-woman-painting.png",
-    bannerDescription:
-      "Equip yourself for any outdoor task with our robust selection of generators, water pumps, and garden tools. Power your projects and maintain your landscape with ease.",
-  },
-  {
-    id: "3",
-    name: "Building Materials",
-    slug: "building-materials",
-    description: "Plumbing, Electricals & More",
+    name: "Power Tools",
+    slug: "power-tools",
+    description: "Professional grade power tools for all your construction needs",
     image: "/category-images/construction-worker-image-1.png",
-    subcategories: ["Plumbing", "Electrical", "Hardware"],
-    bannerImage: "/category-images/construction-worker-image-1.png",
-    bannerDescription:
-      "Build strong and reliable structures with our high-quality building materials. From plumbing and electrical supplies to essential hardware, we have everything you need for your construction projects.",
-  },
-  {
-    id: "4",
-    name: "Home Essentials & Decor",
-    slug: "home-essentials",
-    description: "Bath, Kitchen, Lighting & More",
-    image: "/category-images/in kitchen.png",
-    subcategories: ["Kitchen", "Bathroom", "Lighting"],
-    bannerImage: "/category-images/construction-worker-image-2.png",
-    bannerDescription:
-      "Transform your living space with our collection of home essentials and decor. Discover stylish and functional items for your kitchen, bathroom, and lighting needs to create the perfect ambiance.",
-  },
-]
-
-export const products: Product[] = [
-  // Ingco Tools
-  {
-    id: "1",
-    name: "Ingco Peripheral Water Pumps - 0.5HP, 0.75HP & 1HP - VPM Series",
-    description: "High-quality peripheral water pump for residential use",
-    price: 670.0,
-    image: "/products/image-1.jpeg",
-    hoverImage: "/products/image-2.jpeg", // Added hover image
-    category: "outdoor-equipment",
-    brand: "Ingco",
-    rating: 4.5,
-    reviewCount: 12,
-    inStock: true,
+    productCount: 45,
   },
   {
     id: "2",
-    name: "Ingco Industrial Heavy Duty Brass Padlock",
-    description: "Durable brass padlock for industrial applications",
-    price: 220.0,
-    image: "/products/image-2.jpeg",
-    hoverImage: "/products/image-1.jpeg", // Added hover image
-    category: "tools",
-    brand: "Ingco",
-    inStock: true,
+    name: "Hand Tools",
+    slug: "hand-tools",
+    description: "Quality hand tools for precision work",
+    image: "/category-images/construction-worker-image-2.png",
+    productCount: 32,
   },
   {
     id: "3",
-    name: "Ingco Gasoline Grass Trimmer & Bush Cutter 2HP - GBC543421",
-    description: "Powerful grass trimmer for lawn maintenance",
-    price: 2030.0,
-    image: "/products/image-3.jpeg",
-    hoverImage: "/products/image-4.jpeg", // Added hover image
-    category: "outdoor-equipment",
-    brand: "Ingco",
-    rating: 4.0,
-    reviewCount: 8,
-    inStock: true,
+    name: "Garden Tools",
+    slug: "garden-tools",
+    description: "Everything you need for your garden",
+    image: "/category-images/man-and-woman.png",
+    productCount: 28,
   },
   {
     id: "4",
-    name: "Ingco Safety Helmets – Durable PVC Protection (Yellow, Blue, White, Red)",
-    description: "Professional safety helmets in multiple colors",
-    price: 50.0,
-    image: "/products/image-4.jpeg",
-    hoverImage: "/products/image-5.jpeg", // Added hover image
-    category: "tools",
-    brand: "Ingco",
-    colors: ["yellow", "blue", "white", "red"],
-    inStock: true,
+    name: "Automotive",
+    slug: "automotive",
+    description: "Tools and equipment for automotive work",
+    image: "/category-images/mechanic-image.png",
+    productCount: 19,
   },
   {
     id: "5",
-    name: "Ingco Knitted & PVC Dots Gloves - Size 10 (XL) – HGVK05",
-    description: "Comfortable work gloves with PVC dots for grip",
-    price: 7.0,
-    image: "/products/image-5.jpeg",
-    hoverImage: "/products/image-3.jpeg", // Added hover image
-    category: "tools",
-    brand: "Ingco",
-    rating: 5.0,
-    reviewCount: 15,
-    inStock: true,
+    name: "Home & Kitchen",
+    slug: "home-kitchen",
+    description: "Tools and appliances for home use",
+    image: "/category-images/in kitchen.png",
+    productCount: 24,
   },
-  // Total Tools
   {
     id: "6",
-    name: "Total Gasoline Generator 9.0KW - TP190006",
-    description: "Powerful gasoline generator for backup power",
-    price: 13750.0,
+    name: "Painting",
+    slug: "painting",
+    description: "Professional painting tools and supplies",
+    image: "/category-images/man-and-woman-painting.png",
+    productCount: 15,
+  },
+]
+
+const products: Product[] = [
+  {
+    id: "1",
+    name: "Karcher K2 Compact Pressure Washer",
+    description: "Compact and lightweight pressure washer perfect for small to medium cleaning tasks around the home.",
+    price: 299.99,
+    originalPrice: 349.99,
+    image: "/products/image-1.jpeg",
+    hoverImage: "/products/image-2.jpeg",
+    brand: "Karcher",
+    category: "power-tools",
+    rating: 4.5,
+    reviewCount: 128,
+    discount: 14,
+    inStock: true,
+  },
+  {
+    id: "2",
+    name: "Bosch Professional Drill Set",
+    description: "Professional grade drill with multiple bits and accessories for heavy-duty applications.",
+    price: 189.99,
+    image: "/products/image-3.jpeg",
+    brand: "Bosch",
+    category: "power-tools",
+    rating: 4.8,
+    reviewCount: 95,
+    isNew: true,
+    inStock: true,
+  },
+  {
+    id: "3",
+    name: "Stanley Hammer Set",
+    description: "Durable hammer set with ergonomic handles for comfortable use during extended work sessions.",
+    price: 45.99,
+    originalPrice: 59.99,
+    image: "/products/image-4.jpeg",
+    brand: "Stanley",
+    category: "hand-tools",
+    rating: 4.2,
+    reviewCount: 67,
+    colors: ["red", "blue"],
+    inStock: true,
+  },
+  {
+    id: "4",
+    name: "Ingco Angle Grinder",
+    description: "Powerful angle grinder suitable for cutting and grinding various materials with precision.",
+    price: 79.99,
+    image: "/products/image-5.jpeg",
+    brand: "Ingco",
+    category: "power-tools",
+    rating: 4.3,
+    reviewCount: 43,
+    inStock: false,
+  },
+  {
+    id: "5",
+    name: "Total Tools Screwdriver Set",
+    description: "Complete screwdriver set with magnetic tips and comfortable grip handles.",
+    price: 29.99,
     image: "/products/image-6.jpeg",
-    hoverImage: "/products/image-7.jpeg", // Added hover image
-    category: "outdoor-equipment",
     brand: "Total Tools",
+    category: "hand-tools",
+    rating: 4.1,
+    reviewCount: 89,
+    inStock: true,
+  },
+  {
+    id: "6",
+    name: "Einhell Cordless Drill",
+    description: "Lightweight cordless drill with long-lasting battery and quick charging capability.",
+    price: 129.99,
+    originalPrice: 159.99,
+    image: "/products/image-7.jpeg",
+    brand: "Einhell",
+    category: "power-tools",
+    rating: 4.4,
+    reviewCount: 156,
+    discount: 19,
     inStock: true,
   },
   {
     id: "7",
-    name: "Total Rotary Hammer 650W SDS-Plus - TH306236",
-    description: "Professional rotary hammer for drilling",
-    price: 820.0,
-    image: "/products/image-7.jpeg",
-    hoverImage: "/products/image-8.jpeg", // Added hover image
-    category: "tools",
-    brand: "Total Tools",
-    rating: 4.5,
-    reviewCount: 6,
+    name: "Silverline Multi-Tool",
+    description: "Versatile multi-tool with various attachments for different applications and materials.",
+    price: 89.99,
+    image: "/products/image-8.jpeg",
+    brand: "Silverline",
+    category: "power-tools",
+    rating: 4.0,
+    reviewCount: 34,
     inStock: true,
   },
   {
     id: "8",
-    name: "Total High Pressure Washer 1400W - TGT11316",
-    description: "High-pressure washer for cleaning tasks",
-    price: 1090.0,
-    image: "/products/image-8.jpeg",
-    hoverImage: "/products/image-9.jpeg", // Added hover image
-    category: "outdoor-equipment",
-    brand: "Total Tools",
-    rating: 4.0,
-    reviewCount: 4,
+    name: "Stayer Impact Wrench",
+    description: "High-torque impact wrench designed for automotive and industrial applications.",
+    price: 199.99,
+    image: "/products/image-9.jpeg",
+    brand: "Stayer",
+    category: "automotive",
+    rating: 4.6,
+    reviewCount: 78,
     inStock: true,
   },
   {
     id: "9",
-    name: "Total Wire Cup Twist Brush",
-    description: "Wire brush for surface preparation",
-    price: 30.0,
-    image: "/products/image-9.jpeg",
-    hoverImage: "/products/image-9.jpeg", // Added hover image
-    category: "tools",
-    brand: "Total Tools",
+    name: "Wadfow Garden Shears",
+    description: "Sharp and durable garden shears for pruning and trimming plants with precision.",
+    price: 24.99,
+    image: "/products/imqge-9.jpeg",
+    brand: "Wadfow",
+    category: "garden-tools",
+    rating: 4.2,
+    reviewCount: 45,
     inStock: true,
   },
   {
     id: "10",
-    name: "Total Latex Gloves - TSP13102",
-    description: "Protective latex gloves for various tasks",
-    price: 20.0,
-    image: "/products/image-9.jpeg", // Using existing image from sync
-    hoverImage: "/products/image-9.jpeg", // Added hover image
-    category: "tools",
-    brand: "Total Tools",
-    inStock: true,
-  },
-  // Home Appliances
-  {
-    id: "11",
-    name: "Decakila Smart Home Basic Set - Electric Iron, Electric Kettle & Electric Double Hot Plate",
-    description: "Complete smart home appliance bundle",
-    price: 510.0,
-    originalPrice: 800.0,
-    discount: 36,
-    image: "/products/image-3.jpeg",
-    hoverImage: "/products/image-6.jpeg", // Added hover image
-    category: "home-essentials",
-    brand: "Decakila",
-    isNew: true,
-    inStock: true,
-  },
-  {
-    id: "12",
-    name: "Ariston Aures Slim Instant Water Heater 5.5KW - Multi Point",
-    description: "Instant water heater for multiple points",
-    price: 2400.0,
-    originalPrice: 3444.0,
-    discount: 30,
-    image: "/products/image-6.jpeg",
-    hoverImage: "/products/image-7.jpeg", // Added hover image
-    category: "home-essentials",
-    brand: "Ariston",
-    rating: 4.5,
-    reviewCount: 8,
-    inStock: true,
-  },
-  {
-    id: "13",
-    name: "Ariston Kairos Thermo HF Flat Roof Solar Water Heater - 150, 200 & 300 Liters",
-    description: "Solar water heater system for eco-friendly heating",
-    price: 28000.0,
-    originalPrice: 33600.0,
-    discount: 17,
-    image: "/products/image-7.jpeg",
-    hoverImage: "/products/image-1.jpeg", // Added hover image
-    category: "home-essentials",
-    brand: "Ariston",
-    inStock: true,
-  },
-  {
-    id: "14",
-    name: "Decakila 1.8L Stainless Steel Electric Kettle 1500W - KEKT031M",
-    description: "Stainless steel electric kettle with fast heating",
-    price: 90.0,
-    originalPrice: 130.0,
-    discount: 31,
-    image: "/products/image-1.jpeg",
-    hoverImage: "/products/image-2.jpeg", // Added hover image
-    category: "home-essentials",
-    brand: "Decakila",
-    rating: 4.2,
-    reviewCount: 18,
-    inStock: true,
-  },
-  // Karcher Products
-  {
-    id: "15",
-    name: "Karcher Stone And Paving Cleaner 5L - RM 623",
-    description: "Professional stone and paving cleaner",
-    price: 370.0,
-    image: "/products/image-2.jpeg",
-    hoverImage: "/products/image-3.jpeg", // Added hover image
-    category: "outdoor-equipment",
-    brand: "Karcher",
-    rating: 4.8,
-    reviewCount: 12,
-    inStock: true,
-  },
-  {
-    id: "16",
-    name: "Karcher K3 High pressure Washer 1600W 120 Bar",
-    description: "High-pressure washer for home use",
-    price: 4000.0,
-    image: "/products/image-3.jpeg",
-    hoverImage: "/products/image-4.jpeg", // Added hover image
-    category: "outdoor-equipment",
-    brand: "Karcher",
-    inStock: true,
-  },
-  // Building Essentials (New additions)
-  {
-    id: "17",
-    name: "Schneider 3 Pin Rounded 15AMPS Plug Top",
-    description: "High-quality electrical plug for home use",
-    price: 50.0,
-    image: "/placeholder.svg?height=300&width=300&text=Electrical+Plug",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Electrical+Plug+Hover", // Added hover image
-    category: "building-materials",
-    brand: "Schneider",
-    inStock: true,
-  },
-  {
-    id: "18",
-    name: "Black Metal Old Wood Cuboid Island Chandelier Ceiling Light 44E27 - L800mm",
-    description: "Elegant chandelier for modern homes",
-    price: 4300.0,
-    image: "/placeholder.svg?height=300&width=300&text=Chandelier",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Chandelier+Hover", // Added hover image
-    category: "home-essentials",
-    brand: "Generic",
-    inStock: true,
-  },
-  {
-    id: "19",
-    name: "Tanaro Dark Grey Vintage E27 Outdoor Wall Lantern - 40W",
-    description: "Vintage outdoor wall lantern",
-    price: 420.0,
-    image: "/products/image-19.jpeg",
-    hoverImage: "/products/image-1.jpeg", // Added hover image
-    category: "home-essentials",
-    brand: "Tanaro",
-    inStock: true,
-  },
-  {
-    id: "20",
-    name: "Bosch Series 4 Semi-Integrated Dish Washer 60cm - SMI63D05GC",
-    description: "Efficient dishwasher for modern kitchens",
-    price: 16700.0,
-    image: "/placeholder.svg?height=300&width=300&text=Dishwasher",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Dishwasher+Hover", // Added hover image
-    category: "home-essentials",
-    brand: "Bosch",
-    inStock: true,
-  },
-  {
-    id: "21",
-    name: "Multi-Arm 13 Globe Dimpled Ceiling Light Elegant Gold",
-    description: "Elegant multi-arm ceiling light",
-    price: 2800.0,
-    image: "/placeholder.svg?height=300&width=300&text=Ceiling+Light",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Ceiling+Light+Hover", // Added hover image
-    category: "home-essentials",
-    brand: "Generic",
-    inStock: true,
-  },
-  // Karcher Additional Products (New additions)
-  {
-    id: "22",
-    name: "Karcher Cordless Battery Powered Vacuum Cleaner Premium OurFamily- VC 6",
-    description: "Cordless vacuum cleaner for home use",
-    price: 11000.0,
-    image: "/placeholder.svg?height=300&width=300&text=Vacuum+Cleaner",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Vacuum+Cleaner+Hover", // Added hover image
-    category: "outdoor-equipment",
-    brand: "Karcher",
-    inStock: true,
-  },
-  {
-    id: "23",
-    name: "Karcher Car Shampoo RM 619, 5L",
-    description: "Professional car shampoo",
-    price: 290.0,
-    image: "/placeholder.svg?height=300&width=300&text=Car+Shampoo",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Car+Shampoo+Hover", // Added hover image
-    category: "outdoor-equipment",
-    brand: "Karcher",
-    inStock: true,
-  },
-  {
-    id: "24",
-    name: "Karcher Hose Set With Hose Hanger, 15 M",
-    description: "Complete hose set with hanger",
-    price: 920.0,
-    image: "/placeholder.svg?height=300&width=300&text=Hose+Set",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Hose+Set+Hover", // Added hover image
-    category: "outdoor-equipment",
-    brand: "Karcher",
-    inStock: true,
-  },
-  // Lighting Products (New additions)
-  {
-    id: "25",
-    name: "Ingco Waterproof Rechargeable LED Flashlight 460 Lumens with 6 Light Modes – HCFL1865051",
-    description: "Professional LED flashlight with multiple modes",
-    price: 380.0,
-    image: "/placeholder.svg?height=300&width=300&text=LED+Flashlight",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=LED+Flashlight+Hover", // Added hover image
-    category: "tools",
-    brand: "Ingco",
-    rating: 4.5,
-    reviewCount: 8,
-    inStock: true,
-  },
-  {
-    id: "26",
-    name: "C-Torch 3W White & Warm Spotlight",
-    description: "Compact LED spotlight",
-    price: 100.0,
-    image: "/placeholder.svg?height=300&width=300&text=LED+Spotlight",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=LED+Spotlight+Hover", // Added hover image
-    category: "home-essentials",
-    brand: "C-Torch",
-    rating: 4.0,
-    reviewCount: 5,
-    inStock: true,
-  },
-  {
-    id: "27",
-    name: "Artu Black And Gold Outdoor Garden Pathway Lamp Post - 3 X 40W",
-    description: "Elegant outdoor pathway lamp",
-    price: 2900.0,
-    image: "/placeholder.svg?height=300&width=300&text=Pathway+Lamp",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Pathway+Lamp+Hover", // Added hover image
-    category: "home-essentials",
-    brand: "Artu",
-    inStock: true,
-  },
-  {
-    id: "28",
-    name: "C-Torch Round Surface Mount Led Panel Light",
-    description: "Modern LED panel light",
-    price: 180.0,
-    image: "/placeholder.svg?height=300&width=300&text=LED+Panel",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=LED+Panel+Hover", // Added hover image
-    category: "home-essentials",
-    brand: "C-Torch",
-    inStock: true,
-  },
-  {
-    id: "29",
-    name: "Ingco Round LED Panel Light – 8W & 24W with Daylight Color – HDL1005081 & HDL2225241",
-    description: "Round LED panel with daylight color",
-    price: 40.0,
-    image: "/placeholder.svg?height=300&width=300&text=Round+LED+Panel",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Round+LED+Panel+Hover", // Added hover image
-    category: "home-essentials",
-    brand: "Ingco",
-    rating: 4.2,
-    reviewCount: 12,
-    inStock: true,
-  },
-  // New Arrivals (New additions)
-  {
-    id: "30",
-    name: "Ingco Lithium-Ion Compact Brushless Cordless Drill 20V - CDL1205581",
-    description: "Compact brushless cordless drill",
-    price: 420.0,
-    originalPrice: 650.0,
-    discount: 35,
-    image: "/placeholder.svg?height=300&width=300&text=Cordless+Drill",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Cordless+Drill+Hover", // Added hover image
-    category: "tools",
-    brand: "Ingco",
-    isNew: true,
-    inStock: true,
-  },
-  {
-    id: "31",
-    name: "Ingco Cordless Spray Gun - CSGL12004",
-    description: "Cordless spray gun for painting",
-    price: 510.0,
-    image: "/placeholder.svg?height=300&width=300&text=Spray+Gun",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Spray+Gun+Hover", // Added hover image
-    category: "tools",
-    brand: "Ingco",
-    isNew: true,
-    inStock: true,
-  },
-  {
-    id: "32",
-    name: "Ingco AC Voltage Detector - VD100091",
-    description: "AC voltage detector for electrical work",
-    price: 70.0,
-    originalPrice: 160.0,
-    discount: 56,
-    image: "/placeholder.svg?height=300&width=300&text=Voltage+Detector",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Voltage+Detector+Hover", // Added hover image
-    category: "tools",
-    brand: "Ingco",
-    inStock: true,
-  },
-  {
-    id: "33",
-    name: "Wadfow PH2+PH2 65mm Impact Screwdriver Bit Set - WSV3K62",
-    description: "Impact screwdriver bit set",
-    price: 10.0,
-    image: "/placeholder.svg?height=300&width=300&text=Screwdriver+Bits",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Screwdriver+Bits+Hover", // Added hover image
-    category: "tools",
-    brand: "Wadfow",
-    isNew: true,
-    inStock: true,
-  },
-  {
-    id: "34",
-    name: "Wadfow 31 Pieces Precision Screwdriver Set - WSS1J31",
-    description: "Precision screwdriver set",
-    price: 40.0,
-    image: "/placeholder.svg?height=300&width=300&text=Precision+Screwdrivers",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Precision+Screwdrivers+Hover", // Added hover image
-    category: "tools",
-    brand: "Wadfow",
-    inStock: true,
-  },
-  {
-    id: "35",
-    name: "Total High Pressure Washer 2500W - TGT11246",
-    description: "Powerful high pressure washer with induction motor",
-    price: 3320.0,
+    name: "Karcher Window Cleaner",
+    description: "Professional window cleaning tool with streak-free results and ergonomic design.",
+    price: 149.99,
     image: "/products/timage-10.png",
-    detailImageOverlay: "/product-details/total-pressure-washer-overlay.png", // Specific overlay image
-    category: "outdoor-equipment",
-    brand: "Total Tools",
-    rating: 4.5,
-    reviewCount: 896,
-    inStock: true,
-  },
-  {
-    id: "36",
-    name: "Total 5m Quick Connect High-Pressure Hose - TGTHPH526",
-    description: "5-meter quick connect high-pressure hose",
-    price: 140.0,
-    image: "/placeholder.svg?height=300&width=300&text=High-Pressure+Hose",
-    category: "outdoor-equipment",
-    brand: "Total Tools",
-    inStock: true,
-  },
-  {
-    id: "37",
-    name: "Total Gasoline High Pressure Washer 282Bar 8.5HP - TGT250306",
-    description: "Gasoline high pressure washer for heavy duty use",
-    price: 10000.0,
-    image: "/placeholder.svg?height=300&width=300&text=Gasoline+Pressure+Washer",
-    category: "outdoor-equipment",
-    brand: "Total Tools",
-    inStock: true,
-  },
-  {
-    id: "38",
-    name: "Silverline High Pressure Washer 2100W 165Bar - 943676",
-    description: "High pressure washer with powerful motor",
-    price: 7700.0,
-    image: "/placeholder.svg?height=300&width=300&text=Silverline+Pressure+Washer",
-    category: "outdoor-equipment",
-    brand: "Silverline",
-    inStock: true,
-  },
-  {
-    id: "39",
-    name: "Total Li-ion Cordless High Pressure Washer 24.8 Bar 20V - TPWLI20084",
-    description: "Cordless high pressure washer for portable cleaning",
-    price: 1500.0,
-    image: "/placeholder.svg?height=300&width=300&text=Cordless+Pressure+Washer",
-    category: "outdoor-equipment",
-    brand: "Total Tools",
+    brand: "Karcher",
+    category: "home-kitchen",
+    rating: 4.7,
+    reviewCount: 112,
+    isNew: true,
     inStock: true,
   },
 ]
 
-// API functions
+const brands: Brand[] = [
+  { id: "1", name: "Karcher", logo: "/brands/logo.svg", productCount: 15 },
+  { id: "2", name: "Bosch", logo: "/brands/logoip.svg", productCount: 12 },
+  { id: "3", name: "Stanley", logo: "/brands/logoipsum.svg", productCount: 8 },
+  { id: "4", name: "Ingco", logo: "/brands/ipsum.svg", productCount: 10 },
+  { id: "5", name: "Total Tools", logo: "/brands/mercado.svg", productCount: 7 },
+  { id: "6", name: "Einhell", logo: "/brands/pagomiscuentas.svg", productCount: 6 },
+  { id: "7", name: "Silverline", logo: "/brands/trendyol.svg", productCount: 4 },
+  { id: "8", name: "Stayer", logo: "/brands/honeywell.png", productCount: 5 },
+]
+
+export async function getCategories(): Promise<Category[]> {
+  // Simulate API delay
+  await new Promise((resolve) => setTimeout(resolve, 100))
+  return categories
+}
+
 export async function getProducts(): Promise<Product[]> {
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 100))
   return products
 }
 
-export async function getProductsByCategory(category: string): Promise<Product[]> {
+export async function getProductsByCategory(categorySlug: string): Promise<Product[]> {
+  // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 100))
-  return products.filter((product) => product.category === category)
+  return products.filter((product) => product.category === categorySlug)
 }
 
-export async function getProductsByBrand(brand: string): Promise<Product[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  return products.filter((product) => product.brand.toLowerCase() === brand.toLowerCase())
-}
-
-export async function getProduct(id: string): Promise<Product | null> {
+export async function getProductById(id: string): Promise<Product | null> {
+  // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 100))
   return products.find((product) => product.id === id) || null
 }
 
-export async function getCategories(): Promise<Category[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  return categories
-}
-
 export async function getBrands(): Promise<Brand[]> {
+  // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 100))
   return brands
 }
 
+export async function getFeaturedProducts(): Promise<Product[]> {
+  // Simulate API delay
+  await new Promise((resolve) => setTimeout(resolve, 100))
+  return products.filter((product) => product.rating && product.rating >= 4.5).slice(0, 8)
+}
+
 export async function getNewArrivals(): Promise<Product[]> {
+  // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 100))
-  return products.filter((product) => product.isNew || product.discount)
+  return products.filter((product) => product.isNew).slice(0, 8)
 }
 
-export async function getBuildingEssentials(): Promise<Product[]> {
+export async function searchProducts(query: string): Promise<Product[]> {
+  // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 100))
-  return products
-    .filter((product) => product.category === "building-materials" || product.category === "home-essentials")
-    .slice(0, 5)
-}
-
-export async function getLightingProducts(): Promise<Product[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
+  const lowercaseQuery = query.toLowerCase()
   return products.filter(
     (product) =>
-      product.name.toLowerCase().includes("light") ||
-      product.name.toLowerCase().includes("led") ||
-      product.name.toLowerCase().includes("lamp") ||
-      product.name.toLowerCase().includes("torch"),
+      product.name.toLowerCase().includes(lowercaseQuery) ||
+      product.description.toLowerCase().includes(lowercaseQuery) ||
+      product.brand.toLowerCase().includes(lowercaseQuery),
   )
-}
-
-export async function getSimilarProducts(productId: string): Promise<Product[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  const currentProduct = products.find((p) => p.id === productId)
-  if (!currentProduct) return []
-
-  // Return products from the same category, excluding the current product
-  return products.filter((p) => p.category === currentProduct.category && p.id !== productId).slice(0, 5) // Limit to 5 similar products
 }
