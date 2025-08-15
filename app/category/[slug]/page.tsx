@@ -1,4 +1,3 @@
-// app/category/[slug]/page.tsx
 import { notFound } from "next/navigation"
 import { getProductsByCategory, getCategories } from "@/lib/data"
 import CategoryPageContent from "./CategoryPageContent"
@@ -11,11 +10,8 @@ interface CategoryPageProps {
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  const { slug } = await params;
-  const [categories, products] = await Promise.all([
-    getCategories(), 
-    getProductsByCategory(slug)
-  ])
+  const { slug } = await params
+  const [categories, products] = await Promise.all([getCategories(), getProductsByCategory(slug)])
 
   const category = categories.find((cat) => cat.slug === slug)
 
@@ -23,5 +19,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound()
   }
 
-  return <FilterProvider><CategoryPageContent category={category} products={products} /></FilterProvider>
+  return (
+    <FilterProvider>
+      <CategoryPageContent category={category} products={products} />
+    </FilterProvider>
+  )
 }
