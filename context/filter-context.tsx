@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { createContext, useContext, useReducer, useEffect, useCallback } from "react"
+import { createContext, useContext, useReducer, useEffect } from "react"
 import { useRouter, useSearchParams, usePathname } from "next/navigation"
 import type { Product } from "@/lib/data"
 
@@ -54,8 +54,6 @@ function filterReducer(state: FilterState & { products: Product[]; isLoading: bo
       return {
         ...state,
         ...initialState,
-        products: state.products, // Keep products when clearing filters
-        isLoading: state.isLoading,
       }
     case "SET_LOADING":
       return {
@@ -194,21 +192,21 @@ export function FilterProvider({ children }: { children: React.ReactNode }) {
     router,
   ])
 
-  const updateFilter = useCallback((key: keyof FilterState, value: any) => {
+  const updateFilter = (key: keyof FilterState, value: any) => {
     dispatch({ type: "SET_LOADING", loading: true })
     setTimeout(() => {
       dispatch({ type: "UPDATE_FILTER", key, value })
       dispatch({ type: "SET_LOADING", loading: false })
     }, 100) // Small delay to show loading state
-  }, [])
+  }
 
-  const clearFilters = useCallback(() => {
+  const clearFilters = () => {
     dispatch({ type: "CLEAR_FILTERS" })
-  }, [])
+  }
 
-  const setProducts = useCallback((products: Product[]) => {
+  const setProducts = (products: Product[]) => {
     dispatch({ type: "SET_PRODUCTS", products })
-  }, [])
+  }
 
   const filteredProducts = applyFilters(state.products, state)
 
