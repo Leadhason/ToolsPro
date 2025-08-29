@@ -16,7 +16,7 @@ const reviews = [
     productImage: "/stainless-steel-electric-kettle.png",
     supplyMasterReply: {
       content:
-        "Hi Ruth Ann, thank you for taking the time to leave a review for our Decakila 1.8L Stainless Steel Electric Kettle. We are excited to hear that you had a positive experience with us and that our delivery was fast. We strive to provide efficient and timely service to all of our customers. Thank you for choosing Supply Master! Have a great day!",
+        "Hi Ruth Ann, thank you for taking the time to leave a review for our Decakila 1.8L Stainless Steel Electric Kettle. We are excited to hear that you had a positive experience with us and that our delivery was fast. We strive to provide efficient and timely service to all of our customers. Thank you for choosing EDMAX! Have a great day!",
       date: "08/28/2025",
     },
   },
@@ -46,7 +46,7 @@ const reviews = [
     productImage: "/safety-goggles-clear-with-blue-straps.png",
     supplyMasterReply: {
       content:
-        "Hi Rollie! Thank you for your positive review of our Wadlow Safety Goggles. We're so glad to hear that they have been a great help to you during your work. Your safety is our top priority and we're happy to provide you with reliable PPE. Thank you for choosing Supply Master! Stay safe.",
+        "Hi Rollie! Thank you for your positive review of our Wadlow Safety Goggles. We're so glad to hear that they have been a great help to you during your work. Your safety is our top priority and we're happy to provide you with reliable PPE. Thank you for choosing EDMAX! Stay safe.",
       date: "08/26/2025",
     },
   },
@@ -61,7 +61,7 @@ const reviews = [
     productImage: "/waterproofing-membrane-bucket-white.png",
     supplyMasterReply: {
       content:
-        "Hi Michael, thank you for taking the time to leave a review for our Akfix Waterguard Acrylic Waterproofing Membrane. We are excited to hear that you had a positive experience with us and that our delivery was fast. We strive to provide efficient and timely service to all of our customers. Thank you for choosing Supply Master! Have a great day!",
+        "Hi Michael, thank you for taking the time to leave a review for our Akfix Waterguard Acrylic Waterproofing Membrane. We are excited to hear that you had a positive experience with us and that our delivery was fast. We strive to provide efficient and timely service to all of our customers. Thank you for choosing EDMAX! Have a great day!",
       date: "08/25/2025",
     },
   },
@@ -111,18 +111,7 @@ export default function ReviewsPage() {
 
       <div className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">EDMAX Customer Reviews</h1>
-            <p className="text-lg text-gray-600 mb-8">
-              See what our customers say about their EDMAX shopping experience
-            </p>
-            <p className="text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Experience a symphony of customer satisfaction at Supply Master! Explore glowing reviews showcasing our
-              top-tier tools, superior building materials, and reliable hardware solutions. Join countless patrons on
-              their exceptional journey with us.
-            </p>
-          </div>
-
+          
           <div className="flex gap-12 items-start mb-12">
             {/* Rating summary */}
             <div className="w-80">

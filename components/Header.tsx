@@ -108,11 +108,11 @@ export default function Header() {
               <img 
                 src="/EDMAX.png" 
                 alt="EDMAX Logo" 
-                className="h-16 w-auto"
+                className="h-20 w-auto"
               />
               <div className="hidden md:flex flex-col -ml-4">
                 <span className="text-sm font-medium leading-tight">EDMAX</span>
-                <span className="text-xs font-light text-gray-600 leading-tight">Building Materials and Power Technologies</span>
+                <span className="text-xs font-light text-gray-600 leading-tight">Tools and Power Technologies</span>
               </div>
             </Link>
 

@@ -27,11 +27,11 @@ export default function ContactPage() {
 
       <div className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">What can we help you with?</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">What can we help you with?</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="bg-white p-8 rounded-lg text-center">
               <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
-                <Headphones className="w-12 h-12 text-orange-500" />
+                <Headphones className="w-12 h-12 text-[#E86514]" />
               </div>
               <h3 className="text-xl font-bold mb-4">Pre-sales & advice</h3>
               <p className="text-gray-600 mb-6 text-sm leading-relaxed">
@@ -42,7 +42,7 @@ export default function ContactPage() {
 
             <div className="bg-white p-8 rounded-lg text-center">
               <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
-                <RotateCcw className="w-12 h-12 text-orange-500" />
+                <RotateCcw className="w-12 h-12 text-[#E86514]" />
               </div>
               <h3 className="text-xl font-bold mb-4">Aftersales & returns</h3>
               <p className="text-gray-600 mb-6 text-sm leading-relaxed">
@@ -53,7 +53,7 @@ export default function ContactPage() {
 
             <div className="bg-white p-8 rounded-lg text-center">
               <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
-                <Truck className="w-12 h-12 text-orange-500" />
+                <Truck className="w-12 h-12 text-[#E86514]" />
               </div>
               <h3 className="text-xl font-bold mb-4">Delivery & Shipping</h3>
               <p className="text-gray-600 mb-6 text-sm leading-relaxed">
@@ -64,7 +64,7 @@ export default function ContactPage() {
 
             <div className="bg-white p-8 rounded-lg text-center">
               <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
-                <Shield className="w-12 h-12 text-orange-500" />
+                <Shield className="w-12 h-12 text-[#E86514]" />
               </div>
               <h3 className="text-xl font-bold mb-4">Privacy & Data Protection</h3>
               <p className="text-gray-600 mb-6 text-sm leading-relaxed">
@@ -82,7 +82,7 @@ export default function ContactPage() {
             <div>
               <img
                 src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-8HlWSzYGVFyfn2wZyLc3q378Ypcib4.png"
-                alt="Supply Master Building"
+                alt="EDMAX Building"
                 className="w-full h-64 object-cover rounded-lg"
               />
             </div>
@@ -119,7 +119,7 @@ export default function ContactPage() {
 
           <div className="space-y-8">
             <div>
-              <h3 className="text-lg font-semibold mb-3 text-gray-800">Retail Sales & Customer Support (B2C):</h3>
+              <h3 className="text-lg font-semibold mb-3">Retail Sales & Customer Support (B2C):</h3>
               <div className="flex items-center gap-3 mb-2">
                 <Mail className="w-4 h-4 text-[#E86514]" />
                 <span className="font-medium">sales@edmax.store</span>
@@ -133,7 +133,7 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold mb-3 text-gray-800">B2B Sales & Commercial Clients:</h3>
+              <h3 className="text-lg font-semibold mb-3">B2B Sales & Commercial Clients:</h3>
               <div className="flex items-center gap-3 mb-2">
                 <Mail className="w-4 h-4 text-[#E86514]" />
                 <span className="font-medium">b2b@edmax.store</span>
@@ -148,7 +148,7 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold mb-3 text-gray-800">Partnerships & Supplier Onboarding:</h3>
+              <h3 className="text-lg font-semibold mb-3">Partnerships & Supplier Onboarding:</h3>
               <div className="flex items-center gap-3 mb-2">
                 <Mail className="w-4 h-4 text-[#E86514]" />
                 <span className="font-medium">partnerships@edmax.store</span>
@@ -163,7 +163,7 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold mb-3 text-gray-800">Finance & Payments:</h3>
+              <h3 className="text-lg font-semibold mb-3">Finance & Payments:</h3>
               <div className="flex items-center gap-3 mb-2">
                 <Mail className="w-4 h-4 text-[#E86514]" />
                 <span className="font-medium">finance@edmax.store</span>

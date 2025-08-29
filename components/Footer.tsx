@@ -24,12 +24,12 @@ export default function Footer() {
                   <img 
                     src="/EDMAX.png" 
                     alt="EDMAX Logo" 
-                    className="h-10 w-auto"
+                    className="h-12 w-auto"
                   />
                 </div>
                 <div className="flex flex-col -mt-4">
                   <span className="text-sm font-medium leading-tight">EDMAX</span>
-                  <span className="text-xs font-light text-gray-400 leading-tight">Building Materials and Power Technologies</span>
+                  <span className="text-xs font-light text-gray-400 leading-tight">Tools and Power Technologies</span>
                 </div>
               </div>
               <h3 className="font-medium text-sm mb-2">You Build, We Deliver</h3>
