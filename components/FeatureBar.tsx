@@ -39,7 +39,7 @@ export default function FeaturesBar() {
             </div>
             <div>
               <h3 className="font-medium text-sm">Become our Supplier</h3>
-              <p className="text-xs font-light text-gray-600">Sell on ToolsPro</p>
+              <p className="text-xs font-light text-gray-600">Sell on EDMAX</p>
             </div>
           </Link>
         </div>

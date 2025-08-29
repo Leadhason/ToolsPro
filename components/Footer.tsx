@@ -14,14 +14,23 @@ export default function Footer() {
       </section>
 
       {/* Main Footer */}
-      <footer className="bg-emerald-900 text-white py-12">
+      <footer className="bg-[#003561] text-white py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Company Info */}
             <div>
-              <div className="flex items-center mb-4">
-                <span className="text-lg font-medium">TOOLS</span>
-                <span className="text-lg font-light text-gray-400">PRO</span>
+              <div className="flex items-center justify-center gap-1 bg-white border border-gray-300 rounded-md p-2 mb-6">
+                <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+                  <img 
+                    src="/EDMAX.png" 
+                    alt="EDMAX Logo" 
+                    className="h-10 w-auto"
+                  />
+                </div>
+                <div className="flex flex-col -mt-4">
+                  <span className="text-sm font-medium leading-tight">EDMAX</span>
+                  <span className="text-xs font-light text-gray-400 leading-tight">Building Materials and Power Technologies</span>
+                </div>
               </div>
               <h3 className="font-medium text-sm mb-2">You Build, We Deliver</h3>
               <p className="text-gray-400 text-xs mb-6">
@@ -54,7 +63,7 @@ export default function Footer() {
                   Divisions
                 </Link>
                 <Link href="/sell" className="block text-gray-400 hover:text-white text-xs font-light">
-                  Sell on ToolsPro
+                  Sell on EDMAX
                 </Link>
                 <Link href="/payment" className="block text-gray-400 hover:text-white text-xs font-light">
                   Buy Now, Pay Later
@@ -126,7 +135,7 @@ export default function Footer() {
           </div>
 
           <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-            <p className="text-gray-400 text-xs font-light">© 2025 ToolsPro.</p>
+            <p className="text-gray-400 text-xs font-light">© 2025 EDMAX.</p>
           </div>
         </div>
       </footer>

@@ -5,29 +5,17 @@ import type { Product } from "@/lib/data"
 import { useFilter } from "@/context/filter-context"
 
 interface ProductGridProps {
-  products: Product[]
+  products?: Product[] // Made optional since we can use filtered products
   showCompare?: boolean
 }
 
 export default function ProductGrid({ products, showCompare = true }: ProductGridProps) {
-  const { filters, isLoading } = useFilter()
-
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-        {Array.from({ length: 8 }).map((_, index) => (
-          <div key={index} className="animate-pulse">
-            <div className="bg-gray-200 aspect-square rounded-lg mb-4"></div>
-            <div className="h-4 bg-gray-200 rounded mb-2"></div>
-            <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-            <div className="h-6 bg-gray-200 rounded w-1/2"></div>
-          </div>
-        ))}
-      </div>
-    )
-  }
-
-  if (products.length === 0) {
+  const { filteredProducts, filters } = useFilter()
+  
+  // Use filtered products from context if available, otherwise use props
+  const displayProducts = products || filteredProducts
+  
+  if (displayProducts.length === 0) {
     return (
       <div className="text-center py-12">
         <div className="text-gray-400 mb-4">
@@ -46,14 +34,13 @@ export default function ProductGrid({ products, showCompare = true }: ProductGri
     )
   }
 
-  const gridClasses =
-    filters.viewMode === "list"
-      ? "grid grid-cols-1 gap-4 mt-6"
-      : "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6"
+  const gridClasses = filters.viewMode === "list" 
+    ? "space-y-4 mt-6"
+    : "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6"
 
   return (
     <div className={gridClasses}>
-      {products.map((product) => (
+      {displayProducts.map((product) => (
         <ProductCard key={product.id} product={product} showCompare={showCompare} viewMode={filters.viewMode} />
       ))}
     </div>

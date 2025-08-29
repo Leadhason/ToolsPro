@@ -20,7 +20,9 @@ import {
 } from "@/components/ui/navigation-menu"
 import { useCart } from "@/context/cart-context"
 import { useWishlist } from "@/context/wishlist-context"
+
 import { CartSidebar } from "./cart-sidebar"
+
 
 export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -29,7 +31,7 @@ export default function Header() {
   const { itemCount: wishlistItemCount } = useWishlist()
 
   return (
-    <header className="w-full">
+    <header className="w-full sticky z-50">
       {/* Top bar - hidden on mobile */}
       <div className="bg-black text-white font-light text-xs sm:text-sm py-2 hidden md:block">
         <div className="container mx-auto px-4 text-sm flex justify-between items-center">
@@ -102,9 +104,16 @@ export default function Header() {
             </Sheet>
 
             {/* Logo */}
-            <Link href="/" className="flex items-center">
-              <span className="text-base sm:text-lg lg:text-xl font-medium">TOOLS</span>
-              <span className="text-base sm:text-lg lg:text-xl font-light text-gray-600">PRO</span>
+            <Link href="/" className="flex items-center gap-1">
+              <img 
+                src="/EDMAX.png" 
+                alt="EDMAX Logo" 
+                className="h-16 w-auto"
+              />
+              <div className="hidden md:flex flex-col -ml-4">
+                <span className="text-sm font-medium leading-tight">EDMAX</span>
+                <span className="text-xs font-light text-gray-600 leading-tight">Building Materials and Power Technologies</span>
+              </div>
             </Link>
 
             {/* Search - Desktop */}
@@ -143,7 +152,7 @@ export default function Header() {
               <Button
                 variant="ghost"
                 size="default"
-                className="relative rounded-full bg-gray-100"
+                className="relative rounded-full bg-gray-100 cursor-pointer"
                 onClick={() => setIsCartSidebarOpen(true)}
               >
                 <ShoppingCart className="h-8 w-8" />
@@ -154,7 +163,7 @@ export default function Header() {
                 )}
               </Button>
               <Link href="/wishlist">
-                <Button variant="ghost" size="default" className="relative rounded-full bg-gray-100">
+                <Button variant="ghost" size="default" className="relative rounded-full bg-gray-100 cursor-pointer">
                   <Heart className="h-8 w-8 " />
                   {wishlistItemCount > 0 && (
                     <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
@@ -164,8 +173,8 @@ export default function Header() {
                 </Button>
               </Link>
 
-              <Link href="/login" className="hidden sm:flex">
-                <Button variant="ghost" className="rounded-full bg-gray-100 text-xs font-light">
+              <Link href="/login" className="hidden sm:flex ml-8">
+                <Button variant="ghost" className="rounded-full border text-sm font-light cursor-pointer hover:bg-black hover:text-white px-6">
                   Login
                 </Button>
               </Link>
@@ -198,21 +207,21 @@ export default function Header() {
                   <NavigationMenuList className="flex gap-4 lg:gap-8 text-[10px] font-light">
                     <NavigationMenuItem>
                       <NavigationMenuTrigger className="text-sm font-semibold">Tools</NavigationMenuTrigger>
-                      <NavigationMenuContent>
+                      <NavigationMenuContent className="w-full">
                         <div className="w-[800px] p-6">
                           <div className="grid grid-cols-4 gap-8">
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Hand Tools</h3>
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">Hand Tools</h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Screwdrivers
                                 </Link>
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Hammers
                                 </Link>
@@ -224,106 +233,106 @@ export default function Header() {
                                 </Link>
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Pliers
                                 </Link>
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Tool Sets
                                 </Link>
                               </div>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Power Tools</h3>
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">Power Tools</h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Drills
                                 </Link>
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Grinders
                                 </Link>
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Saws
                                 </Link>
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Sanders
                                 </Link>
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Rotary Hammers
                                 </Link>
                               </div>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Measuring Tools</h3>
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">Measuring Tools</h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Tape Measures
                                 </Link>
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Levels
                                 </Link>
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Calipers
                                 </Link>
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Squares
                                 </Link>
                               </div>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Safety Equipment</h3>
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">Safety Equipment</h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Safety Helmets
                                 </Link>
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Work Gloves
                                 </Link>
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Safety Glasses
                                 </Link>
                                 <Link
                                   href="/category/tools"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Ear Protection
                                 </Link>
@@ -340,110 +349,110 @@ export default function Header() {
                         <div className="w-[800px] p-6">
                           <div className="grid grid-cols-4 gap-8">
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Generators</h3>
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">Generators</h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/outdoor-equipment"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Gasoline Generators
                                 </Link>
                                 <Link
                                   href="/category/outdoor-equipment"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Diesel Generators
                                 </Link>
                                 <Link
                                   href="/category/outdoor-equipment"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Inverter Generators
                                 </Link>
                                 <Link
                                   href="/category/outdoor-equipment"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Portable Generators
                                 </Link>
                               </div>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Water Pumps</h3>
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">Water Pumps</h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/outdoor-equipment"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Peripheral Pumps
                                 </Link>
                                 <Link
                                   href="/category/outdoor-equipment"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Centrifugal Pumps
                                 </Link>
                                 <Link
                                   href="/category/outdoor-equipment"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Submersible Pumps
                                 </Link>
                                 <Link
                                   href="/category/outdoor-equipment"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Pressure Washers
                                 </Link>
                               </div>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Garden Tools</h3>
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">Garden Tools</h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/outdoor-equipment"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Grass Trimmers
                                 </Link>
                                 <Link
                                   href="/category/outdoor-equipment"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Lawn Mowers
                                 </Link>
                                 <Link
                                   href="/category/outdoor-equipment"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Hedge Trimmers
                                 </Link>
                                 <Link
                                   href="/category/outdoor-equipment"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Chainsaws
                                 </Link>
                               </div>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Cleaning Equipment</h3>
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">Cleaning Equipment</h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/outdoor-equipment"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Pressure Washers
                                 </Link>
                                 <Link
                                   href="/category/outdoor-equipment"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Vacuum Cleaners
                                 </Link>
                                 <Link
                                   href="/category/outdoor-equipment"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Steam Cleaners
                                 </Link>
@@ -460,177 +469,177 @@ export default function Header() {
                         <div className="w-[1000px] p-6">
                           <div className="grid grid-cols-5 gap-6">
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Plumbing & Swimming Pool</h3>
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">Plumbing & Swimming Pool</h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Drains
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Taps & Faucet
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Plumbing Parts & Fittings
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Plumbing Accessories
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Water Filtration & Treatment
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Swimming Pool
                                 </Link>
                               </div>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Electrical</h3>
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">Electrical</h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Power Management & Protection
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Smart Home
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Switches & Sockets
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Cables & Wires
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Electrical Accessories
                                 </Link>
                               </div>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">
                                 Paints, Chemicals, and Adhesives
                               </h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Adhesive & Glue
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Caulk & Sealants
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Paint
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Paint Tools & Equipment
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Waterproofing Products
                                 </Link>
                               </div>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Hardware Accessories</h3>
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">Hardware Accessories</h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Adhesives & Tapes
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Hanging & Mounting
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Padlocks & Accessories
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Security & Surveillance Systems
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Ladder & Access Equipment
                                 </Link>
                               </div>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Door & Window Hardware</h3>
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">Door & Window Hardware</h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Door Handles & Knobs
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Door Locks
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Window Hardware
                                 </Link>
                                 <Link
                                   href="/category/building-materials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Hinges & Brackets
                                 </Link>
@@ -649,116 +658,116 @@ export default function Header() {
                         <div className="w-[800px] p-6">
                           <div className="grid grid-cols-4 gap-8">
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Kitchen Appliances</h3>
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">Kitchen Appliances</h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/home-essentials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Electric Kettles
                                 </Link>
                                 <Link
                                   href="/category/home-essentials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Hot Plates
                                 </Link>
                                 <Link
                                   href="/category/home-essentials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Blenders
                                 </Link>
                                 <Link
                                   href="/category/home-essentials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Rice Cookers
                                 </Link>
                               </div>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Bathroom</h3>
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">Bathroom</h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/home-essentials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Water Heaters
                                 </Link>
                                 <Link
                                   href="/category/home-essentials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Shower Systems
                                 </Link>
                                 <Link
                                   href="/category/home-essentials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Bathroom Accessories
                                 </Link>
                                 <Link
                                   href="/category/home-essentials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Soap Dispensers
                                 </Link>
                               </div>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Lighting</h3>
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">Lighting</h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/home-essentials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   LED Bulbs
                                 </Link>
                                 <Link
                                   href="/category/home-essentials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Ceiling Lights
                                 </Link>
                                 <Link
                                   href="/category/home-essentials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Wall Lights
                                 </Link>
                                 <Link
                                   href="/category/home-essentials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Outdoor Lighting
                                 </Link>
                               </div>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-sm text-gray-900 mb-3">Home Decor</h3>
+                              <h3 className="font-semibold text-xs text-gray-900 mb-3">Home Decor</h3>
                               <div className="space-y-2">
                                 <Link
                                   href="/category/home-essentials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Wall Art
                                 </Link>
                                 <Link
                                   href="/category/home-essentials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Mirrors
                                 </Link>
                                 <Link
                                   href="/category/home-essentials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Storage Solutions
                                 </Link>
                                 <Link
                                   href="/category/home-essentials"
-                                  className="block text-sm text-gray-600 hover:text-red-600"
+                                  className="block text-xs text-gray-600 hover:text-red-600"
                                 >
                                   Curtains & Blinds
                                 </Link>
@@ -780,7 +789,7 @@ export default function Header() {
                   <Link href="/loyalty" className="text-gray-600 hover:text-red-600">
                     Loyalty Program
                   </Link>
-                  <Button className="bg-emerald-900 hover:bg-emerald-700 rounded-full font-light text-sm cursor-pointer">
+                  <Button className="bg-[#003561] hover:bg-[#00274d] rounded-full font-light text-sm cursor-pointer">
                     Contact Us
                   </Button>
                 </div>
@@ -851,33 +860,33 @@ export default function Header() {
       </div>
 
       {/* Promo bar - Responsive */}
-      <div className="bg-emerald-900 text-white py-2">
+      <div className="bg-[#003561] text-white py-2">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center lg:justify-between w-full">
             <div className="flex items-center gap-8 text-xs sm:gap-6 lg:gap-12 justify-between w-full">
               <div className="flex items-center gap-1 sm:gap-2 whitespace-nowrap">
                 <div className="bg-transparent rounded-full flex items-center justify-center flex-shrink-0">
-                  <Truck className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
+                  <Truck className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[#E86514]" />
                 </div>
                 <span className="hidden sm:inline">Free Accra delivery over GH₵200</span>
                 <span className="sm:hidden">Free delivery GH₵200+</span>
               </div>
               <div className="flex items-center gap-1 sm:gap-2 whitespace-nowrap">
                 <div className="bg-transparent rounded-full flex items-center justify-center flex-shrink-0">
-                  <CreditCard className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
+                  <CreditCard className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[#E86514]" />
                 </div>
                 <span>Pay on Delivery</span>
               </div>
               <div className="flex items-center gap-1 sm:gap-2 whitespace-nowrap">
                 <div className="bg-transparent rounded-full flex items-center justify-center flex-shrink-0">
-                  <Package className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
+                  <Package className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[#E86514]" />
                 </div>
                 <span className="hidden lg:inline">Delivery within 48-Hours</span>
                 <span className="lg:hidden">48hr Delivery</span>
               </div>
               <div className="hidden md:flex items-center gap-1 sm:gap-2 whitespace-nowrap">
                 <div className="bg-transparent rounded-full flex items-center justify-center flex-shrink-0">
-                  <Headset className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
+                  <Headset className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[#E86514]" />
                 </div>
                 <span className="hidden lg:inline">Weekend orders process on Mondays</span>
                 <span className="lg:hidden">Weekend orders Mon</span>

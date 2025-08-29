@@ -1,12 +1,9 @@
 import { notFound } from "next/navigation"
-import { FilterProvider } from '@/context/filter-context';
 import Header from "@/components/Header"
-import ProductCard from "@/components/ProductCard"
 import { getProductsByCategory, getCategories } from "@/lib/data"
 import CategoryHero from "@/components/CategoryHero"
-import FilterSidebar from "@/components/FilterSidebar"
-import TopControls from "@/components/TopControls"
 import Footer from "@/components/Footer"
+import CategoryPageContent from "@/components/CategoryPageContent"
 import FeatureBar from "@/components/FeatureBar"
 import {
   Breadcrumb,
@@ -36,7 +33,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   }
 
   return (
-    <FilterProvider>
     <div className="min-h-screen bg-white">
       <Header />
       <CategoryHero category={category} />
@@ -54,35 +50,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </BreadcrumbList>
         </Breadcrumb>
 
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Filter Sidebar */}
-          <div className="lg:w-1/4 sticky top-8 h-[calc(100vh-6rem)]">
-            {" "}
-            {/* Added sticky positioning and fixed height */}
-            <FilterSidebar />
-          </div>
-
-          {/* Main Content Area */}
-          <div className="lg:w-3/4">
-            <TopControls />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} showCompare={true} />
-              ))}
-            </div>
-
-            {products.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-gray-500">No products found in this category.</p>
-              </div>
-            )}
-          </div>
-        </div>
+        <CategoryPageContent products={products} />
       </div>
       <FeatureBar />
       <Footer />
     </div>
-    </FilterProvider>
   )
 }

@@ -12,7 +12,7 @@ export default function HeroSection() {
       }}
     >
       {/* Dark overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/50 z-10"></div>
+      <div className="absolute inset-0 bg-black/50"></div>
 
       <div className="relative z-20 text-center max-w-4xl mx-auto px-4">
         <h1 className="text-lg sm:text-xl lg:text-2xl font-medium leading-tight mb-8">

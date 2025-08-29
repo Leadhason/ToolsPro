@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import Header from "@/components/Header"
-import ProductCard from "@/components/ProductCard"
 import { getProductsByBrand, getBrands } from "@/lib/data"
+import BrandPageContent from "@/components/BrandPageContent"
 
 interface BrandPageProps {
   params: {
@@ -22,24 +22,8 @@ export default async function BrandPage({ params }: BrandPageProps) {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-2xl font-medium mb-2">{brand.name} Products</h1>
-          <p className="text-sm font-light">Discover our complete range of {brand.name} tools and equipment</p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-
-        {products.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-sm font-light">No products found for this brand.</p>
-          </div>
-        )}
+        <BrandPageContent products={products} brandName={brand.name} />
       </div>
     </div>
   )

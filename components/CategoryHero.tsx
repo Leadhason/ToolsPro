@@ -7,14 +7,14 @@ interface CategoryHeroProps {
 
 export default function CategoryHero({ category }: CategoryHeroProps) {
   return (
-    <section className="relative my-10 bg-emerald-500 py-4 sm:py-6 lg:py-8 overflow-hidden mx-8">
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="flex flex-col lg:flex-row justify-between items-center gap-8 lg:gap-16">
+    <section className="relative my-10 bg-[#003561] py-2 sm:py-4 lg:py-6 overflow-hidden mx-8 rounded-2xl">
+      <div className="container mx-auto px-4 relative">
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-8  lg:gap-16">
           <div className="lg:w-2/3 text-center lg:text-left">
             <h1 className="text-xl sm:text-lg lg:text-xl font-bold text-gray-900 mb-4 leading-tight">
               {category.name}
             </h1>
-            <p className="text-medium font-light text-gray-700 max-w-2xl mx-auto lg:mx-0">
+            <p className="text-medium font-light text-white max-w-2xl mx-auto lg:mx-0">
               {category.bannerDescription || category.description}
             </p>
           </div>

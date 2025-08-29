@@ -1,10 +1,12 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
+import { Suspense } from "react"
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
 import { CartProvider } from "@/context/cart-context"
 import { WishlistProvider } from "@/context/wishlist-context"
+import { FilterProvider } from "@/context/filter-context"
+
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -21,12 +23,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <title>EDMAX - Building Materials and Power Technologies</title>
+        <meta
+          name="description"
+          content="EDMAX is Ghana's leading supplier of quality building materials and power technologies"
+        />
+      </head>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <CartProvider>
-            <WishlistProvider>{children}</WishlistProvider>
-          </CartProvider>
-        </ThemeProvider>
+        <Suspense fallback={<div>Loading...</div>}>
+          <FilterProvider>
+            <CartProvider>
+              <WishlistProvider>{children}</WishlistProvider>
+            </CartProvider>
+          </FilterProvider>
+        </Suspense>
       </body>
     </html>
   )

@@ -54,82 +54,121 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
 
   if (viewMode === "list") {
     return (
-      <Link href={`/product/${product.id}`}>
-        <div className="flex gap-4 p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-200">
-          <div className="relative w-32 h-32 flex-shrink-0">
+      <div className="flex items-center gap-6 p-6 bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all duration-200">
+        {/* Product Image */}
+        <div className="relative w-24 h-24 flex-shrink-0">
+          <Link href={`/product/${product.id}`}>
             <Image
               src={product.image || "/placeholder.svg"}
               alt={product.name}
               fill
-              className="object-cover rounded-md"
+              className="object-cover rounded-lg"
               onLoad={() => setImageLoaded(true)}
             />
-            {product.isNew && (
-              <Badge className="absolute top-2 left-2 bg-green-500 text-white text-xs font-light px-2 py-1">New</Badge>
-            )}
-            {product.discount && (
-              <Badge className="absolute top-2 right-2 bg-red-500 text-white text-xs font-light px-2 py-1">
-                -{product.discount}%
-              </Badge>
+          </Link>
+          {product.isNew && (
+            <Badge className="absolute -top-2 -left-2 bg-green-500 text-white text-xs font-medium px-2 py-1">
+              New
+            </Badge>
+          )}
+          {product.discount && (
+            <Badge className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-medium px-2 py-1">
+              -{product.discount}%
+            </Badge>
+          )}
+        </div>
+
+        {/* Product Info */}
+        <div className="flex-1 min-w-0">
+          <Link href={`/product/${product.id}`}>
+            <h3 className="text-sm font-medium text-gray-900 mb-1 hover:text-blue-600 transition-colors line-clamp-1">
+              {product.name}
+            </h3>
+          </Link>
+          
+          <div className="flex items-center gap-4 mb-2">
+            <span className="text-lg font-medium text-gray-900">{formatPrice(product.price)}</span>
+            {product.originalPrice && (
+              <span className="text-sm font-light text-gray-500 line-through">
+                {formatPrice(product.originalPrice)}
+              </span>
             )}
           </div>
 
-          <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-medium text-gray-900 mb-2 line-clamp-2">{product.name}</h3>
-            <p className="text-xs font-light text-gray-600 mb-3 line-clamp-2">{product.description}</p>
+          {product.rating && (
+            <div className="flex items-center gap-2 mb-2">
+              <div className="flex">
+                {[...Array(5)].map((_, i) => (
+                  <svg
+                    key={i}
+                    className={`w-4 h-4 ${i < Math.floor(product.rating!) ? "text-yellow-400" : "text-gray-300"}`}
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <span className="text-xs font-light text-gray-500">({product.reviewCount || 0} reviews)</span>
+            </div>
+          )}
 
-            <div className="flex items-center gap-2 mb-3">
-              {product.rating && (
-                <div className="flex items-center gap-1">
-                  <div className="flex">
-                    {[...Array(5)].map((_, i) => (
-                      <svg
-                        key={i}
-                        className={`w-3 h-3 ${i < Math.floor(product.rating!) ? "text-yellow-400" : "text-gray-300"}`}
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <span className="text-xs font-light text-gray-500">({product.reviewCount || 0})</span>
+          <p className="text-xs font-light text-gray-600 line-clamp-2 mb-2">
+            {product.description}
+          </p>
+
+          <div className="flex items-center gap-4">
+            <span className={`text-xs font-light ${product.inStock ? "text-green-600" : "text-red-600"}`}>
+              {product.inStock ? "In Stock" : "Out of Stock"}
+            </span>
+            {product.colors && (
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-light text-gray-500">Colors:</span>
+                <div className="flex gap-1">
+                  {product.colors.slice(0, 3).map((color) => (
+                    <div
+                      key={color}
+                      className={`w-4 h-4 rounded-full border-2 border-gray-300 ${
+                        color === "yellow"
+                          ? "bg-yellow-400"
+                          : color === "blue"
+                            ? "bg-blue-500"
+                            : color === "white"
+                              ? "bg-white"
+                              : color === "red"
+                                ? "bg-red-500"
+                                : "bg-gray-400"
+                      }`}
+                    />
+                  ))}
+                  {product.colors.length > 3 && (
+                    <span className="text-xs text-gray-500 ml-1">+{product.colors.length - 3}</span>
+                  )}
                 </div>
-              )}
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-medium text-gray-900">{formatPrice(product.price)}</span>
-                {product.originalPrice && (
-                  <span className="text-sm font-light text-gray-500 line-through">
-                    {formatPrice(product.originalPrice)}
-                  </span>
-                )}
               </div>
-
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleWishlistToggle}
-                  className="h-8 w-8 hover:bg-gray-100"
-                >
-                  <Heart className={`h-4 w-4 ${isWishlisted ? "fill-red-500 text-red-500" : "text-gray-400"}`} />
-                </Button>
-                <Button
-                  onClick={handleAddToCart}
-                  size="sm"
-                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-light px-3 py-1"
-                >
-                  <ShoppingCart className="h-3 w-3 mr-1" />
-                  Add to Cart
-                </Button>
-              </div>
-            </div>
+            )}
           </div>
         </div>
-      </Link>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col gap-3 items-center">
+          <Button
+            onClick={handleAddToCart}
+            className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2 rounded-full text-xs font-light"
+            disabled={!product.inStock}
+          >
+            Add to cart
+          </Button>
+          
+          <Button
+            onClick={handleWishlistToggle}
+            variant="outline"
+            className="border-gray-300 hover:bg-gray-50 px-6 py-2 rounded-full text-xs font-light"
+          >
+            View details
+          </Button>
+        </div>
+      </div>
     )
   }
 
@@ -171,10 +210,10 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
       </div>
 
       <div className="p-3 sm:p-4 w-full">
-        <div className="text-[10px] sm:text-xs text-gray-600 mb-1 font-light">{product.brand}</div>
+        <div className="text-xs font-light text-gray-600 mb-1">{product.brand}</div>
 
         <Link href={`/product/${product.id}`}>
-          <h3 className="font-medium text-[10px] sm:text-xs mb-2 line-clamp-2 hover:text-red-600 leading-tight font-light group-hover:text-blue-600 transition-colors">
+          <h3 className="text-xs font-light mb-2 line-clamp-2 hover:text-red-600 leading-tight group-hover:text-blue-600 transition-colors">
             {product.name}
           </h3>
         </Link>
@@ -193,14 +232,14 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
                 </svg>
               ))}
             </div>
-            {product.reviewCount && <span className="text-xs text-gray-500">({product.reviewCount})</span>}
+            {product.reviewCount && <span className="text-xs font-light text-gray-500">({product.reviewCount})</span>}
           </div>
         )}
 
         <div className="flex items-center gap-2 mb-3">
-          <span className="font-bold text-xs sm:text-sm lg:text-base font-medium">{formatPrice(product.price)}</span>
+          <span className="text-xs font-light">{formatPrice(product.price)}</span>
           {product.originalPrice && (
-            <span className="text-[10px] sm:text-xs text-gray-500 line-through font-light">
+            <span className="text-xs font-light text-gray-500 line-through">
               {formatPrice(product.originalPrice)}
             </span>
           )}
@@ -229,13 +268,13 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
 
         <div className="space-y-2">
           {product.colors ? (
-            <Button variant="outline" className="w-full text-[10px] sm:text-xs font-light bg-transparent h-8 sm:h-9">
+            <Button variant="outline" className="w-full text-xs font-light bg-transparent h-8 sm:h-9">
               Choose options
             </Button>
           ) : (
             <Button
               variant="outline"
-              className="w-full text-[10px] sm:text-xs font-light bg-transparent h-8 sm:h-9 hover:bg-emerald-800 hover:text-white"
+              className="w-full text-xs font-light bg-transparent h-8 sm:h-9 hover:bg-[#003561] hover:text-white"
               onClick={handleAddToCart}
             >
               Add to cart
