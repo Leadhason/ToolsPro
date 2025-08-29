@@ -1,4 +1,4 @@
-import { Header } from "@/components/header"
+import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import { Star, CheckCircle, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -246,6 +246,8 @@ export default function ReviewsPage() {
           ))}
         </div>
       </div>
+
+      <Footer />
     </div>
   )
 }

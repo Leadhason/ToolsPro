@@ -99,12 +99,12 @@ export default function WishlistPage() {
                 <p className="font-medium text-base">GH₵{item.price.toFixed(2)}</p>
 
                 <div className="space-y-2 pt-2">
-                  <Button className="w-full bg-gray-800 hover:bg-gray-900" onClick={() => handleAddToCart(item)}>
+                  <Button className="w-full bg-gray-800 text-sm font-light cursor-pointer hover:bg-gray-900" onClick={() => handleAddToCart(item)}>
                     Add to cart
                   </Button>
                   <Button
                     variant="outline"
-                    className="w-full bg-transparent"
+                    className="w-full bg-transparent text-sm font-light cursor-pointer"
                     onClick={() => removeFromWishlist(item.id)}
                   >
                     Remove from wishlist
