@@ -12,17 +12,14 @@ export default function ContactPage() {
       <Header />
 
       <div
-        className="relative h-96 bg-gray-300 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: 'url(/Contact-hero-image.jpeg)',
-        }}
+        className="relative h-96 bg-[url('/images/contact-bg.jpg')] bg-cover bg-center bg-no-repeat"
       >
         <div className="absolute inset-0 bg-black bg-opacity-50" />
-        <div className="relative z-10 flex items-center justify-start h-full max-w-7xl mx-auto px-4">
-          <div className="text-white max-w-lg">
-            <h1 className="text-5xl font-bold mb-4">Contact Us</h1>
-            <p className="text-lg leading-relaxed">
-              Please visit our help pages for answers to some of the most commonly asked questions.
+        <div className="relative z-10 flex items-center justify-center h-full">
+          <div className="text-center text-white max-w-4xl px-4">
+            <h1 className="text-4xl font-bold mb-4">Contact EDMAX</h1>
+            <p className="text-lg mb-8">
+              Reach out to us for any inquiries or support
             </p>
           </div>
         </div>
