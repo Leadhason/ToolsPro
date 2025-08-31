@@ -34,6 +34,21 @@ export interface Brand {
   logo: string
 }
 
+export interface Review {
+  id: number;
+  product: string;
+  rating: number;
+  date: string;
+  author: string;
+  verified: boolean;
+  content: string;
+  productImage: string;
+  supplyMasterReply?: {
+    content: string;
+    date: string;
+  };
+}
+
 // Mock data
 export const brands: Brand[] = [
   { id: "1", name: "Honeywell", logo: "/brands/honeywell.png" },
@@ -308,7 +323,7 @@ export const products: Product[] = [
     hoverImage: "/products/image-2.jpeg", // Replaced placeholder
     category: "building-materials",
     brand: "Schneider",
-    inStock: true,
+    inStock: false,
   },
   {
     id: "18",
@@ -330,7 +345,7 @@ export const products: Product[] = [
     hoverImage: "/products/image-1.jpeg", // Added hover image
     category: "home-essentials",
     brand: "Tanaro",
-    inStock: true,
+    inStock: false,
   },
   {
     id: "20",
@@ -567,6 +582,100 @@ export const products: Product[] = [
     inStock: true,
   },
 ]
+
+// Mock data for reviews
+const reviews: Review[] = [
+  {
+    id: 1,
+    product: "Decakila 1.8L Stainless Steel Electric Kettle 1500W - KEKT031M",
+    rating: 4,
+    date: "08/27/2025",
+    author: "Ruth Ann",
+    verified: true,
+    content: "Great kettle, heats water quickly and efficiently.",
+    productImage: products.find(p => p.name === "Decakila 1.8L Stainless Steel Electric Kettle 1500W - KEKT031M")?.image || "/placeholder.svg",
+    supplyMasterReply: {
+      content:
+        "Hi Ruth Ann, thank you for taking the time to leave a review for our Decakila 1.8L Stainless Steel Electric Kettle. We are excited to hear that you had a positive experience with us and that our delivery was fast. We strive to provide efficient and timely service to all of our customers. Thank you for choosing EDMAX! Have a great day!",
+      date: "08/28/2025",
+    },
+  },
+  {
+    id: 2,
+    product: "Decakila Triple Burner Gas Stove - KMGS009B",
+    rating: 3,
+    date: "08/27/2025",
+    author: "OWUSU RICHMOND",
+    verified: true,
+    content: "Nice\nBut yet to use",
+    productImage: products.find(p => p.name === "Decakila Triple Burner Gas Stove - KMGS009B")?.image || "/placeholder.svg",
+    supplyMasterReply: {
+      content:
+        "Thank you for your review, Osei! We're glad to hear that you find our Decakila Double Hot Plate to be very nice and good for cooking. Happy cooking!",
+      date: "08/28/2025",
+    },
+  },
+  {
+    id: 3,
+    product: "Wadlow Safety Goggles - WSG2801",
+    rating: 5,
+    date: "08/25/2025",
+    author: "Rollie Khay",
+    verified: true,
+    content: "Safety goggles\nFantastic PPE that help me during working",
+    productImage: products.find(p => p.name === "Wadlow Safety Goggles - WSG2801")?.image || "/placeholder.svg",
+    supplyMasterReply: {
+      content:
+        "Hi Rollie! Thank you for your positive review of our Wadlow Safety Goggles. We're so glad to hear that they have been a great help to you during your work. Your safety is our top priority and we're happy to provide you with reliable PPE. Thank you for choosing EDMAX! Stay safe.",
+      date: "08/26/2025",
+    },
+  },
+  {
+    id: 4,
+    product: "Akfix Waterguard Acrylic Waterproofing Membrane - EM600",
+    rating: 5,
+    date: "08/24/2025",
+    author: "Michael Kwofie Keelson",
+    verified: true,
+    content: "Good\nDelivery was fast",
+    productImage: products.find(p => p.name === "Akfix Waterguard Acrylic Waterproofing Membrane - EM600")?.image || "/placeholder.svg",
+    supplyMasterReply: {
+      content:
+        "Hi Michael, thank you for taking the time to leave a review for our Akfix Waterguard Acrylic Waterproofing Membrane. We are excited to hear that you had a positive experience with us and that our delivery was fast. We strive to provide efficient and timely service to all of our customers. Thank you for choosing EDMAX! Have a great day!",
+      date: "08/25/2025",
+    },
+  },
+  {
+    id: 5,
+    product: "Decakila Double Hot Plate 2000W - KECC002B",
+    rating: 5,
+    date: "08/24/2025",
+    author: "Osei Evans",
+    verified: true,
+    content: "Very nice and very good for cooking",
+    productImage: products.find(p => p.name === "Decakila Double Hot Plate 2000W - KECC002B")?.image || "/placeholder.svg",
+    supplyMasterReply: {
+      content:
+        "Thank you for your review, Osei! We're glad to hear that you find our Decakila Double Hot Plate to be very nice and good for cooking. Happy cooking!",
+      date: "08/25/2025",
+    },
+  },
+  {
+    id: 6,
+    product: "Kumtel Digital Scale 260x260mm - HDB 02 HDB 03",
+    rating: 5,
+    date: "08/22/2025",
+    author: "LERA KATIMBA",
+    verified: true,
+    content: "Kumtel Digital Scale 260x260mm - HDB 02 HDB 03",
+    productImage: products.find(p => p.name === "Kumtel Digital Scale 260x260mm - HDB 02 HDB 03")?.image || "/placeholder.svg",
+  },
+]
+
+export async function getReviews(): Promise<Review[]> {
+  await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate API delay
+  return reviews;
+}
 
 // API functions
 export async function getProducts(): Promise<Product[]> {

@@ -77,26 +77,17 @@ export default function Header() {
                       <Link href="/category/home-essentials" className="block py-2 hover:text-red-600 text-[10px]">
                         Home Essentials & Decor
                       </Link>
-                      <Link href="/b2b" className="block py-2 hover:text-red-600 text-[10px]">
-                        B2B Solutions
-                      </Link>
                     </div>
                   </div>
                   <div className="space-y-2">
+                    <Link href="/reviews" className="block py-2 hover:text-red-600 text-[10px]">
+                      Reviews
+                    </Link>
                     <Link href="/top-sellers" className="block py-2 hover:text-red-600 text-[10px]">
                       Top Sellers
                     </Link>
                     <Link href="/fresh-stock" className="block py-2 hover:text-red-600 text-[10px]">
                       Just In: Fresh Stock
-                    </Link>
-                    <Link href="/reviews" className="block py-2 hover:text-red-600 text-[10px]">
-                      Reviews
-                    </Link>
-                    <Link href="/divisions" className="block py-2 hover:text-red-600 text-[10px]">
-                      Divisions
-                    </Link>
-                    <Link href="/loyalty" className="block py-2 hover:text-red-600 text-[10px]">
-                      Loyalty Program
                     </Link>
                   </div>
                   <Button className="w-full bg-gray-800 hover:bg-gray-900 text-xs font-light">Contact Us</Button>
@@ -151,7 +142,7 @@ export default function Header() {
             </Button>
 
             {/* User actions */}
-            <div className="flex items-center gap-1 sm:gap-2">
+            <div className="flex items-center gap-1 sm:gap-2 -ml-6 p-1">
               <Button
                 variant="ghost"
                 size="default"
@@ -176,7 +167,7 @@ export default function Header() {
                 </Button>
               </Link>
 
-              <Link href="/login" className="hidden sm:flex ml-5">
+              <Link href="/signin" className="hidden sm:flex">
                 <Button variant="ghost" className="rounded-full border text-sm font-light cursor-pointer hover:bg-black hover:text-white px-6">
                   Login
                 </Button>
@@ -782,23 +773,25 @@ export default function Header() {
                     </NavigationMenuItem>
                   </NavigationMenuList>
                 </NavigationMenu>
-                <div className="hidden lg:flex items-center gap-6 ml-6 font-light text-sm">
+                <div className="hidden lg:flex items-center gap-6 ml-8 font-medium text-sm">
+                  <Link href="/fresh-stock" className="text-gray-600 hover:text-red-600">
+                    New Arrivals
+                  </Link>
+                  <Link href="/best-sellers" className="text-gray-600 hover:text-red-600">
+                    Best Sellers
+                  </Link>
                   <Link href="/reviews" className="text-gray-600 hover:text-red-600">
-                    Reviews
+                  Reviews
                   </Link>
-                  <Link href="/divisions" className="text-gray-600 hover:text-red-600">
-                    Divisions
+                  <Link href="/contact">
+                    <Button className="bg-[#003561] hover:bg-[#00274d] rounded-full font-light text-sm cursor-pointer ml-4">
+                      Contact Us
+                    </Button>
                   </Link>
-                  <Link href="/loyalty" className="text-gray-600 hover:text-red-600">
-                    Loyalty Program
-                  </Link>
-                  <Button className="bg-[#003561] hover:bg-[#00274d] rounded-full font-light text-sm cursor-pointer">
-                    Contact Us
-                  </Button>
                 </div>
               </div>
 
-              <div className="flex flex-col mt-2">
+              {/*<div className="flex flex-col mt-2">
                 <NavigationMenu>
                   <NavigationMenuList>
                     <NavigationMenuItem>
@@ -837,9 +830,9 @@ export default function Header() {
                           </div>
                         </div>
                       </NavigationMenuContent>
-                    </NavigationMenuItem>
+                    </NavigationMenuItem> */}
 
-                    <NavigationMenuItem>
+                    {/* <NavigationMenuItem>
                       <NavigationMenuLink asChild>
                         <Link href="/top-sellers" className="text-sm font-semibold hover:text-red-600">
                           Top Sellers
@@ -856,14 +849,14 @@ export default function Header() {
                     </NavigationMenuItem>
                   </NavigationMenuList>
                 </NavigationMenu>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
       </div>
 
       {/* Promo bar - Responsive */}
-      <div className="bg-[#003561] text-white py-2">
+      <div className="bg-[#003561] text-white py-2 mt-2">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center lg:justify-between w-full">
             <div className="flex items-center gap-8 text-xs sm:gap-6 lg:gap-12 justify-between w-full">

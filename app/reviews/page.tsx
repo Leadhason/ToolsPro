@@ -1,114 +1,46 @@
+"use client"
+
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import { Star, CheckCircle, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import Link from "next/link"
 import { products } from "@/lib/data"
+import { getReviews } from "@/lib/data"; // Import getReviews function
+import { Review } from "@/lib/data"; // Import Review interface
+import { useState, useEffect } from "react";
 
-interface Review {
-  id: number
-  product: string
-  rating: number
-  date: string
-  author: string
-  verified: boolean
-  content: string
-  productImage: string
-  supplyMasterReply?: {
-    content: string
-    date: string
-  }
+interface ReviewsPageProps {
+  // No props needed now that reviews are fetched internally
 }
 
-const reviews: Review[] = [
-  {
-    id: 1,
-    product: "Decakila 1.8L Stainless Steel Electric Kettle 1500W - KEKT031M",
-    rating: 4,
-    date: "08/27/2025",
-    author: "Ruth Ann",
-    verified: true,
-    content: "Great kettle, heats water quickly and efficiently.",
-    productImage: products.find(p => p.name === "Decakila 1.8L Stainless Steel Electric Kettle 1500W - KEKT031M")?.image || "/placeholder.svg",
-    supplyMasterReply: {
-      content:
-        "Hi Ruth Ann, thank you for taking the time to leave a review for our Decakila 1.8L Stainless Steel Electric Kettle. We are excited to hear that you had a positive experience with us and that our delivery was fast. We strive to provide efficient and timely service to all of our customers. Thank you for choosing EDMAX! Have a great day!",
-      date: "08/28/2025",
-    },
-  },
-  {
-    id: 2,
-    product: "Decakila Triple Burner Gas Stove - KMGS009B",
-    rating: 3,
-    date: "08/27/2025",
-    author: "OWUSU RICHMOND",
-    verified: true,
-    content: "Nice\nBut yet to use",
-    productImage: products.find(p => p.name === "Decakila Triple Burner Gas Stove - KMGS009B")?.image || "/placeholder.svg",
-    supplyMasterReply: {
-      content:
-        "Thank you for your review, Osei! We're glad to hear that you find our Decakila Double Hot Plate to be very nice and good for cooking. Happy cooking!",
-      date: "08/28/2025",
-    },
-  },
-  {
-    id: 3,
-    product: "Wadlow Safety Goggles - WSG2801",
-    rating: 5,
-    date: "08/25/2025",
-    author: "Rollie Khay",
-    verified: true,
-    content: "Safety goggles\nFantastic PPE that help me during working",
-    productImage: products.find(p => p.name === "Wadlow Safety Goggles - WSG2801")?.image || "/placeholder.svg",
-    supplyMasterReply: {
-      content:
-        "Hi Rollie! Thank you for your positive review of our Wadlow Safety Goggles. We're so glad to hear that they have been a great help to you during your work. Your safety is our top priority and we're happy to provide you with reliable PPE. Thank you for choosing EDMAX! Stay safe.",
-      date: "08/26/2025",
-    },
-  },
-  {
-    id: 4,
-    product: "Akfix Waterguard Acrylic Waterproofing Membrane - EM600",
-    rating: 5,
-    date: "08/24/2025",
-    author: "Michael Kwofie Keelson",
-    verified: true,
-    content: "Good\nDelivery was fast",
-    productImage: products.find(p => p.name === "Akfix Waterguard Acrylic Waterproofing Membrane - EM600")?.image || "/placeholder.svg",
-    supplyMasterReply: {
-      content:
-        "Hi Michael, thank you for taking the time to leave a review for our Akfix Waterguard Acrylic Waterproofing Membrane. We are excited to hear that you had a positive experience with us and that our delivery was fast. We strive to provide efficient and timely service to all of our customers. Thank you for choosing EDMAX! Have a great day!",
-      date: "08/25/2025",
-    },
-  },
-  {
-    id: 5,
-    product: "Decakila Double Hot Plate 2000W - KECC002B",
-    rating: 5,
-    date: "08/24/2025",
-    author: "Osei Evans",
-    verified: true,
-    content: "Very nice and very good for cooking",
-    productImage: products.find(p => p.name === "Decakila Double Hot Plate 2000W - KECC002B")?.image || "/placeholder.svg",
-    supplyMasterReply: {
-      content:
-        "Thank you for your review, Osei! We're glad to hear that you find our Decakila Double Hot Plate to be very nice and good for cooking. Happy cooking!",
-      date: "08/25/2025",
-    },
-  },
-  {
-    id: 6,
-    product: "Kumtel Digital Scale 260x260mm - HDB 02 HDB 03",
-    rating: 5,
-    date: "08/22/2025",
-    author: "LERA KATIMBA",
-    verified: true,
-    content: "Kumtel Digital Scale 260x260mm - HDB 02 HDB 03",
-    productImage: products.find(p => p.name === "Kumtel Digital Scale 260x260mm - HDB 02 HDB 03")?.image || "/placeholder.svg",
-  },
-]
+export default function ReviewsPage({}: ReviewsPageProps) {
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export default function ReviewsPage() {
+  useEffect(() => {
+    async function fetchReviews() {
+      setLoading(true);
+      const fetchedReviews = await getReviews();
+      setReviews(fetchedReviews);
+      setLoading(false);
+    }
+    fetchReviews();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Header />
+        <div className="container mx-auto px-4 py-16 text-center text-gray-500">
+          Loading reviews...
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -221,7 +153,7 @@ export default function ReviewsPage() {
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                           <p className="text-xs text-gray-600 mb-2">
-                          about <span className="text-blue-600 underline">{review.product}</span>
+                          about <Link href={`/product/${review.product}`} className="text-blue-600 underline">{review.product}</Link>
                         </p>
                         <div className="flex items-center gap-2 mb-3">
                           <div className="flex items-center">
