@@ -304,8 +304,8 @@ export const products: Product[] = [
     name: "Schneider 3 Pin Rounded 15AMPS Plug Top",
     description: "High-quality electrical plug for home use",
     price: 50.0,
-    image: "/placeholder.svg?height=300&width=300&text=Electrical+Plug",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Electrical+Plug+Hover", // Added hover image
+    image: "/products/image-1.jpeg", // Replaced placeholder
+    hoverImage: "/products/image-2.jpeg", // Replaced placeholder
     category: "building-materials",
     brand: "Schneider",
     inStock: true,
@@ -315,8 +315,8 @@ export const products: Product[] = [
     name: "Black Metal Old Wood Cuboid Island Chandelier Ceiling Light 44E27 - L800mm",
     description: "Elegant chandelier for modern homes",
     price: 4300.0,
-    image: "/placeholder.svg?height=300&width=300&text=Chandelier",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Chandelier+Hover", // Added hover image
+    image: "/products/image-3.jpeg", // Replaced placeholder
+    hoverImage: "/products/image-4.jpeg", // Replaced placeholder
     category: "home-essentials",
     brand: "Generic",
     inStock: true,
@@ -337,8 +337,8 @@ export const products: Product[] = [
     name: "Bosch Series 4 Semi-Integrated Dish Washer 60cm - SMI63D05GC",
     description: "Efficient dishwasher for modern kitchens",
     price: 16700.0,
-    image: "/placeholder.svg?height=300&width=300&text=Dishwasher",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Dishwasher+Hover", // Added hover image
+    image: "/products/image-5.jpeg", // Replaced placeholder
+    hoverImage: "/products/image-6.jpeg", // Replaced placeholder
     category: "home-essentials",
     brand: "Bosch",
     inStock: true,
@@ -348,8 +348,8 @@ export const products: Product[] = [
     name: "Multi-Arm 13 Globe Dimpled Ceiling Light Elegant Gold",
     description: "Elegant multi-arm ceiling light",
     price: 2800.0,
-    image: "/placeholder.svg?height=300&width=300&text=Ceiling+Light",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Ceiling+Light+Hover", // Added hover image
+    image: "/products/image-7.jpeg", // Replaced placeholder
+    hoverImage: "/products/image-8.jpeg", // Replaced placeholder
     category: "home-essentials",
     brand: "Generic",
     inStock: true,
@@ -360,8 +360,8 @@ export const products: Product[] = [
     name: "Karcher Cordless Battery Powered Vacuum Cleaner Premium OurFamily- VC 6",
     description: "Cordless vacuum cleaner for home use",
     price: 11000.0,
-    image: "/placeholder.svg?height=300&width=300&text=Vacuum+Cleaner",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Vacuum+Cleaner+Hover", // Added hover image
+    image: "/products/image-9.jpeg", // Replaced placeholder
+    hoverImage: "/products/imqge-9.jpeg", // Replaced placeholder (using typo image for variety)
     category: "outdoor-equipment",
     brand: "Karcher",
     inStock: true,
@@ -371,8 +371,8 @@ export const products: Product[] = [
     name: "Karcher Car Shampoo RM 619, 5L",
     description: "Professional car shampoo",
     price: 290.0,
-    image: "/placeholder.svg?height=300&width=300&text=Car+Shampoo",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Car+Shampoo+Hover", // Added hover image
+    image: "/products/timage-10.png", // Replaced placeholder
+    hoverImage: "/products/image-1.jpeg", // Replaced placeholder (cycling)
     category: "outdoor-equipment",
     brand: "Karcher",
     inStock: true,
@@ -382,8 +382,8 @@ export const products: Product[] = [
     name: "Karcher Hose Set With Hose Hanger, 15 M",
     description: "Complete hose set with hanger",
     price: 920.0,
-    image: "/placeholder.svg?height=300&width=300&text=Hose+Set",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Hose+Set+Hover", // Added hover image
+    image: "/products/image-2.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "/products/image-3.jpeg", // Replaced placeholder (cycling)
     category: "outdoor-equipment",
     brand: "Karcher",
     inStock: true,
@@ -394,8 +394,8 @@ export const products: Product[] = [
     name: "Ingco Waterproof Rechargeable LED Flashlight 460 Lumens with 6 Light Modes – HCFL1865051",
     description: "Professional LED flashlight with multiple modes",
     price: 380.0,
-    image: "/placeholder.svg?height=300&width=300&text=LED+Flashlight",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=LED+Flashlight+Hover", // Added hover image
+    image: "/products/image-4.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "/products/image-5.jpeg", // Replaced placeholder (cycling)
     category: "tools",
     brand: "Ingco",
     rating: 4.5,
@@ -407,8 +407,8 @@ export const products: Product[] = [
     name: "C-Torch 3W White & Warm Spotlight",
     description: "Compact LED spotlight",
     price: 100.0,
-    image: "/placeholder.svg?height=300&width=300&text=LED+Spotlight",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=LED+Spotlight+Hover", // Added hover image
+    image: "/products/image-6.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "/products/image-7.jpeg", // Replaced placeholder (cycling)
     category: "home-essentials",
     brand: "C-Torch",
     rating: 4.0,
@@ -420,8 +420,8 @@ export const products: Product[] = [
     name: "Artu Black And Gold Outdoor Garden Pathway Lamp Post - 3 X 40W",
     description: "Elegant outdoor pathway lamp",
     price: 2900.0,
-    image: "/placeholder.svg?height=300&width=300&text=Pathway+Lamp",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Pathway+Lamp+Hover", // Added hover image
+    image: "/products/image-8.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "/products/image-9.jpeg", // Replaced placeholder (cycling)
     category: "home-essentials",
     brand: "Artu",
     inStock: true,
@@ -431,8 +431,8 @@ export const products: Product[] = [
     name: "C-Torch Round Surface Mount Led Panel Light",
     description: "Modern LED panel light",
     price: 180.0,
-    image: "/placeholder.svg?height=300&width=300&text=LED+Panel",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=LED+Panel+Hover", // Added hover image
+    image: "/products/imqge-9.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "/products/timage-10.png", // Replaced placeholder (cycling)
     category: "home-essentials",
     brand: "C-Torch",
     inStock: true,
@@ -442,8 +442,8 @@ export const products: Product[] = [
     name: "Ingco Round LED Panel Light – 8W & 24W with Daylight Color – HDL1005081 & HDL2225241",
     description: "Round LED panel with daylight color",
     price: 40.0,
-    image: "/placeholder.svg?height=300&width=300&text=Round+LED+Panel",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Round+LED+Panel+Hover", // Added hover image
+    image: "/products/image-1.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "/products/image-2.jpeg", // Replaced placeholder (cycling)
     category: "home-essentials",
     brand: "Ingco",
     rating: 4.2,
@@ -458,8 +458,8 @@ export const products: Product[] = [
     price: 420.0,
     originalPrice: 650.0,
     discount: 35,
-    image: "/placeholder.svg?height=300&width=300&text=Cordless+Drill",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Cordless+Drill+Hover", // Added hover image
+    image: "/products/image-3.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "/products/image-4.jpeg", // Replaced placeholder (cycling)
     category: "tools",
     brand: "Ingco",
     isNew: true,
@@ -470,8 +470,8 @@ export const products: Product[] = [
     name: "Ingco Cordless Spray Gun - CSGL12004",
     description: "Cordless spray gun for painting",
     price: 510.0,
-    image: "/placeholder.svg?height=300&width=300&text=Spray+Gun",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Spray+Gun+Hover", // Added hover image
+    image: "/products/image-5.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "/products/image-6.jpeg", // Replaced placeholder (cycling)
     category: "tools",
     brand: "Ingco",
     isNew: true,
@@ -484,8 +484,8 @@ export const products: Product[] = [
     price: 70.0,
     originalPrice: 160.0,
     discount: 56,
-    image: "/placeholder.svg?height=300&width=300&text=Voltage+Detector",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Voltage+Detector+Hover", // Added hover image
+    image: "/products/image-7.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "/products/image-8.jpeg", // Replaced placeholder (cycling)
     category: "tools",
     brand: "Ingco",
     inStock: true,
@@ -495,8 +495,8 @@ export const products: Product[] = [
     name: "Wadfow PH2+PH2 65mm Impact Screwdriver Bit Set - WSV3K62",
     description: "Impact screwdriver bit set",
     price: 10.0,
-    image: "/placeholder.svg?height=300&width=300&text=Screwdriver+Bits",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Screwdriver+Bits+Hover", // Added hover image
+    image: "/products/image-9.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "/products/imqge-9.jpeg", // Replaced placeholder (cycling)
     category: "tools",
     brand: "Wadfow",
     isNew: true,
@@ -507,8 +507,8 @@ export const products: Product[] = [
     name: "Wadfow 31 Pieces Precision Screwdriver Set - WSS1J31",
     description: "Precision screwdriver set",
     price: 40.0,
-    image: "/placeholder.svg?height=300&width=300&text=Precision+Screwdrivers",
-    hoverImage: "/placeholder.svg?height=300&width=300&text=Precision+Screwdrivers+Hover", // Added hover image
+    image: "/products/timage-10.png", // Replaced placeholder (cycling)
+    hoverImage: "/products/image-1.jpeg", // Replaced placeholder (cycling)
     category: "tools",
     brand: "Wadfow",
     inStock: true,
@@ -531,7 +531,7 @@ export const products: Product[] = [
     name: "Total 5m Quick Connect High-Pressure Hose - TGTHPH526",
     description: "5-meter quick connect high-pressure hose",
     price: 140.0,
-    image: "/placeholder.svg?height=300&width=300&text=High-Pressure+Hose",
+    image: "/products/image-2.jpeg", // Replaced placeholder (cycling)
     category: "outdoor-equipment",
     brand: "Total Tools",
     inStock: true,
@@ -541,7 +541,7 @@ export const products: Product[] = [
     name: "Total Gasoline High Pressure Washer 282Bar 8.5HP - TGT250306",
     description: "Gasoline high pressure washer for heavy duty use",
     price: 10000.0,
-    image: "/placeholder.svg?height=300&width=300&text=Gasoline+Pressure+Washer",
+    image: "/products/image-3.jpeg", // Replaced placeholder (cycling)
     category: "outdoor-equipment",
     brand: "Total Tools",
     inStock: true,
@@ -551,7 +551,7 @@ export const products: Product[] = [
     name: "Silverline High Pressure Washer 2100W 165Bar - 943676",
     description: "High pressure washer with powerful motor",
     price: 7700.0,
-    image: "/placeholder.svg?height=300&width=300&text=Silverline+Pressure+Washer",
+    image: "/products/image-4.jpeg", // Replaced placeholder (cycling)
     category: "outdoor-equipment",
     brand: "Silverline",
     inStock: true,
@@ -561,7 +561,7 @@ export const products: Product[] = [
     name: "Total Li-ion Cordless High Pressure Washer 24.8 Bar 20V - TPWLI20084",
     description: "Cordless high pressure washer for portable cleaning",
     price: 1500.0,
-    image: "/placeholder.svg?height=300&width=300&text=Cordless+Pressure+Washer",
+    image: "/products/image-5.jpeg", // Replaced placeholder (cycling)
     category: "outdoor-equipment",
     brand: "Total Tools",
     inStock: true,
@@ -630,4 +630,47 @@ export async function getSimilarProducts(productId: string): Promise<Product[]> 
 
   // Return products from the same category, excluding the current product
   return products.filter((p) => p.category === currentProduct.category && p.id !== productId).slice(0, 5) // Limit to 5 similar products
+}
+
+// New function to get all images for a product, replacing placeholders with actual images
+export async function getProductImages(productId: string): Promise<string[]> {
+  await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate API delay
+  const product = products.find(p => p.id === productId);
+
+  if (!product) {
+    return [];
+  }
+
+  const allImages: string[] = [];
+  const availableImages = products.filter(p => !p.image.includes("placeholder.svg")).map(p => p.image);
+  let imageIndex = 0;
+
+  const getNextAvailableImage = () => {
+    if (availableImages.length === 0) return "/placeholder.svg"; // Fallback if no real images exist
+    const image = availableImages[imageIndex % availableImages.length];
+    imageIndex++;
+    return image;
+  };
+
+  // Add main image, with fallback
+  allImages.push(product.image && !product.image.includes("placeholder.svg") ? product.image : getNextAvailableImage());
+
+  // Add hover image, with fallback
+  if (product.hoverImage) {
+    allImages.push(product.hoverImage && !product.hoverImage.includes("placeholder.svg") ? product.hoverImage : getNextAvailableImage());
+  }
+
+  // Add additional images, ensuring they are not placeholders and cycle through available images
+  for (let i = 0; i < 3; i++) { // Add up to 3 additional unique images
+    let newImage = getNextAvailableImage();
+    // Ensure unique images for additional slots, avoid duplicates with main/hover
+    while (allImages.includes(newImage) && availableImages.length > allImages.length) {
+      newImage = getNextAvailableImage();
+    }
+    if (!allImages.includes(newImage)) {
+      allImages.push(newImage);
+    }
+  }
+
+  return allImages.filter(Boolean); // Filter out any potential empty strings
 }

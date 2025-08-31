@@ -3,14 +3,17 @@
 import ProductCard from "@/components/ProductCard"
 import type { Product } from "@/lib/data"
 import { useFilter } from "@/context/filter-context"
+import { useCompare } from "@/context/compare-context"; // Import useCompare hook
 
 interface ProductGridProps {
   products?: Product[] // Made optional since we can use filtered products
-  showCompare?: boolean
+  // No longer need showCompare here, it will be controlled by context
+  // showCompare?: boolean
 }
 
-export default function ProductGrid({ products, showCompare = true }: ProductGridProps) {
+export default function ProductGrid({ products }: ProductGridProps) {
   const { filteredProducts, filters } = useFilter()
+  const { isCompareEnabled } = useCompare(); // Get isCompareEnabled from context
   
   // Use filtered products from context if available, otherwise use props
   const displayProducts = products || filteredProducts
@@ -41,7 +44,7 @@ export default function ProductGrid({ products, showCompare = true }: ProductGri
   return (
     <div className={gridClasses}>
       {displayProducts.map((product) => (
-        <ProductCard key={product.id} product={product} showCompare={showCompare} viewMode={filters.viewMode} />
+        <ProductCard key={product.id} product={product} showCompare={isCompareEnabled} viewMode={filters.viewMode} />
       ))}
     </div>
   )

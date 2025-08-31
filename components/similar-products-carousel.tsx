@@ -5,23 +5,35 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useRef } from "react"
 import { Button } from "@/components/ui/button"
 
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+
+// Import required modules
+import { Navigation } from 'swiper/modules';
+import { useEffect, useState } from 'react'; // Import useEffect and useState
+
 interface SimilarProductsCarouselProps {
   products: Product[]
 }
 
 export default function SimilarProductsCarousel({ products }: SimilarProductsCarouselProps) {
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const [swiperInstance, setSwiperInstance] = useState<any>(null);
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
 
-  const scroll = (direction: "left" | "right") => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = scrollContainerRef.current.clientWidth / 2 // Scroll half the width
-      if (direction === "left") {
-        scrollContainerRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" })
-      } else {
-        scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" })
-      }
+  useEffect(() => {
+    if (swiperInstance && prevRef.current && nextRef.current) {
+      swiperInstance.params.navigation.prevEl = prevRef.current;
+      swiperInstance.params.navigation.nextEl = nextRef.current;
+      swiperInstance.navigation.destroy();
+      swiperInstance.navigation.init();
+      swiperInstance.navigation.update();
     }
-  }
+  }, [swiperInstance, prevRef, nextRef]);
 
   if (products.length === 0) {
     return null
@@ -35,33 +47,55 @@ export default function SimilarProductsCarousel({ products }: SimilarProductsCar
         </div>
 
         <div className="relative">
-          <div ref={scrollContainerRef} className="flex overflow-x-auto scrollbar-hide space-x-4 pb-4">
-            {products.map((product) => (
-              <div key={product.id} className="flex-none w-[200px] sm:w-[220px] lg:w-[240px]">
-                <ProductCard product={product} showCompare={true} />
-              </div>
+          <Swiper
+            onSwiper={setSwiperInstance}
+            slidesPerView={1}
+            spaceBetween={16}
+            loop={true}
+            navigation={{
+              prevEl: prevRef.current, // Use ref here
+              nextEl: nextRef.current, // Use ref here
+            }}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+              },
+              768: {
+                slidesPerView: 3,
+                spaceBetween: 30,
+              },
+              1024: {
+                slidesPerView: 4,
+                spaceBetween: 40,
+              },
+            }}
+            modules={[Navigation]}
+            className="similar-products-swiper"
+          >
+            {products.map((product, index) => (
+              <SwiperSlide key={`${product.id}-${index}`}>
+                <ProductCard product={product} showCompare={false} />
+              </SwiperSlide>
             ))}
-          </div>
-          {products.length > 4 && ( // Show arrows only if there are more than 4 products
-            <>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full shadow-md z-10"
-                onClick={() => scroll("left")}
-              >
-                <ChevronLeft className="h-6 w-6" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full shadow-md z-10"
-                onClick={() => scroll("right")}
-              >
-                <ChevronRight className="h-6 w-6" />
-              </Button>
-            </>
-          )}
+          </Swiper>
+          {/* Custom Navigation Buttons for Swiper */}
+          <Button
+            ref={prevRef} // Assign ref here
+            variant="ghost"
+            size="icon"
+            className="swiper-button-prev absolute left-0 top-1/2 -translate-y-1/2  rounded-full bg-transparent hover:bg-transparent z-10"
+            aria-label="Previous product"
+          >
+          </Button>
+          <Button
+            ref={nextRef} // Assign ref here
+            variant="ghost"
+            size="icon"
+            className="swiper-button-next absolute right-0 top-1/2 -translate-y-1/2 rounded-full bg-transparent hover:bg-transparent z-10"
+            aria-label="Next product"
+          >
+          </Button>
         </div>
       </div>
     </section>

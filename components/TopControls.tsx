@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Switch } from "@/components/ui/switch"
 import { useFilter } from "@/context/filter-context"
+import { useCompare } from "@/context/compare-context"; // Import useCompare hook
 
 interface TopControlsProps {
   onMobileFilterToggle?: () => void
@@ -15,6 +16,7 @@ interface TopControlsProps {
 
 export default function TopControls({ onMobileFilterToggle, onFilterToggle, showFilters = true, productCount }: TopControlsProps) {
   const { filters, updateFilter, filteredProducts } = useFilter()
+  const { isCompareEnabled, toggleCompare } = useCompare(); // Get isCompareEnabled and toggleCompare from context
   
   // Use filtered product count if not provided
   const displayCount = productCount ?? filteredProducts.length
@@ -95,9 +97,9 @@ export default function TopControls({ onMobileFilterToggle, onFilterToggle, show
         <div className="flex items-center gap-3">
           <span className="text-xs font-light text-gray-600">Compare</span>
           <Switch 
-            checked={false} 
-            onCheckedChange={() => {}}
-            className="data-[state=checked]:bg-gray-900"
+            checked={isCompareEnabled}
+            onCheckedChange={toggleCompare}
+            className="data-[state=checked]:bg-[#003561]" // Updated to brand color
           />
         </div>
 

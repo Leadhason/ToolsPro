@@ -3,8 +3,24 @@ import Footer from "@/components/Footer"
 import { Star, CheckCircle, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { products } from "@/lib/data"
 
-const reviews = [
+interface Review {
+  id: number
+  product: string
+  rating: number
+  date: string
+  author: string
+  verified: boolean
+  content: string
+  productImage: string
+  supplyMasterReply?: {
+    content: string
+    date: string
+  }
+}
+
+const reviews: Review[] = [
   {
     id: 1,
     product: "Decakila 1.8L Stainless Steel Electric Kettle 1500W - KEKT031M",
@@ -13,7 +29,7 @@ const reviews = [
     author: "Ruth Ann",
     verified: true,
     content: "Great kettle, heats water quickly and efficiently.",
-    productImage: "/stainless-steel-electric-kettle.png",
+    productImage: products.find(p => p.name === "Decakila 1.8L Stainless Steel Electric Kettle 1500W - KEKT031M")?.image || "/placeholder.svg",
     supplyMasterReply: {
       content:
         "Hi Ruth Ann, thank you for taking the time to leave a review for our Decakila 1.8L Stainless Steel Electric Kettle. We are excited to hear that you had a positive experience with us and that our delivery was fast. We strive to provide efficient and timely service to all of our customers. Thank you for choosing EDMAX! Have a great day!",
@@ -28,7 +44,7 @@ const reviews = [
     author: "OWUSU RICHMOND",
     verified: true,
     content: "Nice\nBut yet to use",
-    productImage: "/triple-burner-gas-stove-black.png",
+    productImage: products.find(p => p.name === "Decakila Triple Burner Gas Stove - KMGS009B")?.image || "/placeholder.svg",
     supplyMasterReply: {
       content:
         "Thank you for your review, Osei! We're glad to hear that you find our Decakila Double Hot Plate to be very nice and good for cooking. Happy cooking!",
@@ -43,7 +59,7 @@ const reviews = [
     author: "Rollie Khay",
     verified: true,
     content: "Safety goggles\nFantastic PPE that help me during working",
-    productImage: "/safety-goggles-clear-with-blue-straps.png",
+    productImage: products.find(p => p.name === "Wadlow Safety Goggles - WSG2801")?.image || "/placeholder.svg",
     supplyMasterReply: {
       content:
         "Hi Rollie! Thank you for your positive review of our Wadlow Safety Goggles. We're so glad to hear that they have been a great help to you during your work. Your safety is our top priority and we're happy to provide you with reliable PPE. Thank you for choosing EDMAX! Stay safe.",
@@ -58,7 +74,7 @@ const reviews = [
     author: "Michael Kwofie Keelson",
     verified: true,
     content: "Good\nDelivery was fast",
-    productImage: "/waterproofing-membrane-bucket-white.png",
+    productImage: products.find(p => p.name === "Akfix Waterguard Acrylic Waterproofing Membrane - EM600")?.image || "/placeholder.svg",
     supplyMasterReply: {
       content:
         "Hi Michael, thank you for taking the time to leave a review for our Akfix Waterguard Acrylic Waterproofing Membrane. We are excited to hear that you had a positive experience with us and that our delivery was fast. We strive to provide efficient and timely service to all of our customers. Thank you for choosing EDMAX! Have a great day!",
@@ -73,7 +89,7 @@ const reviews = [
     author: "Osei Evans",
     verified: true,
     content: "Very nice and very good for cooking",
-    productImage: "/double-hot-plate-black-electric-cooktop.png",
+    productImage: products.find(p => p.name === "Decakila Double Hot Plate 2000W - KECC002B")?.image || "/placeholder.svg",
     supplyMasterReply: {
       content:
         "Thank you for your review, Osei! We're glad to hear that you find our Decakila Double Hot Plate to be very nice and good for cooking. Happy cooking!",
@@ -88,7 +104,7 @@ const reviews = [
     author: "LERA KATIMBA",
     verified: true,
     content: "Kumtel Digital Scale 260x260mm - HDB 02 HDB 03",
-    productImage: "/digital-scale-black-with-blue-display.png",
+    productImage: products.find(p => p.name === "Kumtel Digital Scale 260x260mm - HDB 02 HDB 03")?.image || "/placeholder.svg",
   },
 ]
 
@@ -101,20 +117,19 @@ export default function ReviewsPage() {
         <div className="absolute inset-0 bg-black bg-opacity-50" />
         <div className="relative z-10 flex items-center justify-center h-full">
           <div className="text-center text-white max-w-4xl px-4">
-            <h1 className="text-4xl font-bold mb-4">EDMAX Customer Reviews</h1>
-            <p className="text-lg mb-8">
+            <h1 className="text-3xl font-semibold mb-4">EDMAX Customer Reviews</h1>
+            <p className="text-base mb-8">
               See what our customers say about their EDMAX shopping experience
             </p>
           </div>
         </div>
-      </div>
+        </div>
 
-      <div className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          
-          <div className="flex gap-12 items-start mb-12">
+      <div className="py-16 bg-gray-50 flex flex-col items-center justify-center">
+        <div className="container w-full mx-auto px-10 flex flex-col items-center justify-center">
+          <div className="flex gap-8 items-center mb-8 flex-col lg:flex-col sm:flex-row">
             {/* Rating summary */}
-            <div className="w-80">
+            <div className="w-80 border-x-1 p-2">
               <div className="flex items-center gap-2 mb-2">
                 <div className="flex items-center">
                   {[...Array(4)].map((_, i) => (
@@ -122,10 +137,10 @@ export default function ReviewsPage() {
                   ))}
                   <Star className="w-5 h-5 fill-yellow-400/50 text-yellow-400" />
                 </div>
-                <span className="text-lg font-medium">4.53 out of 5</span>
+                  <span className="text-base font-medium">4.53 out of 5</span>
               </div>
               <div className="flex items-center gap-2 mb-6">
-                <span className="text-sm text-gray-600">Based on 910 reviews</span>
+                  <span className="text-xs text-gray-600">Based on 910 reviews</span>
                 <CheckCircle className="w-4 h-4 text-green-500" />
               </div>
 
@@ -150,37 +165,39 @@ export default function ReviewsPage() {
                     <div className="flex-1 bg-gray-200 rounded-full h-2">
                       <div className="bg-gray-600 h-2 rounded-full" style={{ width: item.width }}></div>
                     </div>
-                    <span className="text-sm text-gray-600 w-8">{item.count}</span>
+                      <span className="text-xs text-gray-600 w-8">{item.count}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Write review button */}
-            <div className="flex-1 flex justify-end">
-              <Button className="bg-gray-800 hover:bg-gray-900 text-white px-8 py-3 rounded-full">
+            <div className="flex-1 flex justify-center mb-8">
+                <Button className="bg-gray-800 hover:bg-gray-900 text-white px-8 py-3 rounded-full text-sm">
                 Write a Store Review
               </Button>
             </div>
           </div>
 
           {/* Review tabs */}
-          <div className="flex gap-4 mb-6">
-            <Button variant="secondary" className="bg-gray-200 text-gray-800 rounded-full px-6">
-              Product Reviews (901)
-            </Button>
-            <Button variant="ghost" className="text-gray-600 underline hover:no-underline">
-              Shop Reviews (9)
-            </Button>
-          </div>
+          <div className="flex gap-4 items-center justify-between w-full mb-6  border-b p-2">
+            <div className="flex gap-4">
+              <Button variant="secondary" className="bg-gray-200 text-gray-800 rounded-full px-6 text-sm">
+                Product Reviews (901)
+              </Button>
+                <Button variant="ghost" className="text-gray-600 underline hover:no-underline text-sm">
+                Shop Reviews (9)
+              </Button>
+            </div>
 
-          {/* Sort dropdown */}
-          <div className="mb-8">
-            <select className="border rounded px-3 py-2 text-sm bg-white">
-              <option>Most Recent</option>
-              <option>Highest Rated</option>
-              <option>Lowest Rated</option>
-            </select>
+            {/* Sort dropdown */}
+            <div className="">
+                <select className="border rounded px-3 py-2 text-xs bg-white">
+                <option>Most Recent</option>
+                <option>Highest Rated</option>
+                <option>Lowest Rated</option>
+              </select>
+            </div>
           </div>
 
           {/* Reviews list */}
@@ -203,7 +220,7 @@ export default function ReviewsPage() {
                   <div className="flex-1">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
-                        <p className="text-sm text-gray-600 mb-2">
+                          <p className="text-xs text-gray-600 mb-2">
                           about <span className="text-blue-600 underline">{review.product}</span>
                         </p>
                         <div className="flex items-center gap-2 mb-3">
@@ -218,24 +235,24 @@ export default function ReviewsPage() {
                         </div>
                         <div className="flex items-center gap-2 mb-4">
                           <User className="w-4 h-4 text-gray-400" />
-                          <span className="font-medium text-gray-800">{review.author}</span>
+                            <span className="font-medium text-gray-800 text-sm">{review.author}</span>
                           {review.verified && (
                             <span className="bg-gray-800 text-white text-xs px-2 py-1 rounded">Verified</span>
                           )}
                         </div>
                       </div>
-                      <span className="text-sm text-gray-500">{review.date}</span>
+                        <span className="text-xs text-gray-500">{review.date}</span>
                     </div>
 
                     <div className="mb-6">
-                      <p className="text-gray-700 whitespace-pre-line">{review.content}</p>
+                        <p className="text-gray-700 whitespace-pre-line text-sm">{review.content}</p>
                     </div>
 
                     {/* Supply Master Reply */}
                     {review.supplyMasterReply && (
                       <div className="bg-gray-50 p-4 rounded-lg">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="text-sm font-medium text-gray-800">&gt;&gt; Supply Master</span>
+                            <span className="text-sm font-medium text-gray-800">&gt;&gt; EDMAX</span>
                           <span className="text-xs text-gray-500">replied:</span>
                         </div>
                         <p className="text-sm text-gray-700 leading-relaxed">{review.supplyMasterReply.content}</p>

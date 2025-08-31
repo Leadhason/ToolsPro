@@ -27,8 +27,8 @@ export default function Footer() {
                     className="h-12 w-auto"
                   />
                 </div>
-                <div className="flex flex-col -mt-4">
-                  <span className="text-sm font-medium leading-tight">EDMAX</span>
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold text-black leading-tight">EDMAX</span>
                   <span className="text-xs font-light text-gray-400 leading-tight">Tools and Power Technologies</span>
                 </div>
               </div>

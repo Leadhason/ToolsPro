@@ -12,7 +12,7 @@ export default async function PopularBrands() {
           {brands.map((brand) => (
             <div
               key={brand.id}
-              className="bg-white p-3 sm:p-4 rounded-lg shadow-none hover:bg-gray-100 transition-shadow"
+              className="bg-white p-3 sm:p-4 rounded-lg shadow-none transition-shadow"
             >
               <Image
                 src={brand.logo || "/placeholder.svg"}

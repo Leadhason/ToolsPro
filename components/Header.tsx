@@ -2,6 +2,7 @@
 
 import { Search, Heart, ShoppingCart, Camera, Menu } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -31,7 +32,7 @@ export default function Header() {
   const { itemCount: wishlistItemCount } = useWishlist()
 
   return (
-    <header className="w-full sticky z-50">
+    <header className="w-full z-50">
       {/* Top bar - hidden on mobile */}
       <div className="bg-black text-white font-light text-xs sm:text-sm py-2 hidden md:block">
         <div className="container mx-auto px-4 text-sm flex justify-between items-center">
@@ -50,7 +51,7 @@ export default function Header() {
 
       {/* Main header */}
       <div className="bg-white">
-        <div className="container mx-auto -mb-4 px-4 py-3 sm:py-4">
+        <div className="container mx-auto -mb-4 px-4">
           <div className="flex items-center justify-between gap-2 sm:gap-4">
             {/* Mobile menu trigger */}
             <Sheet>
@@ -104,11 +105,13 @@ export default function Header() {
             </Sheet>
 
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-1">
-              <img 
+            <Link href="/" className="flex items-center gap-1 -ml-4">
+              <Image 
                 src="/EDMAX.png" 
                 alt="EDMAX Logo" 
-                className="h-20 w-auto"
+                width={100}
+                height={100}
+                className=""
               />
               <div className="hidden md:flex flex-col -ml-4">
                 <span className="text-sm font-medium leading-tight">EDMAX</span>
@@ -173,7 +176,7 @@ export default function Header() {
                 </Button>
               </Link>
 
-              <Link href="/login" className="hidden sm:flex ml-8">
+              <Link href="/login" className="hidden sm:flex ml-5">
                 <Button variant="ghost" className="rounded-full border text-sm font-light cursor-pointer hover:bg-black hover:text-white px-6">
                   Login
                 </Button>

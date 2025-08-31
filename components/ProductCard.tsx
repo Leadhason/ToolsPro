@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import type { Product } from "@/lib/data"
+import { products } from "@/lib/data" // Import products array
 import { useState } from "react"
 import { useCart } from "@/context/cart-context"
 import { useWishlist } from "@/context/wishlist-context"
@@ -52,6 +53,13 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
     }).format(price)
   }
 
+  // Function to get a fallback image if product.image is a placeholder or missing
+  const getFallbackImage = (productId: string, index: number) => {
+    const productIndex = products.findIndex(p => p.id === productId);
+    const fallbackImageIndex = (productIndex !== -1 ? productIndex : index) % products.length;
+    return products[fallbackImageIndex]?.image || "/placeholder.svg";
+  };
+
   if (viewMode === "list") {
     return (
       <div className="flex items-center gap-6 p-6 bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all duration-200">
@@ -59,22 +67,27 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
         <div className="relative w-24 h-24 flex-shrink-0">
           <Link href={`/product/${product.id}`}>
             <Image
-              src={product.image || "/placeholder.svg"}
+              src={product.image && !product.image.includes("placeholder.svg") ? product.image : getFallbackImage(product.id, 0)}
               alt={product.name}
               fill
               className="object-cover rounded-lg"
               onLoad={() => setImageLoaded(true)}
             />
           </Link>
-          {product.isNew && (
-            <Badge className="absolute -top-2 -left-2 bg-green-500 text-white text-xs font-medium px-2 py-1">
-              New
-            </Badge>
-          )}
-          {product.discount && (
-            <Badge className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-medium px-2 py-1">
-              -{product.discount}%
-            </Badge>
+          {/* Badges Container */}
+          {(product.isNew || product.discount) && (
+            <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
+              {product.isNew && (
+                <Badge className="bg-green-500 text-white text-xs font-medium px-2 py-1">
+                  New
+                </Badge>
+              )}
+              {product.discount && (
+                <Badge className="bg-red-500 text-white text-xs font-medium px-2 py-1">
+                  -{product.discount}%
+                </Badge>
+              )}
+            </div>
           )}
         </div>
 
@@ -113,7 +126,7 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
             </div>
           )}
 
-          <p className="text-xs font-light text-gray-600 line-clamp-2 mb-2">
+          <p className="text-sm font-medium text-gray-600 line-clamp-2 mb-2">
             {product.description}
           </p>
 
@@ -195,7 +208,7 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
 
         <Link href={`/product/${product.id}`}>
           <Image
-            src={isHovered && product.hoverImage ? product.hoverImage : product.image}
+            src={isHovered && product.hoverImage ? product.hoverImage : (product.image && !product.image.includes("placeholder.svg") ? product.image : getFallbackImage(product.id, 0))}
             alt={product.name}
             width={300}
             height={300}
@@ -203,19 +216,24 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
             onLoad={() => setImageLoaded(true)}
           />
         </Link>
-        {product.discount && (
-          <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs">-{product.discount}%</Badge>
+        {/* Badges Container */}
+        {(product.discount || product.isNew) && (
+          <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
+            {product.discount && (
+              <Badge className="bg-red-500 text-white text-xs">-{product.discount}%</Badge>
+            )}
+            {product.isNew && <Badge className="bg-green-500 text-white text-xs">New</Badge>}
+          </div>
         )}
-        {product.isNew && <Badge className="absolute top-2 left-2 bg-green-500 text-white text-xs">New</Badge>}
       </div>
 
       <div className="p-3 sm:p-4 w-full">
-        <div className="text-xs font-light text-gray-600 mb-1">{product.brand}</div>
+        <div className="text-sm font-light text-gray-600 mb-1">{product.brand}</div>
 
         <Link href={`/product/${product.id}`}>
-          <h3 className="text-xs font-light mb-2 line-clamp-2 hover:text-red-600 leading-tight group-hover:text-blue-600 transition-colors">
+          <p className="text-md font-light mb-2 line-clamp-2 hover:text-red-600 leading-tight group-hover:text-blue-600 transition-colors">
             {product.name}
-          </h3>
+          </p>
         </Link>
 
         {product.rating && (
@@ -237,9 +255,9 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
         )}
 
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-xs font-light">{formatPrice(product.price)}</span>
+          <span className="text-md font-light">{formatPrice(product.price)}</span>
           {product.originalPrice && (
-            <span className="text-xs font-light text-gray-500 line-through">
+            <span className="text-md font-light text-gray-500 line-through">
               {formatPrice(product.originalPrice)}
             </span>
           )}
@@ -268,13 +286,13 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
 
         <div className="space-y-2">
           {product.colors ? (
-            <Button variant="outline" className="w-full text-xs font-light bg-transparent h-8 sm:h-9">
+            <Button variant="outline" className="w-full text-xm font-light bg-transparent h-8 sm:h-9">
               Choose options
             </Button>
           ) : (
             <Button
               variant="outline"
-              className="w-full text-xs font-light bg-transparent h-8 sm:h-9 hover:bg-[#003561] hover:text-white"
+              className="w-full text-sm font-light bg-transparent h-8 sm:h-9 hover:bg-[#003561] hover:text-white"
               onClick={handleAddToCart}
             >
               Add to cart

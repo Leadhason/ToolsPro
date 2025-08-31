@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import Header from "@/components/Header"
 import { getProduct, getCategories, getSimilarProducts } from "@/lib/data"
+import { getProductImages } from "@/lib/data" // Import new getProductImages function
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -44,7 +45,7 @@ export default function ProductPage({ params }: ProductPageProps) {
     targetDay: 0,
   })
   const [mainImage, setMainImage] = useState<string>("")
-  const { id } = use(params)
+  const { id } = use(params as Readonly<{ id: string }>)
 
   useEffect(() => {
     async function fetchData() {
@@ -58,6 +59,16 @@ export default function ProductPage({ params }: ProductPageProps) {
       setSimilarProducts(fetchedSimilarProducts)
       if (fetchedProduct) {
         setMainImage(fetchedProduct.image || "/placeholder.svg")
+
+        // Fetch all product images using the new centralized function
+        const allImages = await getProductImages(id);
+        if (allImages.length > 0) {
+          // Set main image from the fetched list, if the current mainImage is a placeholder
+          if (!fetchedProduct.image || fetchedProduct.image.includes("placeholder.svg")) {
+            setMainImage(allImages[0]);
+          }
+          setAllProductImages(allImages);
+        }
       }
       setLoading(false)
     }
@@ -140,14 +151,14 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   const category = categories.find((cat) => cat.slug === product?.category)
 
-  // Define additional placeholder images for demonstration
-  const additionalImages = [
-    product.hoverImage || "/product-image-2.png",
-    "/product-image-3.png",
-    "/product-image-4.png",
-  ]
+  // No longer needed, data is fetched via getProductImages
+  // const additionalImages = [
+  //   product.hoverImage || "/product-image-2.png",
+  //   "/product-image-3.png",
+  //   "/product-image-4.png",
+  // ]
 
-  const allProductImages = [product.image, ...additionalImages].filter(Boolean)
+  const [allProductImages, setAllProductImages] = useState<string[]>([]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -236,7 +247,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                   while regional deliveries may take 3-5 business days. Weekend orders are processed on Mondays.
                 </p>
               </ProductDetailAccordion>
-              <ProductDetailAccordion title="Free Shipping and Other Policies" className="text-sm font-medium">
+              <ProductDetailAccordion title="Free Shipping and Other Policies" className="text-medium font-medium">
                 <p>
                   Enjoy free delivery on all orders over GH₵500 within Accra. For our full shipping, return, and privacy
                   policies, please visit our dedicated policy pages linked in the footer.
@@ -252,8 +263,8 @@ export default function ProductPage({ params }: ProductPageProps) {
           {/* Product Info Column */}
           <div className="space-y-4 sm:space-y-6">
             <div>
-              <div className="text-xs font-light mb-2">SM Essential Bundles</div>
-              <div className="text-xs font-light mb-4">{product.brand}</div>
+              <div className="text-md font-light mb-2">SM Essential Bundles</div>
+              <div className="text-md font-light mb-4">{product.brand}</div>
 
               <h1 className="text-lg sm:text-xl lg:text-2xl font-medium mb-4 leading-tight">{product.name}</h1>
 
@@ -284,7 +295,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             </div>
 
             {/* Delivery Countdown */}
-            <div className="mb-6 text-xs font-light">
+            <div className="mb-6 text-md font-light">
               <p>
                 Order within{" "}
                 {timerComponents.map((comp, index) => (
@@ -305,20 +316,20 @@ export default function ProductPage({ params }: ProductPageProps) {
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex items-center border rounded-md w-fit">
-                  <Button variant="ghost" size="icon" className="h-10 w-10">
+                  <Button variant="ghost" size="icon" className="h-10 w-10 cursor-pointer">
                     <Minus className="h-4 w-4" />
                   </Button>
                   <span className="px-4 py-2 min-w-[3rem] text-center">1</span>
-                  <Button variant="ghost" size="icon" className="h-10 w-10">
+                  <Button variant="ghost" size="icon" className="h-10 w-10 cursor-pointer">
                     <Plus className="h-4 w-4" />
                   </Button>
                 </div>
-                <Button className="flex-1 sm:flex-none sm:min-w-[200px] bg-gray-800 hover:bg-gray-900">
+                <Button className="flex-1 sm:flex-none sm:min-w-[200px] bg-gray-800 hover:bg-gray-900 cursor-pointer">
                   Add to cart
                 </Button>
               </div>
 
-              <Button variant="outline" className="w-full bg-transparent">
+              <Button variant="outline" className="w-full bg-transparent cursor-pointer">
                 Buy it now
               </Button>
               <Link
@@ -337,10 +348,10 @@ export default function ProductPage({ params }: ProductPageProps) {
                 <span className="font-semibold">Next-Day Delivery</span> |{" "}
                 <span className="font-semibold">Free Delivery Over GH₵500</span>
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-sm text-gray-500">
                 Add to cart, checkout, and receive it at your door - pay on delivery!
               </p>
-              <p className="text-xs text-gray-500">Over 75,000+ orders delivered across Ghana.</p>
+              <p className="text-sm text-gray-500">Over 75,000+ orders delivered across Ghana.</p>
             </div>
 
             {/* Accordion Sections (How to Place Order, Pay on Delivery) - Always visible in this column */}
