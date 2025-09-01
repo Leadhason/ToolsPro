@@ -10,14 +10,16 @@ import { products } from "@/lib/data"
 import { getReviews } from "@/lib/data"; // Import getReviews function
 import { Review } from "@/lib/data"; // Import Review interface
 import { useState, useEffect } from "react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
-interface ReviewsPageProps {
-  // No props needed now that reviews are fetched internally
-}
 
-export default function ReviewsPage({}: ReviewsPageProps) {
+export default function ReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [currentRating, setCurrentRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
 
   useEffect(() => {
     async function fetchReviews() {
@@ -42,7 +44,7 @@ export default function ReviewsPage({}: ReviewsPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white flex flex-col">
       <Header />
 
       <div className="relative h-96 bg-gray-300 bg-cover bg-center bg-no-repeat">
@@ -60,142 +62,245 @@ export default function ReviewsPage({}: ReviewsPageProps) {
       <div className="py-16 bg-gray-50 flex flex-col items-center justify-center">
         <div className="container w-full mx-auto px-10 flex flex-col items-center justify-center">
           <div className="flex gap-8 items-center mb-8 flex-col lg:flex-col sm:flex-row">
-            {/* Rating summary */}
+          {/* Rating summary */}
             <div className="w-80 border-x-1 p-2">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="flex items-center">
-                  {[...Array(4)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                  ))}
-                  <Star className="w-5 h-5 fill-yellow-400/50 text-yellow-400" />
-                </div>
+            <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center">
+                {[...Array(4)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                ))}
+                <Star className="w-5 h-5 fill-yellow-400/50 text-yellow-400" />
+              </div>
                   <span className="text-base font-medium">4.53 out of 5</span>
-              </div>
-              <div className="flex items-center gap-2 mb-6">
+            </div>
+            <div className="flex items-center gap-2 mb-6">
                   <span className="text-xs text-gray-600">Based on 910 reviews</span>
-                <CheckCircle className="w-4 h-4 text-green-500" />
-              </div>
+              <CheckCircle className="w-4 h-4 text-green-500" />
+            </div>
 
-              {/* Rating breakdown */}
-              <div className="space-y-2 mb-8">
-                {[
-                  { stars: 5, count: 619, width: "75%" },
-                  { stars: 4, count: 197, width: "24%" },
-                  { stars: 3, count: 64, width: "8%" },
-                  { stars: 2, count: 13, width: "2%" },
-                  { stars: 1, count: 17, width: "2%" },
-                ].map((item) => (
-                  <div key={item.stars} className="flex items-center gap-3">
-                    <div className="flex items-center">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`w-4 h-4 ${i < item.stars ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
-                        />
-                      ))}
-                    </div>
-                    <div className="flex-1 bg-gray-200 rounded-full h-2">
-                      <div className="bg-gray-600 h-2 rounded-full" style={{ width: item.width }}></div>
-                    </div>
-                      <span className="text-xs text-gray-600 w-8">{item.count}</span>
+            {/* Rating breakdown */}
+            <div className="space-y-2 mb-8">
+              {[
+                { stars: 5, count: 619, width: "75%" },
+                { stars: 4, count: 197, width: "24%" },
+                { stars: 3, count: 64, width: "8%" },
+                { stars: 2, count: 13, width: "2%" },
+                { stars: 1, count: 17, width: "2%" },
+              ].map((item) => (
+                <div key={item.stars} className="flex items-center gap-3">
+                  <div className="flex items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`w-4 h-4 ${i < item.stars ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
+                      />
+                    ))}
                   </div>
+                  <div className="flex-1 bg-gray-200 rounded-full h-2">
+                    <div className="bg-gray-600 h-2 rounded-full" style={{ width: item.width }}></div>
+                  </div>
+                      <span className="text-xs text-gray-600 w-8">{item.count}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Write review button */}
+            <div className="flex-1 flex justify-center mb-8">
+                <Button 
+                  className="bg-gray-800 hover:bg-gray-900 text-white px-8 py-3 rounded-full text-sm cursor-pointer"
+                  onClick={() => setShowReviewForm(true)}
+                >
+              Write a Store Review
+            </Button>
+          </div>
+        </div>
+
+        {/* Review Form */}
+        <div 
+          className={`w-full mb-10 transition-all duration-500 ease-in-out ${
+            showReviewForm ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          <div className="bg-white p-8 rounded-lg shadow-md mb-8 w-full max-w-2xl mx-auto">
+            <h2 className="text-2xl font-semibold mb-6 text-center">Write a review</h2>
+
+            {/* Rating */}
+            <div className="mb-6">
+              <p className="text-sm font-medium text-center text-gray-700 mb-2">Rating</p>
+              <div className="flex justify-center gap-1">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star
+                    key={star}
+                    className={`h-8 w-8 cursor-pointer ${
+                      (hoverRating || currentRating) >= star ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+                    }`}
+                    onClick={() => setCurrentRating(star)}
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                  />
                 ))}
               </div>
             </div>
 
-            {/* Write review button */}
-            <div className="flex-1 flex justify-center mb-8">
-                <Button className="bg-gray-800 hover:bg-gray-900 text-white px-8 py-3 rounded-full text-sm">
-                Write a Store Review
+            {/* Review Title */}
+            <div className="mb-4">
+              <label htmlFor="review-title" className="block text-sm font-medium text-gray-700 mb-2">
+                Review Title <span className="text-xs text-gray-500">(100)</span>
+              </label>
+              <Input id="review-title" placeholder="Give your review a title" maxLength={100} />
+            </div>
+
+            {/* Review Content */}
+            <div className="mb-6">
+              <label htmlFor="review-content" className="block text-sm font-medium text-gray-700 mb-2">
+                Review
+              </label>
+              <Textarea id="review-content" placeholder="Write your comments here" rows={5} />
+            </div>
+
+            {/* Picture/Video Upload (Placeholder) */}
+            <div className="mb-6 text-center">
+              <p className="text-sm font-medium text-gray-700 mb-2">Picture/Video (optional)</p>
+              <div className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center mx-auto cursor-pointer hover:border-gray-400 transition-colors">
+                <svg className="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            {/* Name and Email */}
+            <div className="mb-6">
+              <label htmlFor="reviewer-name" className="block text-sm font-medium text-gray-700 mb-2">
+                Name <span className="text-xs text-gray-500">(displayed publicly like John Smith)</span>
+              </label>
+              <Input id="reviewer-name" placeholder="Enter your name (public)" className="mb-4" />
+              <label htmlFor="reviewer-email" className="block text-sm font-medium text-gray-700 mb-2">
+                Email
+              </label>
+              <Input id="reviewer-email" type="email" placeholder="Enter your email (private)" />
+            </div>
+
+            {/* Privacy Policy Text */}
+            <p className="text-xs text-gray-500 mb-6 text-center">
+              How we use your data: We'll only contact you about the review you left, and only if
+              necessary. By submitting your review, you agree to Judge.me's terms, privacy and
+              content policies.
+            </p>
+
+            {/* Action Buttons */}
+            <div className="flex justify-center gap-4">
+              <Button 
+                variant="outline" 
+                className="px-8 py-2 text-sm font-light border-gray-300 hover:bg-gray-100"
+                onClick={() => setShowReviewForm(false)}
+              >
+                Cancel review
+              </Button>
+              <Button 
+                className="bg-[#003561] hover:bg-[#00274d] text-white px-8 py-2 text-sm font-light"
+                onClick={() => {
+                  // Handle submit logic here
+                  console.log("Review submitted!");
+                  setShowReviewForm(false);
+                }}
+              >
+                Submit Review
               </Button>
             </div>
           </div>
+        </div>
 
-          {/* Review tabs */}
+        {/* Review tabs */}
           <div className="flex gap-4 items-center justify-between w-full mb-6  border-b p-2">
             <div className="flex gap-4">
               <Button variant="secondary" className="bg-gray-200 text-gray-800 rounded-full px-6 text-sm">
-                Product Reviews (901)
-              </Button>
+            Product Reviews (901)
+          </Button>
                 <Button variant="ghost" className="text-gray-600 underline hover:no-underline text-sm">
-                Shop Reviews (9)
-              </Button>
-            </div>
+            Shop Reviews (9)
+          </Button>
+        </div>
 
-            {/* Sort dropdown */}
+        {/* Sort dropdown */}
             <div className="">
                 <select className="border rounded px-3 py-2 text-xs bg-white">
-                <option>Most Recent</option>
-                <option>Highest Rated</option>
-                <option>Lowest Rated</option>
-              </select>
+            <option>Most Recent</option>
+            <option>Highest Rated</option>
+            <option>Lowest Rated</option>
+          </select>
             </div>
-          </div>
+        </div>
 
-          {/* Reviews list */}
-          <div className="space-y-8">
-            {reviews.map((review) => (
-              <div key={review.id} className="border-b border-gray-200 pb-8">
-                <div className="flex gap-6">
-                  {/* Product image */}
-                  <div className="w-48 h-48 flex-shrink-0">
-                    <Image
-                      src={review.productImage || "/placeholder.svg"}
-                      alt={review.product}
-                      width={200}
-                      height={200}
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                  </div>
+        {/* Reviews list */}
+        <div className="space-y-8">
+          {reviews.map((review) => (
+            <div key={review.id} className="border-b border-gray-200 pb-8">
+              <div className="flex gap-6">
+                {/* Product image */}
+                <div className="w-48 h-48 flex-shrink-0">
+                  <Image
+                    src={review.productImage || "/placeholder.svg"}
+                    alt={review.product}
+                    width={200}
+                    height={200}
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                </div>
 
-                  {/* Review content */}
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
+                {/* Review content */}
+                <div className="flex-1">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
                           <p className="text-xs text-gray-600 mb-2">
                           about <Link href={`/product/${review.product}`} className="text-blue-600 underline">{review.product}</Link>
-                        </p>
-                        <div className="flex items-center gap-2 mb-3">
-                          <div className="flex items-center">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className={`w-4 h-4 ${i < review.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
-                              />
-                            ))}
-                          </div>
+                      </p>
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="flex items-center">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`w-4 h-4 ${i < review.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
+                            />
+                          ))}
                         </div>
-                        <div className="flex items-center gap-2 mb-4">
-                          <User className="w-4 h-4 text-gray-400" />
+                      </div>
+                      <div className="flex items-center gap-2 mb-4">
+                        <User className="w-4 h-4 text-gray-400" />
                             <span className="font-medium text-gray-800 text-sm">{review.author}</span>
-                          {review.verified && (
-                            <span className="bg-gray-800 text-white text-xs px-2 py-1 rounded">Verified</span>
-                          )}
-                        </div>
+                        {review.verified && (
+                          <span className="bg-gray-800 text-white text-xs px-2 py-1 rounded">Verified</span>
+                        )}
                       </div>
+                    </div>
                         <span className="text-xs text-gray-500">{review.date}</span>
-                    </div>
-
-                    <div className="mb-6">
-                        <p className="text-gray-700 whitespace-pre-line text-sm">{review.content}</p>
-                    </div>
-
-                    {/* Supply Master Reply */}
-                    {review.supplyMasterReply && (
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <div className="flex items-center gap-2 mb-2">
-                            <span className="text-sm font-medium text-gray-800">&gt;&gt; EDMAX</span>
-                          <span className="text-xs text-gray-500">replied:</span>
-                        </div>
-                        <p className="text-sm text-gray-700 leading-relaxed">{review.supplyMasterReply.content}</p>
-                      </div>
-                    )}
                   </div>
+
+                  <div className="mb-6">
+                        <p className="text-gray-700 whitespace-pre-line text-sm">{review.content}</p>
+                  </div>
+
+                  {/* Supply Master Reply */}
+                  {review.supplyMasterReply && (
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="flex items-center gap-2 mb-2">
+                            <span className="text-sm font-medium text-gray-800">&gt;&gt; EDMAX</span>
+                        <span className="text-xs text-gray-500">replied:</span>
+                      </div>
+                      <p className="text-sm text-gray-700 leading-relaxed">{review.supplyMasterReply.content}</p>
+                    </div>
+                  )}
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
+      </div>
       </div>
 
       <Footer />

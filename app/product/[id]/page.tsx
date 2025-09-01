@@ -7,7 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import Header from "@/components/Header"
 import { getProduct, getCategories, getSimilarProducts } from "@/lib/data"
-import { getProductImages } from "@/lib/data" // Import new getProductImages function
+import { getProductImages } from "@/lib/data";
+import { Input } from "@/components/ui/input"; // Import Input for quantity control
+import { toast } from "sonner"; // Import toast from sonner
+import { useCart, CartItem } from "@/context/cart-context"; // Import CartContext
+import { useWishlist, WishlistItem } from "@/context/wishlist-context"; // Import WishlistContext
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -22,20 +26,29 @@ import CustomerReviewsSection from "@/components/customer-reviews-section"
 import SellProductsBanner from "@/components/sell-products-banner"
 import SimilarProductsCarousel from "@/components/similar-products-carousel"
 import Link from "next/link"
-import React, { use, useState, useEffect } from "react"
-import Footer from "@/components/Footer" // Import Footer component
+import React, { useState, useEffect } from "react"
+import Footer from "@/components/Footer";
+import { ProductAccordionDetail, getProductDetailAccordions } from "@/lib/data";
+import { useParams } from 'next/navigation'; // Import useParams
 
 interface ProductPageProps {
-  params: {
-    id: string
-  }
+  // Removed params from interface
 }
 
-export default function ProductPage({ params }: ProductPageProps) {
+export default function ProductPage({  }: ProductPageProps) { // Removed params from function signature
+  const { id } = useParams();
+
+  if (typeof id !== 'string') {
+    notFound(); // Handle case where id is undefined or an array
+  }
+
+  const productId: string = id;
+
   const [product, setProduct] = useState<any>(null)
   const [categories, setCategories] = useState<any[]>([])
   const [similarProducts, setSimilarProducts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [quantity, setQuantity] = useState(1); // State for product quantity
   const [timeLeft, setTimeLeft] = useState<any>({
     hours: 0,
     minutes: 0,
@@ -44,36 +57,45 @@ export default function ProductPage({ params }: ProductPageProps) {
     targetMonth: "",
     targetDay: 0,
   })
+  const [allProductImages, setAllProductImages] = useState<string[]>([])
   const [mainImage, setMainImage] = useState<string>("")
-  const { id } = use(params as Readonly<{ id: string }>)
+  // Removed: const { id } = use(params as Readonly<{ id: string }>);
+  const [productAccordions, setProductAccordions] = useState<ProductAccordionDetail[]>([])
+
+  // Initialize Cart and Wishlist Contexts
+  const { addToCart, updateQuantity: updateCartQuantity, items: cartItems } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  // Removed: const { toast } = useToast(); // Initialize toast
 
   useEffect(() => {
     async function fetchData() {
       setLoading(true)
-      const fetchedProduct = await getProduct(id)
+      const fetchedProduct = await getProduct(productId)
       const fetchedCategories = await getCategories()
-      const fetchedSimilarProducts = await getSimilarProducts(id)
+      const fetchedSimilarProducts = await getSimilarProducts(productId)
+      const fetchedProductAccordions = await getProductDetailAccordions(productId);
 
       setProduct(fetchedProduct)
       setCategories(fetchedCategories)
       setSimilarProducts(fetchedSimilarProducts)
+      setProductAccordions(fetchedProductAccordions)
       if (fetchedProduct) {
         setMainImage(fetchedProduct.image || "/placeholder.svg")
 
         // Fetch all product images using the new centralized function
-        const allImages = await getProductImages(id);
+        const allImages = await getProductImages(productId);
         if (allImages.length > 0) {
           // Set main image from the fetched list, if the current mainImage is a placeholder
           if (!fetchedProduct.image || fetchedProduct.image.includes("placeholder.svg")) {
             setMainImage(allImages[0]);
           }
-          setAllProductImages(allImages);
+          setAllProductImages(allImages); // Corrected to use all images
         }
       }
       setLoading(false)
     }
     fetchData()
-  }, [id])
+  }, [productId]) // Dependency updated to productId
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -151,14 +173,89 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   const category = categories.find((cat) => cat.slug === product?.category)
 
-  // No longer needed, data is fetched via getProductImages
-  // const additionalImages = [
-  //   product.hoverImage || "/product-image-2.png",
-  //   "/product-image-3.png",
-  //   "/product-image-4.png",
-  // ]
+  // Event handler for quantity change
+  const handleQuantityChange = (type: 'increment' | 'decrement' | 'input', value?: string) => {
+    setQuantity(prevQuantity => {
+      let newQuantity = prevQuantity;
+      if (type === 'increment') {
+        newQuantity += 1;
+      } else if (type === 'decrement') {
+        newQuantity = Math.max(1, newQuantity - 1);
+      } else if (value !== undefined) {
+        const parsedValue = parseInt(value, 10);
+        newQuantity = isNaN(parsedValue) || parsedValue < 1 ? 1 : parsedValue; // Ensure quantity is at least 1
+      }
+      return newQuantity;
+    });
+  };
 
-  const [allProductImages, setAllProductImages] = useState<string[]>([]);
+  // Event handler for adding to cart
+  const handleAddToCart = () => {
+    if (!product) return;
+
+    // Create the item to add, ensuring it matches Omit<CartItem, "quantity">
+    const itemToAdd: Omit<CartItem, "quantity"> = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      brand: product.brand,
+    };
+
+    const existingCartItem = cartItems.find(item => item.id === product.id);
+
+    if (existingCartItem) {
+      // If item exists in cart, update its quantity by adding the new quantity
+      const newQuantity = existingCartItem.quantity + quantity;
+      updateCartQuantity(product.id, newQuantity);
+      toast.success(`Updated Cart`, {
+        description: `${quantity} more of ${product.name} added to your cart. Total: ${newQuantity}.`,
+        duration: 3000,
+      });
+    } else {
+      // If it's a new item, add it to cart (initially quantity 1),
+      // then update to the desired quantity if it's more than 1.
+      addToCart(itemToAdd);
+      if (quantity > 1) {
+        updateCartQuantity(product.id, quantity);
+      }
+      toast.success(`Added to Cart`, {
+        description: `${quantity} x ${product.name} has been added to your cart.`,
+        duration: 3000,
+      });
+    }
+
+    setQuantity(1); // Reset quantity after adding to cart
+  };
+
+  // Event handler for toggling wishlist
+  const handleToggleWishlist = () => {
+    if (!product) return;
+
+    const wishlistItem: WishlistItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      brand: product.brand,
+      rating: product.rating,
+      reviewCount: product.reviewCount,
+    };
+
+    if (isInWishlist(product.id)) {
+      removeFromWishlist(product.id);
+      toast.info(`Removed from Wishlist`, {
+        description: `${product.name} has been removed from your wishlist.`,
+        duration: 3000,
+      });
+    } else {
+      addToWishlist(wishlistItem);
+      toast.success(`Added to Wishlist`, {
+        description: `${product.name} has been added to your wishlist.`,
+        duration: 3000,
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -234,25 +331,17 @@ export default function ProductPage({ params }: ProductPageProps) {
 
             {/* Accordion Sections (Description, Processing, Free Shipping) and Payment Section - Visible on large screens, hidden on small */}
             <div className="pt-4 border-t hidden lg:block">
-              <ProductDetailAccordion title="Description" className="text-sm font-medium">
-                <p>{product.description}</p>
-                <p className="mt-2">
-                  This {product.name} from {product.brand} is designed for optimal performance and durability. Ideal for
-                  both professional and DIY use.
-                </p>
-              </ProductDetailAccordion>
-              <ProductDetailAccordion title="Processing & Fulfillment" className="text-sm font-medium">
-                <p>
-                  Orders are typically processed within 24 hours. Delivery within Accra is usually within 48 hours,
-                  while regional deliveries may take 3-5 business days. Weekend orders are processed on Mondays.
-                </p>
-              </ProductDetailAccordion>
-              <ProductDetailAccordion title="Free Shipping and Other Policies" className="text-medium font-medium">
-                <p>
-                  Enjoy free delivery on all orders over GH₵500 within Accra. For our full shipping, return, and privacy
-                  policies, please visit our dedicated policy pages linked in the footer.
-                </p>
-              </ProductDetailAccordion>
+              {productAccordions.filter(accordion =>
+                 ["description", "processing-fulfillment", "free-shipping-policies"].includes(accordion.id)
+               ).map(accordion => (
+                 <ProductDetailAccordion
+                   key={accordion.id}
+                   title={accordion.title}
+                   className=""
+                 >
+                   <p>{accordion.content}</p>
+                 </ProductDetailAccordion>
+               ))}
             </div>
 
             <div className="hidden lg:block">
@@ -263,7 +352,6 @@ export default function ProductPage({ params }: ProductPageProps) {
           {/* Product Info Column */}
           <div className="space-y-4 sm:space-y-6">
             <div>
-              <div className="text-md font-light mb-2">SM Essential Bundles</div>
               <div className="text-md font-light mb-4">{product.brand}</div>
 
               <h1 className="text-lg sm:text-xl lg:text-2xl font-medium mb-4 leading-tight">{product.name}</h1>
@@ -316,15 +404,34 @@ export default function ProductPage({ params }: ProductPageProps) {
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex items-center border rounded-md w-fit">
-                  <Button variant="ghost" size="icon" className="h-10 w-10 cursor-pointer">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-10 w-10 cursor-pointer"
+                    onClick={() => handleQuantityChange('decrement')}
+                  >
                     <Minus className="h-4 w-4" />
                   </Button>
-                  <span className="px-4 py-2 min-w-[3rem] text-center">1</span>
-                  <Button variant="ghost" size="icon" className="h-10 w-10 cursor-pointer">
+                  <Input
+                    type="number"
+                    min="1"
+                    value={quantity}
+                    onChange={(e) => handleQuantityChange('input', e.target.value)}
+                    className="w-16 text-center focus-visible:ring-offset-0 focus-visible:ring-0"
+                  />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-10 w-10 cursor-pointer"
+                    onClick={() => handleQuantityChange('increment')}
+                  >
                     <Plus className="h-4 w-4" />
                   </Button>
                 </div>
-                <Button className="flex-1 sm:flex-none sm:min-w-[200px] bg-gray-800 hover:bg-gray-900 cursor-pointer">
+                <Button
+                  className="flex-1 sm:flex-none sm:min-w-[200px] bg-gray-800 hover:bg-gray-900 cursor-pointer"
+                  onClick={handleAddToCart}
+                >
                   Add to cart
                 </Button>
               </div>
@@ -332,17 +439,20 @@ export default function ProductPage({ params }: ProductPageProps) {
               <Button variant="outline" className="w-full bg-transparent cursor-pointer">
                 Buy it now
               </Button>
-              <Link
-                href="/wishlist"
-                className="flex items-center justify-center gap-2 text-blue-600 hover:underline text-sm"
+              <Button
+                variant="ghost"
+                className={`w-full flex items-center justify-center gap-2 text-sm cursor-pointer ${
+                  isInWishlist(productId) ? "text-red-500 hover:text-red-600" : "text-blue-600 hover:text-blue-700"
+                }`}
+                onClick={handleToggleWishlist}
               >
-                <Heart className="h-4 w-4" />
-                Add to Wishlist
-              </Link>
+                <Heart className="h-4 w-4" fill={isInWishlist(productId) ? "#ef4444" : "none"} />
+                {isInWishlist(productId) ? "Remove from Wishlist" : "Add to Wishlist"}
+              </Button>
             </div>
 
             {/* Delivery Guarantees */}
-            <div className="pt-4 border-t space-y-2 text-[10px] font-light">
+            <div className="pt-4 border-t space-y-2 text-[11px] font-light">
               <p>
                 <span className="font-semibold">Pay on Delivery</span> |{" "}
                 <span className="font-semibold">Next-Day Delivery</span> |{" "}
@@ -356,41 +466,33 @@ export default function ProductPage({ params }: ProductPageProps) {
 
             {/* Accordion Sections (How to Place Order, Pay on Delivery) - Always visible in this column */}
             <div className="pt-4 border-t">
-              <ProductDetailAccordion title="How to Place an Order" defaultOpen={true} className="text-sm font-medium">
-                <p>
-                  Placing an order is simple! Browse our categories, add desired products to your cart, and proceed to
-                  checkout. Follow the prompts to enter your delivery details and choose your payment method.
-                </p>
-              </ProductDetailAccordion>
-              <ProductDetailAccordion title="Pay on Delivery Options" className="text-sm font-medium">
-                <p>
-                  We offer convenient Pay on Delivery options for most locations. You can pay with cash, mobile money
-                  (MTN, Vodafone, AirtelTigo), or card upon receiving your order.
-                </p>
-              </ProductDetailAccordion>
+              {productAccordions.filter(accordion =>
+                ["how-to-place-order", "pay-on-delivery-options"].includes(accordion.id)
+              ).map(accordion => (
+                <ProductDetailAccordion
+                  key={accordion.id}
+                  title={accordion.title}
+                  className=""
+                  defaultOpen={accordion.defaultOpen}
+                >
+                  <p className="whitespace-pre-line">{accordion.content}</p>
+                </ProductDetailAccordion>
+              ))}
             </div>
 
             {/* Accordion Sections (Description, Processing, Free Shipping) and Payment Section - Visible on small screens, hidden on large */}
             <div className="pt-4 border-t block lg:hidden">
-              <ProductDetailAccordion title="Description" className="text-sm font-medium">
-                <p>{product.description}</p>
-                <p className="mt-2">
-                  This {product.name} from {product.brand} is designed for optimal performance and durability. Ideal for
-                  both professional and DIY use.
-                </p>
-              </ProductDetailAccordion>
-              <ProductDetailAccordion title="Processing & Fulfillment" className="text-sm font-medium">
-                <p>
-                  Orders are typically processed within 24 hours. Delivery within Accra is usually within 48 hours,
-                  while regional deliveries may take 3-5 business days. Weekend orders are processed on Mondays.
-                </p>
-              </ProductDetailAccordion>
-              <ProductDetailAccordion title="Free Shipping and Other Policies" className="text-sm font-medium">
-                <p>
-                  Enjoy free delivery on all orders over GH₵500 within Accra. For our full shipping, return, and privacy
-                  policies, please visit our dedicated policy pages linked in the footer.
-                </p>
-              </ProductDetailAccordion>
+              {productAccordions.filter(accordion =>
+                 ["description", "processing-fulfillment", "free-shipping-policies"].includes(accordion.id)
+               ).map(accordion => (
+                 <ProductDetailAccordion
+                   key={accordion.id}
+                   title={accordion.title}
+                   className=""
+                 >
+                   <p>{accordion.content}</p>
+                 </ProductDetailAccordion>
+               ))}
             </div>
 
             <div className="block lg:hidden">

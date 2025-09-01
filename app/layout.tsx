@@ -6,7 +6,8 @@ import "./globals.css"
 import { CartProvider } from "@/context/cart-context"
 import { WishlistProvider } from "@/context/wishlist-context"
 import { FilterProvider } from "@/context/filter-context"
-import { CompareProvider } from "@/context/compare-context"; // Import CompareProvider
+import { CompareProvider } from "@/context/compare-context"; 
+import { Toaster } from "@/components/ui/sonner"; 
 
 
 const inter = Inter({ subsets: ["latin"] })
@@ -41,6 +42,7 @@ export default function RootLayout({
             </CartProvider>
           </FilterProvider>
         </Suspense>
+        <Toaster />
       </body>
     </html>
   )

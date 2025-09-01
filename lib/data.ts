@@ -611,7 +611,7 @@ const reviews: Review[] = [
     productImage: products.find(p => p.name === "Decakila Triple Burner Gas Stove - KMGS009B")?.image || "/placeholder.svg",
     supplyMasterReply: {
       content:
-        "Thank you for your review, Osei! We're glad to hear that you find our Decakila Double Hot Plate to be very nice and good for cooking. Happy cooking!",
+        "Thank you for your review, Osei! We\'re glad to hear that you find our Decakila Double Hot Plate to be very nice and good for cooking. Happy cooking!",
       date: "08/28/2025",
     },
   },
@@ -626,7 +626,7 @@ const reviews: Review[] = [
     productImage: products.find(p => p.name === "Wadlow Safety Goggles - WSG2801")?.image || "/placeholder.svg",
     supplyMasterReply: {
       content:
-        "Hi Rollie! Thank you for your positive review of our Wadlow Safety Goggles. We're so glad to hear that they have been a great help to you during your work. Your safety is our top priority and we're happy to provide you with reliable PPE. Thank you for choosing EDMAX! Stay safe.",
+        "Hi Rollie! Thank you for your positive review of our Wadlow Safety Goggles. We\'re so glad to hear that they have been a great help to you during your work. Your safety is our top priority and we\'re happy to provide you with reliable PPE. Thank you for choosing EDMAX! Stay safe.",
       date: "08/26/2025",
     },
   },
@@ -656,7 +656,7 @@ const reviews: Review[] = [
     productImage: products.find(p => p.name === "Decakila Double Hot Plate 2000W - KECC002B")?.image || "/placeholder.svg",
     supplyMasterReply: {
       content:
-        "Thank you for your review, Osei! We're glad to hear that you find our Decakila Double Hot Plate to be very nice and good for cooking. Happy cooking!",
+        "Thank you for your review, Osei! We\'re glad to hear that you find our Decakila Double Hot Plate to be very nice and good for cooking. Happy cooking!",
       date: "08/25/2025",
     },
   },
@@ -672,9 +672,223 @@ const reviews: Review[] = [
   },
 ]
 
+// New interface for product detail accordion content
+export interface ProductAccordionDetail {
+  id: string;
+  title: string;
+  content: string;
+  defaultOpen?: boolean; // Optional, for items that should be open by default
+}
+
+// Mock data for product detail accordions
+const productDetailAccordions: ProductAccordionDetail[] = [
+  {
+    id: "description",
+    title: "Description",
+    content: `This is a detailed description of the product. It covers all the features, benefits, and specifications that a customer needs to know before making a purchase. Our products are designed for durability and high performance, suitable for both professional and DIY use.\n\n        This product is manufactured using high-quality materials, ensuring a long lifespan and reliable operation. It is an essential tool for any toolkit, offering versatility and efficiency in various applications.`,
+  },
+  {
+    id: "processing-fulfillment",
+    title: "Processing & Fulfillment",
+    content: `Orders are typically processed within 24 hours during business days (Monday-Friday).\n\n        Delivery within Accra is usually completed within 48 hours. For regional deliveries outside Accra, please allow 3-5 business days for your order to arrive. Orders placed on weekends or public holidays will be processed on the next business day.`,
+  },
+  {
+    id: "free-shipping-policies",
+    title: "Free Shipping and Other Policies",
+    content: `Enjoy free standard delivery on all orders over GH₵500 within the Greater Accra Region.\n\n        For detailed information on our complete shipping, return, and privacy policies, please visit the respective links located in our website\'s footer. We are committed to transparency and ensuring a smooth shopping experience for all our customers.`,
+  },
+  {
+    id: "how-to-place-order",
+    title: "How to Place an Order",
+    content: `Placing an order with EDMAX is quick and easy! Simply browse our extensive product catalog, add the items you wish to purchase to your shopping cart, and proceed to the checkout page. You will be guided through the process to enter your delivery address and select your preferred payment method.\n\n        Should you encounter any difficulties or require assistance, our customer service team is readily available to help you complete your order.`,
+    defaultOpen: true,
+  },
+  {
+    id: "pay-on-delivery-options",
+    title: "Pay on Delivery Options",
+    content: `We offer convenient Pay on Delivery (POD) options for a wide range of locations across Ghana. You can choose to pay for your order using cash, mobile money (available for MTN, Vodafone, and AirtelTigo networks), or via a valid debit/credit card upon successful delivery of your items.\n\n        Please ensure you have the exact amount or chosen payment method ready at the time of delivery to facilitate a quick and seamless transaction.`,
+  },
+];
+
+export async function getProductDetailAccordions(productId: string): Promise<ProductAccordionDetail[]> {
+  await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate API delay
+  // In a real application, you might fetch specific details based on the productId
+  return productDetailAccordions;
+}
+
 export async function getReviews(): Promise<Review[]> {
   await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate API delay
   return reviews;
+}
+
+// New interface for contact help cards
+export interface ContactHelpCard {
+  icon: string;
+  title: string;
+  description: string;
+  dialogDetails: string;
+}
+
+// Mock data for contact help cards
+const contactHelpCards: ContactHelpCard[] = [
+  {
+    icon: "Headphones",
+    title: "Pre-sales & Advice",
+    description: "Got questions about a product or need guidance on the best buy?",
+    dialogDetails: [
+      "**Comprehensive Pre-Sales Consultation**",
+      "Our dedicated pre-sales team offers in-depth consultations to help you choose the perfect products for your needs. We cover: ",
+      "- **Product Specifications**: Detailed insights into features, capabilities, and technical requirements.",
+      "- **Compatibility Checks**: Ensuring products integrate seamlessly with your existing tools or project infrastructure.",
+      "- **Best Buy Guidance**: Personalized recommendations based on your budget, project scope, and specific requirements.",
+      "- **Project Planning Assistance**: Advice on material estimation, tool selection, and optimizing your workflow.",
+      "",
+      "**Reach Our Experts**: ",
+      "- **Phone**: 0308251057 (Monday - Friday, 9:00 AM - 5:00 PM GMT)",
+      "- **Email**: sales@edmax.store (Expect a response within 24 business hours)",
+      "",
+      "We are committed to empowering you with the right information to make confident purchasing decisions.",
+    ].join('\n'),
+  },
+  {
+    icon: "RotateCcw",
+    title: "Aftersales & Returns",
+    description: "Need assistance with refunds, product returns, or after-sales care?",
+    dialogDetails: [
+      "**Dedicated Aftersales Support**",
+      "Your satisfaction extends beyond the purchase. Our aftersales team provides comprehensive support for any post-purchase queries or issues.",
+      "",
+      "**Product Support**: ",
+      "- **Troubleshooting**: Expert guidance for common product issues and operational queries.",
+      "- **Warranty Claims**: Assistance with understanding and initiating warranty claims for eligible products.",
+      "- **Service Requests**: Facilitating repairs or replacements under warranty terms.",
+      "",
+      "**Returns & Refunds Policy**: ",
+      "- **Hassle-Free Returns**: Products can be returned within **30 days** of purchase, provided they are in their original condition, unused, and in their original packaging.",
+      "- **Refund Process**: Refunds are typically processed within 7-10 business days after the returned item is inspected and approved.",
+      "- **Initiating a Return**: Visit our dedicated \'Returns & Refunds\' section on our website for step-by-step instructions or contact aftersales@edmax.store for direct assistance.",
+      "",
+      "We aim to make your aftersales experience as smooth and stress-free as possible.",
+    ].join('\n'),
+  },
+  {
+    icon: "Truck",
+    title: "Delivery & Shipping",
+    description: "Get your order delivered swiftly across Ghana with transparent shipping policies.",
+    dialogDetails: [
+      "**Fast, Secure, and Transparent Delivery**",
+      "At EDMAX, we understand the importance of timely delivery for your projects. We offer efficient and reliable shipping services across all regions of Ghana.",
+      "",
+      "**Key Delivery Information**: ",
+      "- **Accra Deliveries**: Enjoy **free delivery for orders over GH₵500** within Accra, typically delivered within 24-48 business hours.",
+      "- **Regional Deliveries**: For orders outside Accra, delivery times may vary from 3-7 business days, depending on the region. Shipping fees apply and are calculated at checkout.",
+      "- **Tracking Your Order**: Upon dispatch, a tracking number will be sent to your registered email, allowing you to monitor your order\'s progress in real-time.",
+      "- **Payment on Delivery**: Convenient payment on delivery options are available for eligible orders within specified regions.",
+      "- **Weekend Orders**: Please note that orders placed during the weekend are processed on the following Monday.",
+      "",
+      "For detailed shipping information, including international shipping options, please visit our Shipping Policy page.",
+    ].join('\n'),
+  },
+  {
+    icon: "Shield",
+    title: "Privacy & Data Protection",
+    description: "Learn about our commitment to safeguarding your personal information with our privacy policy.",
+    dialogDetails: [
+      "**Our Commitment to Your Privacy**",
+      "At EDMAX, we are fully committed to protecting your personal data and ensuring your privacy. Our robust Privacy Policy adheres to all relevant data protection regulations and outlines our practices in detail.",
+      "",
+      "**What Our Policy Covers**: ",
+      "- **Data Collection**: What personal information we collect (e.g., name, contact details, purchase history) and how it\'s collected.",
+      "- **Data Usage**: How your data is used to process orders, improve services, personalize your experience, and for marketing purposes (with your consent).",
+      "- **Data Storage & Security**: Measures taken to secure your data, including encryption, access controls, and regular security audits.",
+      "- **Data Sharing**: Conditions under which your data might be shared with trusted third-party service providers (e.g., payment processors, delivery partners), always with strict confidentiality agreements.",
+      "- **Your Rights**: Information on how you can access, rectify, erase, or restrict the processing of your personal data.",
+      "",
+      "**Contact Our Privacy Officer**: ",
+      "- For any privacy-related questions or requests, please email privacy@edmax.store.",
+      "",
+      "We encourage you to read our full Privacy Policy to understand your rights and our obligations regarding your personal data.",
+    ].join('\n'),
+  },
+];
+
+export async function getContactHelpCards(): Promise<ContactHelpCard[]> {
+  await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate API delay
+  return contactHelpCards;
+}
+
+// New interface for category cards
+export interface CategoryCard {
+  id: string;
+  name: string;
+  imageUrl: string;
+  description: string;
+  link: string;
+}
+
+// Mock data for category cards
+const categoryCards: CategoryCard[] = [
+  {
+    id: "best-deals",
+    name: "Best Deals",
+    imageUrl: "/categories/category-best-deals.webp",
+    description: "Limited-time offers on top brands.",
+    link: "/categories/best-deals",
+  },
+  {
+    id: "new-arrivals",
+    name: "New Arrivals",
+    imageUrl: "/categories/category-new-arrivals.webp",
+    description: "The latest tools and equipment.",
+    link: "/categories/new-arrivals",
+  },
+  {
+    id: "power-tools",
+    name: "Power Tools",
+    imageUrl: "/categories/category-power-tools.webp",
+    description: "High-performance drills, saws, and more.",
+    link: "/categories/power-tools",
+  },
+  {
+    id: "hand-tools",
+    name: "Hand Tools",
+    imageUrl: "/categories/category-hand-tools.webp",
+    description: "Essential tools for every craftsman.",
+    link: "/categories/hand-tools",
+  },
+  {
+    id: "outdoor-garden",
+    name: "Outdoor & Garden",
+    imageUrl: "/categories/category-outdoor-garden.webp",
+    description: "Mowers, trimmers, and outdoor essentials.",
+    link: "/categories/outdoor-garden",
+  },
+  {
+    id: "building-materials",
+    name: "Building Materials",
+    imageUrl: "/categories/category-building-materials.webp",
+    description: "Quality materials for all construction needs.",
+    link: "/categories/building-materials",
+  },
+  {
+    id: "home-decor",
+    name: "Home & Decor",
+    imageUrl: "/categories/category-home-decor.webp",
+    description: "Enhance your living space with stylish items.",
+    link: "/categories/home-decor",
+  },
+  {
+    id: "safety-equipment",
+    name: "Safety Equipment",
+    imageUrl: "/categories/category-safety-equipment.webp",
+    description: "Protect yourself with our range of safety gear.",
+    link: "/categories/safety-equipment",
+  },
+];
+
+export async function getCategoryCards(): Promise<CategoryCard[]> {
+  await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate API delay
+  return categoryCards;
 }
 
 // API functions

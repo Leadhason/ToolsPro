@@ -13,6 +13,7 @@ import { products } from "@/lib/data" // Import products array
 import { useState } from "react"
 import { useCart } from "@/context/cart-context"
 import { useWishlist } from "@/context/wishlist-context"
+import { toast } from "sonner"; // Import toast from sonner
 
 interface ProductCardProps {
   product: Product
@@ -32,6 +33,7 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
     e.preventDefault()
     e.stopPropagation()
     addToCart(product)
+    toast.success(`${product.name} added to cart!`);
   }
 
   const handleWishlistToggle = (e: React.MouseEvent) => {
@@ -39,8 +41,10 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
     e.stopPropagation()
     if (isWishlisted) {
       removeFromWishlist(product.id)
+      toast.info(`${product.name} removed from wishlist.`);
     } else {
       addToWishlist(product)
+      toast.success(`${product.name} added to wishlist!`);
     }
   }
 

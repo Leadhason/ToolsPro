@@ -15,10 +15,10 @@ export default function ProductDetailAccordion({ title, children, defaultOpen = 
   return (
     <Accordion type="single" collapsible defaultValue={defaultOpen ? title : undefined} className={cn("w-full", className)}>
       <AccordionItem value={title}>
-        <AccordionTrigger className="text-medium font-medium text-gray-800 hover:no-underline py-4">
+        <AccordionTrigger className="text-md font-semibold text-gray-800 hover:no-underline py-4">
           {title}
         </AccordionTrigger>
-        <AccordionContent className={cn("pt-2 text-medium text-gray-600", defaultOpen ? "block" : "hidden")}>
+        <AccordionContent className={cn("pt-2 text-md font-medium text-gray-600")}>
           <div className="leading-relaxed">{children}</div>
         </AccordionContent>
       </AccordionItem>
