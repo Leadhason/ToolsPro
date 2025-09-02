@@ -32,8 +32,8 @@ export default function ReviewsPage() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-white">
+  return (
+    <div className="min-h-screen bg-white">
         <Header />
         <div className="container mx-auto px-4 py-16 text-center text-gray-500">
           Loading reviews...

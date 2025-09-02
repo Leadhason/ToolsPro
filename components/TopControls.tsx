@@ -4,7 +4,7 @@ import { Filter, LayoutGrid, List, ToggleLeft, ChevronDown, SlidersHorizontal } 
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Switch } from "@/components/ui/switch"
-import { useFilter } from "@/context/filter-context"
+import { useProductFilters } from "@/context/filter-context"; // Renamed import
 import { useCompare } from "@/context/compare-context"; // Import useCompare hook
 
 interface TopControlsProps {
@@ -15,7 +15,7 @@ interface TopControlsProps {
 }
 
 export default function TopControls({ onMobileFilterToggle, onFilterToggle, showFilters = true, productCount }: TopControlsProps) {
-  const { filters, updateFilter, filteredProducts } = useFilter()
+  const { filters, updateFilter, filteredProducts } = useProductFilters()
   const { isCompareEnabled, toggleCompare } = useCompare(); // Get isCompareEnabled and toggleCompare from context
   
   // Use filtered product count if not provided

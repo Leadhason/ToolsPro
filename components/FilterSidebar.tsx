@@ -5,85 +5,145 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
-import { useFilter } from "@/context/filter-context"
+import { useProductFilters } from "@/context/filter-context"; // Corrected import
+import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { Category } from "@/lib/data"; // Import Category
+import { Product } from "@/lib/data"; // Import Product
 
 interface FilterSidebarProps {
   className?: string
 }
 
 export default function FilterSidebar({ className }: FilterSidebarProps) {
-  const { filters, updateFilter, clearFilters, getFilterCounts } = useFilter()
-  const counts = getFilterCounts()
+  const router = useRouter();
+  const {
+    filters,
+    updateFilter,
+    clearFilters,
+    getFilterCounts,
+    allCategories,
+    allProducts, // Destructure allProducts here
+    availableBrands,
+    minPriceOverall,
+    maxPriceOverall,
+    getDescendantCategoryIds, // Destructure from useProductFilters
+  } = useProductFilters();
+  const counts = getFilterCounts();
+
+  // Local state for price range to handle slider interaction smoothly
+  const [localPriceRange, setLocalPriceRange] = useState<[number, number]>(filters.priceRange);
+
+  useEffect(() => {
+    // Initialize local price range when global filters update, but only if they are different
+    if (filters.priceRange[0] !== localPriceRange[0] || filters.priceRange[1] !== localPriceRange[1]) {
+      setLocalPriceRange(filters.priceRange);
+    }
+  }, [filters.priceRange]);
 
   // Filter options with dynamic counts
   const availabilityOptions = [
     { label: "In stock", count: counts.availability["in-stock"] || 0, value: "in-stock" },
     { label: "Out of stock", count: counts.availability["out-of-stock"] || 0, value: "out-of-stock" },
-  ]
+  ];
 
-  const productTypeOptions = [
-    { label: "Pressure Washer", count: counts.productTypes["pressure-washer"] || 0, value: "pressure-washer" },
-    { label: "Drill", count: counts.productTypes["drill"] || 0, value: "drill" },
-    { label: "Hammer", count: counts.productTypes["hammer"] || 0, value: "hammer" },
-    { label: "Screwdriver", count: counts.productTypes["screwdriver"] || 0, value: "screwdriver" },
-    { label: "Grinder", count: counts.productTypes["grinder"] || 0, value: "grinder" },
-  ]
+  // Dynamic Product Type Options (child categories of the current category slug)
+  const productTypeOptions = React.useMemo(() => {
+    const currentCategory = allCategories.find(cat => cat.slug === filters.currentCategorySlug);
+    let categoriesToDisplay: Category[] = [];
 
-  const brandOptions = [
-    { label: "Einhell", count: counts.brands["einhell"] || 0, value: "einhell" },
-    { label: "Karcher", count: counts.brands["karcher"] || 0, value: "karcher" },
-    { label: "Silverline", count: counts.brands["silverline"] || 0, value: "silverline" },
-    { label: "Stayer", count: counts.brands["stayer"] || 0, value: "stayer" },
-    { label: "Total Tools", count: counts.brands["total tools"] || 0, value: "total tools" },
-    { label: "Wadfow", count: counts.brands["wadfow"] || 0, value: "wadfow" },
-    { label: "Ingco", count: counts.brands["ingco"] || 0, value: "ingco" },
-    { label: "Bosch", count: counts.brands["bosch"] || 0, value: "bosch" },
-  ]
+    if (currentCategory) {
+      const childrenOfCurrent = allCategories.filter(cat => cat.parentId === currentCategory.id);
+      if (childrenOfCurrent.length > 0) {
+        // If current category is a top-level category (parentId === null), show its children's children (grandchildren)
+        if (currentCategory.parentId === null) {
+          childrenOfCurrent.forEach(child => {
+            categoriesToDisplay.push(...allCategories.filter(cat => cat.parentId === child.id));
+          });
+        } else {
+          // If current category is a second-level category or deeper, show its direct children
+          categoriesToDisplay = childrenOfCurrent;
+        }
+
+      } else {
+        // If current category has no children (it's a leaf), display itself
+        categoriesToDisplay = [currentCategory];
+      }
+    } else {
+      // If no specific category is selected, show all top-level categories (parentId === null)
+      categoriesToDisplay = allCategories.filter(cat => cat.parentId === null);
+    }
+
+    return categoriesToDisplay.map(cat => {
+      const descendantIds = getDescendantCategoryIds(cat.id, allCategories);
+      const count = allProducts.filter((product: Product) => descendantIds.includes(product.categoryId)).length;
+      return {
+        label: cat.name,
+        count: count,
+        value: cat.id,
+      };
+    });
+  }, [allCategories, filters.currentCategorySlug, allProducts, getDescendantCategoryIds]); // Depend on allProducts
+
+  // Dynamic Brand Options
+  const brandOptions = React.useMemo(() => {
+    return availableBrands.map(brandName => ({
+      label: brandName,
+      count: counts.brands[brandName.toLowerCase()] || 0,
+      value: brandName.toLowerCase(),
+    }));
+  }, [availableBrands, counts.brands]);
 
   // Event handlers
   const handleAvailabilityChange = (value: string, checked: boolean) => {
     const newAvailability = checked
       ? [...filters.availability, value]
-      : filters.availability.filter((item) => item !== value)
-    updateFilter("availability", newAvailability)
-  }
+      : filters.availability.filter((item: string) => item !== value); // Explicitly type item as string
+    updateFilter("availability", newAvailability);
+  };
 
   const handleProductTypeChange = (value: string, checked: boolean) => {
-    const newProductTypes = checked
-      ? [...filters.productTypes, value]
-      : filters.productTypes.filter((item) => item !== value)
-    updateFilter("productTypes", newProductTypes)
-  }
+    const newActiveCategoryIds = checked
+      ? [...filters.activeCategoryIds, value]
+      : filters.activeCategoryIds.filter((item: string) => item !== value); // Explicitly type item as string
+    updateFilter("activeCategoryIds", newActiveCategoryIds);
+  };
 
   const handleBrandChange = (value: string, checked: boolean) => {
-    const newBrands = checked
-      ? [...filters.brands, value]
-      : filters.brands.filter((item) => item !== value)
-    updateFilter("brands", newBrands)
-  }
+    const newSelectedBrands = checked
+      ? [...filters.selectedBrands, value]
+      : filters.selectedBrands.filter((item: string) => item !== value); // Explicitly type item as string
+    updateFilter("selectedBrands", newSelectedBrands);
+  };
 
-  const handlePriceRangeChange = (value: [number, number]) => {
-    updateFilter("priceRange", value)
-  }
+  const handlePriceRangeCommit = (value: [number, number]) => {
+    updateFilter("priceRange", value);
+  };
 
   const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newMin = Number(e.target.value)
-    const newRange: [number, number] = [newMin, filters.priceRange[1]]
-    updateFilter("priceRange", newRange)
-  }
+    const newMin = Number(e.target.value);
+    setLocalPriceRange([newMin, localPriceRange[1]]);
+  };
 
   const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newMax = Number(e.target.value)
-    const newRange: [number, number] = [filters.priceRange[0], newMax]
-    updateFilter("priceRange", newRange)
-  }
+    const newMax = Number(e.target.value);
+    setLocalPriceRange([localPriceRange[0], newMax]);
+  };
 
-  const hasActiveFilters =
+  const handleReset = () => {
+    clearFilters();
+    router.push("/category/all-products");
+  };
+
+  const hasActiveFilters = (
     filters.availability.length > 0 ||
-    filters.productTypes.length > 0 ||
-    filters.brands.length > 0 ||
-    filters.priceRange[0] !== 0 ||
-    filters.priceRange[1] !== 300000
+    filters.activeCategoryIds.length > 0 ||
+    filters.selectedBrands.length > 0 ||
+    filters.searchQuery !== "" ||
+    filters.activeTags.length > 0 ||
+    filters.priceRange[0] !== minPriceOverall ||
+    filters.priceRange[1] !== maxPriceOverall
+  );
 
   return (
     <div className={`bg-white p-6 rounded-none h-full overflow-y-auto scrollbar-hide sticky top-4 ${className || ''}`}>
@@ -92,7 +152,7 @@ export default function FilterSidebar({ className }: FilterSidebarProps) {
           <Button
             variant="ghost"
             size="sm"
-            onClick={clearFilters}  
+            onClick={handleReset} // Use handleReset
             className="text-md font-light text-blue-600 hover:text-blue-700 p-0 h-auto"
           >
             Clear all
@@ -105,7 +165,7 @@ export default function FilterSidebar({ className }: FilterSidebarProps) {
           <AccordionTrigger className="text-md font-light text-gray-800 hover:no-underline">
             Availability
             <span className="text-gray-500 text-md font-light ml-2">
-              ({availabilityOptions.reduce((sum, opt) => sum + opt.count, 0)})
+              ({counts.availability["in-stock"] + counts.availability["out-of-stock"]})
             </span>
           </AccordionTrigger>
           <AccordionContent className="pt-2">
@@ -134,7 +194,7 @@ export default function FilterSidebar({ className }: FilterSidebarProps) {
           <AccordionTrigger className="text-md font-light text-gray-800 hover:no-underline">
             Product Type
             <span className="text-gray-500 text-md font-light ml-2">
-              ({productTypeOptions.reduce((sum, opt) => sum + opt.count, 0)})
+              ({productTypeOptions.reduce((sum, opt) => sum + (opt.count || 0), 0)})
             </span>
           </AccordionTrigger>
           <AccordionContent className="pt-2">
@@ -144,7 +204,7 @@ export default function FilterSidebar({ className }: FilterSidebarProps) {
                   <Checkbox
                     id={`product-type-${option.value}`}
                     className="h-4 w-4"
-                    checked={filters.productTypes.includes(option.value)}
+                    checked={filters.activeCategoryIds.includes(option.value)}
                     onCheckedChange={(checked) => handleProductTypeChange(option.value, checked as boolean)}
                   />
                   <label
@@ -165,26 +225,29 @@ export default function FilterSidebar({ className }: FilterSidebarProps) {
             <div className="flex items-center gap-3 mb-4">
               <Input
                 type="number"
-                value={filters.priceRange[0]}
+                value={localPriceRange[0]}
                 onChange={handleMinPriceChange}
+                onBlur={() => handlePriceRangeCommit(localPriceRange)} // Commit on blur
                 className="w-full text-md font-light border-gray-300 focus:border-gray-500 focus:ring-0"
                 placeholder="Min"
               />
               <span className="text-gray-500 text-md font-light">-</span>
               <Input
                 type="number"
-                value={filters.priceRange[1]}
+                value={localPriceRange[1]}
                 onChange={handleMaxPriceChange}
+                onBlur={() => handlePriceRangeCommit(localPriceRange)} // Commit on blur
                 className="w-full text-md font-light border-gray-300 focus:border-gray-500 focus:ring-0"
                 placeholder="Max"
               />
             </div>
             <Slider
-              min={0}
-              max={300000}
+              min={minPriceOverall}
+              max={maxPriceOverall}
               step={100}
-              value={[filters.priceRange[0], filters.priceRange[1]]}
-              onValueChange={handlePriceRangeChange}
+              value={[localPriceRange[0], localPriceRange[1]]}
+              onValueChange={(value: number[]) => setLocalPriceRange(value as [number, number])} // Cast to tuple type
+              onValueCommit={handlePriceRangeCommit} // Commit to global state on release
               className="w-full"
             />
           </AccordionContent>
@@ -204,7 +267,7 @@ export default function FilterSidebar({ className }: FilterSidebarProps) {
                   <Checkbox
                     id={`brand-${option.value}`}
                     className="h-4 w-4"
-                    checked={filters.brands.includes(option.value)}
+                    checked={filters.selectedBrands.includes(option.value)}
                     onCheckedChange={(checked) => handleBrandChange(option.value, checked as boolean)}
                   />
                   <label htmlFor={`brand-${option.value}`} className="text-md font-light text-gray-700 cursor-pointer">
@@ -217,5 +280,5 @@ export default function FilterSidebar({ className }: FilterSidebarProps) {
         </AccordionItem>
       </Accordion>
     </div>
-  )
+  );
 }

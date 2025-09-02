@@ -81,15 +81,15 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
           {/* Badges Container */}
           {(product.isNew || product.discount) && (
             <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
-              {product.isNew && (
+          {product.isNew && (
                 <Badge className="bg-green-500 text-white text-xs font-medium px-2 py-1">
-                  New
-                </Badge>
-              )}
-              {product.discount && (
+              New
+            </Badge>
+          )}
+          {product.discount && (
                 <Badge className="bg-red-500 text-white text-xs font-medium px-2 py-1">
-                  -{product.discount}%
-                </Badge>
+              -{product.discount}%
+            </Badge>
               )}
             </div>
           )}
@@ -223,7 +223,7 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
         {/* Badges Container */}
         {(product.discount || product.isNew) && (
           <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
-            {product.discount && (
+        {product.discount && (
               <Badge className="bg-red-500 text-white text-xs">-{product.discount}%</Badge>
             )}
             {product.isNew && <Badge className="bg-green-500 text-white text-xs">New</Badge>}

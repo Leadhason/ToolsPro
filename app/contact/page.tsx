@@ -77,9 +77,9 @@ export default function ContactPage() {
               }
               return (
                 <div key={index} className="bg-white p-8 rounded-lg text-center border shadow-sm">
-                  <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+              <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
                       {IconComponent && <IconComponent className="w-12 h-12 text-[#E86514]" />}
-                  </div>
+              </div>
                   <h3 className="text-lg font-semibold mb-4">{card.title}</h3>
                   <p className="text-gray-600 mb-6 text-xs leading-relaxed">
                     {card.description}
@@ -90,7 +90,7 @@ export default function ContactPage() {
                   >
                     {card.title.split(' ')[0]} Info
                   </Button>
-                </div>
+            </div>
               );
             })}
           </div>

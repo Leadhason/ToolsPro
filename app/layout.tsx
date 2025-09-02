@@ -5,7 +5,7 @@ import { Suspense } from "react"
 import "./globals.css"
 import { CartProvider } from "@/context/cart-context"
 import { WishlistProvider } from "@/context/wishlist-context"
-import { FilterProvider } from "@/context/filter-context"
+import { ProductFilterProvider } from "@/context/filter-context"
 import { CompareProvider } from "@/context/compare-context"; 
 import { Toaster } from "@/components/ui/sonner"; 
 
@@ -34,13 +34,13 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <Suspense fallback={<div className="text-center">Loading...</div>}>
-          <FilterProvider>
+          <ProductFilterProvider>
             <CartProvider>
               <WishlistProvider>
                 <CompareProvider>{children}</CompareProvider>
               </WishlistProvider>
             </CartProvider>
-          </FilterProvider>
+          </ProductFilterProvider>
         </Suspense>
         <Toaster />
       </body>

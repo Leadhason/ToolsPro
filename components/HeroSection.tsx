@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export default function HeroSection() {
   return (
@@ -25,29 +26,31 @@ export default function HeroSection() {
           Trusted by 60,000+ Ghanaians | 75,000+ Orders Delivered
         </p>
         <Button size="lg" className="bg-white text-black hover:bg-gray-300 p-4 text-sm font-light cursor-pointer">
-          Shop Our Top Sellers
+          Shop Our Best Sellers
         </Button>
       </div>
 
       {/* Trust indicators */}
       <div className="absolute z-20 bottom-0 bg-transparent text-gray-800 py-3 sm:py-4">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center">
-            <div className="flex items-center gap-1 sm:gap-2">
-              <span className="text-xl sm:text-2xl font-bold text-yellow-500">4.5</span>
-              <div className="flex text-yellow-500">
-                {"★★★★★".split("").map((star, i) => (
-                  <span key={i} className={`text-sm sm:text-base ${i < 4 ? "text-yellow-500" : "text-gray-300"}`}>
-                    {star}
-                  </span>
-                ))}
+          <Link href="/reviews">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center">
+              <div className="flex items-center gap-1 sm:gap-2">
+                  <span className="text-xl sm:text-2xl font-bold text-yellow-500">4.5</span>
+                  <div className="flex text-yellow-500">
+                    {"★★★★★".split("").map((star, i) => (
+                      <span key={i} className={`text-sm sm:text-base ${i < 4 ? "text-yellow-500" : "text-gray-300"}`}>
+                        {star}
+                      </span>
+                    ))}
+                  </div>
               </div>
+              <span className="text-blue-600 underline text-xs sm:text-sm font-light">
+                4.5 out of 5 stars based on 879 reviews
+              </span>
+              <span className="text-yellow-600 font-semibold text-xs sm:text-sm">✓ Verified</span>
             </div>
-            <span className="text-blue-600 underline text-xs sm:text-sm font-light">
-              4.5 out of 5 stars based on 879 reviews
-            </span>
-            <span className="text-yellow-600 font-semibold text-xs sm:text-sm">✓ Verified</span>
-          </div>
+          </Link>
         </div>
       </div>
     </section>

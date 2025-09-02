@@ -7,12 +7,12 @@ export interface Product {
   discount?: number
   image: string
   hoverImage?: string // Added hoverImage property
-  category: string
+  categoryId: string // Changed from 'category'
   brand: string
   rating?: number
   reviewCount?: number
   inStock: boolean
-  isNew?: boolean
+  tags: string[]; // Added for filtering by 'new-arrival', 'best-seller', 'discount'
   colors?: string[]
   detailImageOverlay?: string // New: for product detail page image overlay
 }
@@ -23,7 +23,7 @@ export interface Category {
   slug: string
   description: string
   image: string
-  subcategories: string[]
+  parentId?: string | null; // Added for hierarchy, null for root categories
   bannerImage?: string // New: for category hero banner
   bannerDescription?: string // New: for category hero banner
 }
@@ -61,50 +61,146 @@ export const brands: Brand[] = [
 
 export const categories: Category[] = [
   {
-    id: "1",
+    id: "tools",
     name: "Tools",
     slug: "tools",
     description: "Hand & Power Tools",
     image: "/category-images/construction-worker-image-2.png",
-    subcategories: ["Hand Tools", "Power Tools", "Measuring Tools"],
+    parentId: null,
     bannerImage: "/category-images/mechanic-image.png",
     bannerDescription:
       "Explore a comprehensive range of hand and power tools for every project, from DIY home repairs to professional construction. Find drills, saws, wrenches, and more from top brands.",
   },
   {
-    id: "2",
+    id: "hand-tools",
+    name: "Hand Tools",
+    slug: "hand-tools",
+    description: "Wrenches, Screwdrivers & More",
+    image: "/category-images/man-with-wrench.png", // Placeholder image, replace with actual
+    parentId: "tools",
+  },
+  {
+    id: "power-tools",
+    name: "Power Tools",
+    slug: "power-tools",
+    description: "Drills, Saws & Sanders",
+    image: "/category-images/man-with-drill.png", // Placeholder image, replace with actual
+    parentId: "tools",
+  },
+  {
+    id: "measuring-tools",
+    name: "Measuring Tools",
+    slug: "measuring-tools",
+    description: "Tapes, Levels & Calipers",
+    image: "/category-images/measuring-tape.png", // Placeholder image, replace with actual
+    parentId: "tools",
+  },
+  {
+    id: "outdoor-equipment",
     name: "Outdoor Equipment",
     slug: "outdoor-equipment",
     description: "Water Pumps, Generators & More",
     image: "/category-images/man-and-woman.png",
-    subcategories: ["Generators", "Water Pumps", "Garden Tools"],
+    parentId: null,
     bannerImage: "/category-images/man-and-woman-painting.png",
     bannerDescription:
       "Equip yourself for any outdoor task with our robust selection of generators, water pumps, and garden tools. Power your projects and maintain your landscape with ease.",
   },
   {
-    id: "3",
+    id: "generators",
+    name: "Generators",
+    slug: "generators",
+    description: "Portable & Standby Generators",
+    image: "/category-images/generator.png", // Placeholder image, replace with actual
+    parentId: "outdoor-equipment",
+  },
+  {
+    id: "water-pumps",
+    name: "Water Pumps",
+    slug: "water-pumps",
+    description: "Submersible, Peripheral & Centrifugal Pumps",
+    image: "/category-images/water-pump.png", // Placeholder image, replace with actual
+    parentId: "outdoor-equipment",
+  },
+  {
+    id: "garden-tools",
+    name: "Garden Tools",
+    slug: "garden-tools",
+    description: "Trimmers, Mowers & Shears",
+    image: "/category-images/garden-tools.png", // Placeholder image, replace with actual
+    parentId: "outdoor-equipment",
+  },
+  {
+    id: "building-materials",
     name: "Building Materials",
     slug: "building-materials",
     description: "Plumbing, Electricals & More",
     image: "/category-images/construction-worker-image-1.png",
-    subcategories: ["Plumbing", "Electrical", "Hardware"],
+    parentId: null,
     bannerImage: "/category-images/construction-worker-image-1.png",
     bannerDescription:
       "Build strong and reliable structures with our high-quality building materials. From plumbing and electrical supplies to essential hardware, we have everything you need for your construction projects.",
   },
   {
-    id: "4",
+    id: "plumbing",
+    name: "Plumbing",
+    slug: "plumbing",
+    description: "Pipes, Fittings & Fixtures",
+    image: "/category-images/plumbing.png", // Placeholder image, replace with actual
+    parentId: "building-materials",
+  },
+  {
+    id: "electrical",
+    name: "Electrical",
+    slug: "electrical",
+    description: "Wires, Switches & Sockets",
+    image: "/category-images/electrical.png", // Placeholder image, replace with actual
+    parentId: "building-materials",
+  },
+  {
+    id: "hardware",
+    name: "Hardware",
+    slug: "hardware",
+    description: "Fasteners, Hinges & Brackets",
+    image: "/category-images/hardware.png", // Placeholder image, replace with actual
+    parentId: "building-materials",
+  },
+  {
+    id: "home-essentials",
     name: "Home Essentials & Decor",
     slug: "home-essentials",
     description: "Bath, Kitchen, Lighting & More",
     image: "/category-images/in kitchen.png",
-    subcategories: ["Kitchen", "Bathroom", "Lighting"],
+    parentId: null,
     bannerImage: "/category-images/construction-worker-image-2.png",
     bannerDescription:
       "Transform your living space with our collection of home essentials and decor. Discover stylish and functional items for your kitchen, bathroom, and lighting needs to create the perfect ambiance.",
   },
-]
+  {
+    id: "kitchen",
+    name: "Kitchen",
+    slug: "kitchen",
+    description: "Appliances, Cookware & Utensils",
+    image: "/category-images/kitchen.png", // Placeholder image, replace with actual
+    parentId: "home-essentials",
+  },
+  {
+    id: "bathroom",
+    name: "Bathroom",
+    slug: "bathroom",
+    description: "Fixtures, Accessories & Storage",
+    image: "/category-images/bathroom.png", // Placeholder image, replace with actual
+    parentId: "home-essentials",
+  },
+  {
+    id: "lighting",
+    name: "Lighting",
+    slug: "lighting",
+    description: "Lamps, Bulbs & Fixtures",
+    image: "/category-images/lighting.png", // Placeholder image, replace with actual
+    parentId: "home-essentials",
+  },
+];
 
 export const products: Product[] = [
   // Ingco Tools
@@ -115,11 +211,12 @@ export const products: Product[] = [
     price: 670.0,
     image: "/products/image-1.jpeg",
     hoverImage: "/products/image-2.jpeg", // Added hover image
-    category: "outdoor-equipment",
+    categoryId: "water-pumps",
     brand: "Ingco",
     rating: 4.5,
     reviewCount: 12,
     inStock: true,
+    tags: ["new-arrival", "best-seller"],
   },
   {
     id: "2",
@@ -128,9 +225,10 @@ export const products: Product[] = [
     price: 220.0,
     image: "/products/image-2.jpeg",
     hoverImage: "/products/image-1.jpeg", // Added hover image
-    category: "tools",
+    categoryId: "hand-tools",
     brand: "Ingco",
     inStock: true,
+    tags: [],
   },
   {
     id: "3",
@@ -139,11 +237,12 @@ export const products: Product[] = [
     price: 2030.0,
     image: "/products/image-3.jpeg",
     hoverImage: "/products/image-4.jpeg", // Added hover image
-    category: "outdoor-equipment",
+    categoryId: "garden-tools",
     brand: "Ingco",
     rating: 4.0,
     reviewCount: 8,
     inStock: true,
+    tags: ["best-seller"],
   },
   {
     id: "4",
@@ -152,10 +251,11 @@ export const products: Product[] = [
     price: 50.0,
     image: "/products/image-4.jpeg",
     hoverImage: "/products/image-5.jpeg", // Added hover image
-    category: "tools",
+    categoryId: "tools", // Assuming safety helmets fall under general tools or a specific safety category
     brand: "Ingco",
     colors: ["yellow", "blue", "white", "red"],
     inStock: true,
+    tags: [],
   },
   {
     id: "5",
@@ -164,11 +264,12 @@ export const products: Product[] = [
     price: 7.0,
     image: "/products/image-5.jpeg",
     hoverImage: "/products/image-3.jpeg", // Added hover image
-    category: "tools",
+    categoryId: "tools",
     brand: "Ingco",
     rating: 5.0,
     reviewCount: 15,
     inStock: true,
+    tags: ["new-arrival"],
   },
   // Total Tools
   {
@@ -178,9 +279,10 @@ export const products: Product[] = [
     price: 13750.0,
     image: "/products/image-6.jpeg",
     hoverImage: "/products/image-7.jpeg", // Added hover image
-    category: "outdoor-equipment",
+    categoryId: "generators",
     brand: "Total Tools",
     inStock: true,
+    tags: ["best-seller"],
   },
   {
     id: "7",
@@ -189,11 +291,12 @@ export const products: Product[] = [
     price: 820.0,
     image: "/products/image-7.jpeg",
     hoverImage: "/products/image-8.jpeg", // Added hover image
-    category: "tools",
+    categoryId: "power-tools",
     brand: "Total Tools",
     rating: 4.5,
     reviewCount: 6,
     inStock: true,
+    tags: ["new-arrival"],
   },
   {
     id: "8",
@@ -202,11 +305,12 @@ export const products: Product[] = [
     price: 1090.0,
     image: "/products/image-8.jpeg",
     hoverImage: "/products/image-9.jpeg", // Added hover image
-    category: "outdoor-equipment",
+    categoryId: "outdoor-equipment", // General outdoor equipment
     brand: "Total Tools",
     rating: 4.0,
     reviewCount: 4,
     inStock: true,
+    tags: [],
   },
   {
     id: "9",
@@ -215,9 +319,10 @@ export const products: Product[] = [
     price: 30.0,
     image: "/products/image-9.jpeg",
     hoverImage: "/products/image-9.jpeg", // Added hover image
-    category: "tools",
+    categoryId: "hand-tools", // Assuming this is a hand tool
     brand: "Total Tools",
     inStock: true,
+    tags: [],
   },
   {
     id: "10",
@@ -226,9 +331,10 @@ export const products: Product[] = [
     price: 20.0,
     image: "/products/image-9.jpeg", // Using existing image from sync
     hoverImage: "/products/image-9.jpeg", // Added hover image
-    category: "tools",
+    categoryId: "tools",
     brand: "Total Tools",
     inStock: true,
+    tags: [],
   },
   // Home Appliances
   {
@@ -240,9 +346,9 @@ export const products: Product[] = [
     discount: 36,
     image: "/products/image-3.jpeg",
     hoverImage: "/products/image-6.jpeg", // Added hover image
-    category: "home-essentials",
+    categoryId: "kitchen",
     brand: "Decakila",
-    isNew: true,
+    tags: ["new-arrival", "discount"], // Is new and has discount
     inStock: true,
   },
   {
@@ -254,11 +360,12 @@ export const products: Product[] = [
     discount: 30,
     image: "/products/image-6.jpeg",
     hoverImage: "/products/image-7.jpeg", // Added hover image
-    category: "home-essentials",
+    categoryId: "bathroom",
     brand: "Ariston",
     rating: 4.5,
     reviewCount: 8,
     inStock: true,
+    tags: ["discount"],
   },
   {
     id: "13",
@@ -269,9 +376,10 @@ export const products: Product[] = [
     discount: 17,
     image: "/products/image-7.jpeg",
     hoverImage: "/products/image-1.jpeg", // Added hover image
-    category: "home-essentials",
+    categoryId: "bathroom",
     brand: "Ariston",
     inStock: true,
+    tags: ["best-seller", "discount"],
   },
   {
     id: "14",
@@ -282,11 +390,12 @@ export const products: Product[] = [
     discount: 31,
     image: "/products/image-1.jpeg",
     hoverImage: "/products/image-2.jpeg", // Added hover image
-    category: "home-essentials",
+    categoryId: "kitchen",
     brand: "Decakila",
     rating: 4.2,
     reviewCount: 18,
     inStock: true,
+    tags: ["discount"],
   },
   // Karcher Products
   {
@@ -296,11 +405,12 @@ export const products: Product[] = [
     price: 370.0,
     image: "/products/image-2.jpeg",
     hoverImage: "/products/image-3.jpeg", // Added hover image
-    category: "outdoor-equipment",
+    categoryId: "outdoor-equipment",
     brand: "Karcher",
     rating: 4.8,
     reviewCount: 12,
     inStock: true,
+    tags: [],
   },
   {
     id: "16",
@@ -309,9 +419,10 @@ export const products: Product[] = [
     price: 4000.0,
     image: "/products/image-3.jpeg",
     hoverImage: "/products/image-4.jpeg", // Added hover image
-    category: "outdoor-equipment",
+    categoryId: "outdoor-equipment",
     brand: "Karcher",
     inStock: true,
+    tags: ["best-seller"],
   },
   // Building Essentials (New additions)
   {
@@ -321,9 +432,10 @@ export const products: Product[] = [
     price: 50.0,
     image: "/products/image-1.jpeg", // Replaced placeholder
     hoverImage: "/products/image-2.jpeg", // Replaced placeholder
-    category: "building-materials",
+    categoryId: "electrical",
     brand: "Schneider",
     inStock: false,
+    tags: ["new-arrival"],
   },
   {
     id: "18",
@@ -332,9 +444,10 @@ export const products: Product[] = [
     price: 4300.0,
     image: "/products/image-3.jpeg", // Replaced placeholder
     hoverImage: "/products/image-4.jpeg", // Replaced placeholder
-    category: "home-essentials",
+    categoryId: "lighting",
     brand: "Generic",
     inStock: true,
+    tags: [],
   },
   {
     id: "19",
@@ -343,9 +456,10 @@ export const products: Product[] = [
     price: 420.0,
     image: "/products/image-19.jpeg",
     hoverImage: "/products/image-1.jpeg", // Added hover image
-    category: "home-essentials",
+    categoryId: "lighting",
     brand: "Tanaro",
     inStock: false,
+    tags: ["new-arrival"],
   },
   {
     id: "20",
@@ -354,9 +468,10 @@ export const products: Product[] = [
     price: 16700.0,
     image: "/products/image-5.jpeg", // Replaced placeholder
     hoverImage: "/products/image-6.jpeg", // Replaced placeholder
-    category: "home-essentials",
+    categoryId: "kitchen",
     brand: "Bosch",
     inStock: true,
+    tags: ["best-seller"],
   },
   {
     id: "21",
@@ -365,9 +480,10 @@ export const products: Product[] = [
     price: 2800.0,
     image: "/products/image-7.jpeg", // Replaced placeholder
     hoverImage: "/products/image-8.jpeg", // Replaced placeholder
-    category: "home-essentials",
+    categoryId: "lighting",
     brand: "Generic",
     inStock: true,
+    tags: [],
   },
   // Karcher Additional Products (New additions)
   {
@@ -377,9 +493,10 @@ export const products: Product[] = [
     price: 11000.0,
     image: "/products/image-9.jpeg", // Replaced placeholder
     hoverImage: "/products/imqge-9.jpeg", // Replaced placeholder (using typo image for variety)
-    category: "outdoor-equipment",
+    categoryId: "home-essentials", // Assuming this is a general home essential
     brand: "Karcher",
     inStock: true,
+    tags: ["new-arrival"],
   },
   {
     id: "23",
@@ -388,9 +505,10 @@ export const products: Product[] = [
     price: 290.0,
     image: "/products/timage-10.png", // Replaced placeholder
     hoverImage: "/products/image-1.jpeg", // Replaced placeholder (cycling)
-    category: "outdoor-equipment",
+    categoryId: "outdoor-equipment", // Part of outdoor cleaning
     brand: "Karcher",
     inStock: true,
+    tags: [],
   },
   {
     id: "24",
@@ -399,9 +517,10 @@ export const products: Product[] = [
     price: 920.0,
     image: "/products/image-2.jpeg", // Replaced placeholder (cycling)
     hoverImage: "/products/image-3.jpeg", // Replaced placeholder (cycling)
-    category: "outdoor-equipment",
+    categoryId: "garden-tools", // Garden related
     brand: "Karcher",
     inStock: true,
+    tags: [],
   },
   // Lighting Products (New additions)
   {
@@ -411,11 +530,12 @@ export const products: Product[] = [
     price: 380.0,
     image: "/products/image-4.jpeg", // Replaced placeholder (cycling)
     hoverImage: "/products/image-5.jpeg", // Replaced placeholder (cycling)
-    category: "tools",
+    categoryId: "lighting",
     brand: "Ingco",
     rating: 4.5,
     reviewCount: 8,
     inStock: true,
+    tags: ["new-arrival"],
   },
   {
     id: "26",
@@ -424,11 +544,12 @@ export const products: Product[] = [
     price: 100.0,
     image: "/products/image-6.jpeg", // Replaced placeholder (cycling)
     hoverImage: "/products/image-7.jpeg", // Replaced placeholder (cycling)
-    category: "home-essentials",
+    categoryId: "lighting",
     brand: "C-Torch",
     rating: 4.0,
     reviewCount: 5,
     inStock: true,
+    tags: [],
   },
   {
     id: "27",
@@ -437,9 +558,10 @@ export const products: Product[] = [
     price: 2900.0,
     image: "/products/image-8.jpeg", // Replaced placeholder (cycling)
     hoverImage: "/products/image-9.jpeg", // Replaced placeholder (cycling)
-    category: "home-essentials",
+    categoryId: "lighting",
     brand: "Artu",
     inStock: true,
+    tags: ["best-seller"],
   },
   {
     id: "28",
@@ -448,9 +570,10 @@ export const products: Product[] = [
     price: 180.0,
     image: "/products/imqge-9.jpeg", // Replaced placeholder (cycling)
     hoverImage: "/products/timage-10.png", // Replaced placeholder (cycling)
-    category: "home-essentials",
+    categoryId: "lighting",
     brand: "C-Torch",
     inStock: true,
+    tags: [],
   },
   {
     id: "29",
@@ -459,13 +582,14 @@ export const products: Product[] = [
     price: 40.0,
     image: "/products/image-1.jpeg", // Replaced placeholder (cycling)
     hoverImage: "/products/image-2.jpeg", // Replaced placeholder (cycling)
-    category: "home-essentials",
+    categoryId: "lighting",
     brand: "Ingco",
     rating: 4.2,
     reviewCount: 12,
     inStock: true,
+    tags: ["new-arrival"],
   },
-  // New Arrivals (New additions)
+  // New Arrivals (New additions) - already updated with tags
   {
     id: "30",
     name: "Ingco Lithium-Ion Compact Brushless Cordless Drill 20V - CDL1205581",
@@ -475,9 +599,9 @@ export const products: Product[] = [
     discount: 35,
     image: "/products/image-3.jpeg", // Replaced placeholder (cycling)
     hoverImage: "/products/image-4.jpeg", // Replaced placeholder (cycling)
-    category: "tools",
+    categoryId: "power-tools",
     brand: "Ingco",
-    isNew: true,
+    tags: ["new-arrival", "discount", "best-seller"], // Is new and has discount
     inStock: true,
   },
   {
@@ -487,9 +611,9 @@ export const products: Product[] = [
     price: 510.0,
     image: "/products/image-5.jpeg", // Replaced placeholder (cycling)
     hoverImage: "/products/image-6.jpeg", // Replaced placeholder (cycling)
-    category: "tools",
+    categoryId: "power-tools",
     brand: "Ingco",
-    isNew: true,
+    tags: ["new-arrival"],
     inStock: true,
   },
   {
@@ -501,9 +625,10 @@ export const products: Product[] = [
     discount: 56,
     image: "/products/image-7.jpeg", // Replaced placeholder (cycling)
     hoverImage: "/products/image-8.jpeg", // Replaced placeholder (cycling)
-    category: "tools",
+    categoryId: "electrical",
     brand: "Ingco",
     inStock: true,
+    tags: ["discount"],
   },
   {
     id: "33",
@@ -512,9 +637,9 @@ export const products: Product[] = [
     price: 10.0,
     image: "/products/image-9.jpeg", // Replaced placeholder (cycling)
     hoverImage: "/products/imqge-9.jpeg", // Replaced placeholder (cycling)
-    category: "tools",
+    categoryId: "hand-tools", // Assuming screwdrivers are hand tools
     brand: "Wadfow",
-    isNew: true,
+    tags: ["new-arrival"],
     inStock: true,
   },
   {
@@ -524,9 +649,10 @@ export const products: Product[] = [
     price: 40.0,
     image: "/products/timage-10.png", // Replaced placeholder (cycling)
     hoverImage: "/products/image-1.jpeg", // Replaced placeholder (cycling)
-    category: "tools",
+    categoryId: "hand-tools",
     brand: "Wadfow",
     inStock: true,
+    tags: ["best-seller"],
   },
   {
     id: "35",
@@ -535,11 +661,12 @@ export const products: Product[] = [
     price: 3320.0,
     image: "/products/timage-10.png",
     detailImageOverlay: "/product-details/total-pressure-washer-overlay.png", // Specific overlay image
-    category: "outdoor-equipment",
+    categoryId: "water-pumps",
     brand: "Total Tools",
     rating: 4.5,
     reviewCount: 896,
     inStock: true,
+    tags: ["best-seller"],
   },
   {
     id: "36",
@@ -547,9 +674,10 @@ export const products: Product[] = [
     description: "5-meter quick connect high-pressure hose",
     price: 140.0,
     image: "/products/image-2.jpeg", // Replaced placeholder (cycling)
-    category: "outdoor-equipment",
+    categoryId: "water-pumps",
     brand: "Total Tools",
     inStock: true,
+    tags: [],
   },
   {
     id: "37",
@@ -557,9 +685,11 @@ export const products: Product[] = [
     description: "Gasoline high pressure washer for heavy duty use",
     price: 10000.0,
     image: "/products/image-3.jpeg", // Replaced placeholder (cycling)
-    category: "outdoor-equipment",
+    categoryId: "water-pumps",
     brand: "Total Tools",
     inStock: true,
+    tags: ["new-arrival", "discount"],
+    discount: 15,
   },
   {
     id: "38",
@@ -567,9 +697,10 @@ export const products: Product[] = [
     description: "High pressure washer with powerful motor",
     price: 7700.0,
     image: "/products/image-4.jpeg", // Replaced placeholder (cycling)
-    category: "outdoor-equipment",
+    categoryId: "water-pumps",
     brand: "Silverline",
     inStock: true,
+    tags: [],
   },
   {
     id: "39",
@@ -577,11 +708,13 @@ export const products: Product[] = [
     description: "Cordless high pressure washer for portable cleaning",
     price: 1500.0,
     image: "/products/image-5.jpeg", // Replaced placeholder (cycling)
-    category: "outdoor-equipment",
+    categoryId: "water-pumps",
     brand: "Total Tools",
     inStock: true,
+    tags: ["best-seller", "discount"],
+    discount: 10,
   },
-]
+];
 
 // Mock data for reviews
 const reviews: Review[] = [
@@ -898,9 +1031,9 @@ export async function getProducts(): Promise<Product[]> {
   return products
 }
 
-export async function getProductsByCategory(category: string): Promise<Product[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  return products.filter((product) => product.category === category)
+export async function getProductsByCategory(categoryId: string): Promise<Product[]> {
+  await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate API delay
+  return products.filter((product) => product.categoryId === categoryId);
 }
 
 export async function getProductsByBrand(brand: string): Promise<Product[]> {
@@ -924,14 +1057,19 @@ export async function getBrands(): Promise<Brand[]> {
 }
 
 export async function getNewArrivals(): Promise<Product[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  return products.filter((product) => product.isNew || product.discount)
+  await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate API delay
+  return products.filter((product) => product.tags.includes("new-arrival"));
+}
+
+export async function getProductsByTag(tag: string): Promise<Product[]> {
+  await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate API delay
+  return products.filter((product) => product.tags.includes(tag));
 }
 
 export async function getBuildingEssentials(): Promise<Product[]> {
   await new Promise((resolve) => setTimeout(resolve, 100))
   return products
-    .filter((product) => product.category === "building-materials" || product.category === "home-essentials")
+    .filter((product) => product.categoryId === "building-materials" || product.categoryId === "home-essentials")
     .slice(0, 5)
 }
 
@@ -952,7 +1090,7 @@ export async function getSimilarProducts(productId: string): Promise<Product[]> 
   if (!currentProduct) return []
 
   // Return products from the same category, excluding the current product
-  return products.filter((p) => p.category === currentProduct.category && p.id !== productId).slice(0, 5) // Limit to 5 similar products
+  return products.filter((p) => p.categoryId === currentProduct.categoryId && p.id !== productId).slice(0, 5) // Limit to 5 similar products
 }
 
 // New function to get all images for a product, replacing placeholders with actual images

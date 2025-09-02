@@ -340,7 +340,7 @@ export default function ProductPage({  }: ProductPageProps) { // Removed params 
                    className=""
                  >
                    <p>{accordion.content}</p>
-                 </ProductDetailAccordion>
+              </ProductDetailAccordion>
                ))}
             </div>
 
@@ -476,7 +476,7 @@ export default function ProductPage({  }: ProductPageProps) { // Removed params 
                   defaultOpen={accordion.defaultOpen}
                 >
                   <p className="whitespace-pre-line">{accordion.content}</p>
-                </ProductDetailAccordion>
+              </ProductDetailAccordion>
               ))}
             </div>
 
@@ -491,7 +491,7 @@ export default function ProductPage({  }: ProductPageProps) { // Removed params 
                    className=""
                  >
                    <p>{accordion.content}</p>
-                 </ProductDetailAccordion>
+              </ProductDetailAccordion>
                ))}
             </div>
 

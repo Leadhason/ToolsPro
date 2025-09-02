@@ -1,10 +1,12 @@
-import { notFound } from "next/navigation"
-import Header from "@/components/Header"
-import { getProductsByCategory, getCategories } from "@/lib/data"
-import CategoryHero from "@/components/CategoryHero"
-import Footer from "@/components/Footer"
-import CategoryPageContent from "@/components/CategoryPageContent"
-import FeatureBar from "@/components/FeatureBar"
+import { notFound } from "next/navigation";
+import Header from "@/components/Header";
+import { getProductsByCategory, getCategories } from "@/lib/data"; // Re-added server-side data fetching functions
+import CategoryHero from "@/components/CategoryHero";
+import Footer from "@/components/Footer";
+import CategoryPageContent from "@/components/CategoryPageContent"; // Kept CategoryPageContent
+import FeatureBar from "@/components/FeatureBar";
+// Removed imports for ProductCard, FilterSidebar, useProductFilters, useSearchParams
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,24 +14,25 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
+} from "@/components/ui/breadcrumb";
 
 interface CategoryPageProps {
   params: {
-    slug: string
-  }
+    slug: string;
+  };
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  const { slug } = await params;
+  const { slug } = await params; // Reverted to server-side params access
   const [categories, products] = await Promise.all([
-    getCategories(), getProductsByCategory(slug)
-  ])
+    getCategories(),
+    getProductsByCategory(slug),
+  ]);
 
-  const category = categories.find((cat) => cat.slug === slug)
+  const category = categories.find((cat) => cat.slug === slug);
 
   if (!category) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -50,10 +53,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </BreadcrumbList>
         </Breadcrumb>
 
-        <CategoryPageContent products={products} />
+        <CategoryPageContent products={products} /> {/* Pass products prop */}
       </div>
       <FeatureBar />
       <Footer />
     </div>
-  )
+  );
 }

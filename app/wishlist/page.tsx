@@ -9,6 +9,7 @@ import Link from "next/link"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import { Star } from "lucide-react"
+import { toast } from "sonner"; // Import toast for notifications
 
 export default function WishlistPage() {
   const { items, removeFromWishlist } = useWishlist()
@@ -22,6 +23,7 @@ export default function WishlistPage() {
       image: item.image,
       brand: item.brand,
     })
+    toast.success(`${item.name} added to cart!`);
   }
 
   if (items.length === 0) {
@@ -59,7 +61,10 @@ export default function WishlistPage() {
                 variant="ghost"
                 size="icon"
                 className="absolute top-2 right-2 z-10 bg-white rounded-full shadow-md"
-                onClick={() => removeFromWishlist(item.id)}
+                onClick={() => {
+                  removeFromWishlist(item.id);
+                  toast.info(`${item.name} removed from wishlist.`);
+                }}
               >
                 <Heart className="h-4 w-4 fill-red-500 text-red-500" />
               </Button>
@@ -105,7 +110,10 @@ export default function WishlistPage() {
                   <Button
                     variant="outline"
                     className="w-full bg-transparent text-sm font-light cursor-pointer"
-                    onClick={() => removeFromWishlist(item.id)}
+                    onClick={() => {
+                      removeFromWishlist(item.id);
+                      toast.info(`${item.name} removed from wishlist.`);
+                    }}
                   >
                     Remove from wishlist
                   </Button>

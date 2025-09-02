@@ -2,7 +2,7 @@
 
 import ProductCard from "@/components/ProductCard"
 import type { Product } from "@/lib/data"
-import { useFilter } from "@/context/filter-context"
+import { useProductFilters } from "@/context/filter-context"; // Renamed import
 import { useCompare } from "@/context/compare-context"; // Import useCompare hook
 
 interface ProductGridProps {
@@ -12,7 +12,7 @@ interface ProductGridProps {
 }
 
 export default function ProductGrid({ products }: ProductGridProps) {
-  const { filteredProducts, filters } = useFilter()
+  const { filteredProducts, filters } = useProductFilters()
   const { isCompareEnabled } = useCompare(); // Get isCompareEnabled from context
   
   // Use filtered products from context if available, otherwise use props
