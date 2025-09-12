@@ -37,12 +37,17 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
+  // Define protected routes that require authentication
+  const protectedRoutes = ['/cart', '/checkout', '/order-history', '/wishlist', '/profile']
+  const isProtectedRoute = protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route))
+  
   if (
     !user &&
+    isProtectedRoute &&
     !request.nextUrl.pathname.startsWith('/signin') &&
     !request.nextUrl.pathname.startsWith('/auth')
   ) {
-    // no user, potentially respond by redirecting the user to the login page
+    // no user, redirect to login only for protected routes
     const url = request.nextUrl.clone()
     url.pathname = '/signin'
     return NextResponse.redirect(url)
