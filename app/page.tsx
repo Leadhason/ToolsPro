@@ -19,9 +19,19 @@ export default async function HomePage() {
     buildingEssentials,
     lightingProducts,
   ] = await Promise.all([
-    getProductsByBrand("Ingco"),
+    getProductsByBrand("Ingco").catch(async (err) => {
+      console.log('Ingco error:', err);
+      // If this is a fetch request, check the response
+      const response = await fetch('/api/products/brand/Ingco');
+      console.log('Ingco response status:', response.status);
+      console.log('Ingco response headers:', [...response.headers.entries()]);
+      const text = await response.text();
+      console.log('Ingco response body:', `"${text}"`); // Shows empty string as ""
+      console.log('Ingco response length:', text.length);
+      return [];
+    }),
     getProductsByBrand("Total Tools"),
-    getProducts().then((products) => products.filter((p) => p.category === "home-essentials")),
+    getProducts().then((products) => products.filter((p) => p.categoryId === "home-essentials")),
     getProductsByBrand("Karcher"),
     getNewArrivals(),
     getBuildingEssentials(),

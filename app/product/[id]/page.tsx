@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input"; // Import Input for quantity cont
 import { toast } from "sonner"; // Import toast from sonner
 import { useCart, CartItem } from "@/context/cart-context"; // Import CartContext
 import { useWishlist, WishlistItem } from "@/context/wishlist-context"; // Import WishlistContext
+import { getPublicImageUrl } from "@/lib/supabase/image-utils"; // Import getPublicImageUrl
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -70,9 +71,22 @@ export default function ProductPage({  }: ProductPageProps) { // Removed params 
   useEffect(() => {
     async function fetchData() {
       setLoading(true)
-      const fetchedProduct = await getProduct(productId)
-      const fetchedCategories = await getCategories()
-      const fetchedSimilarProducts = await getSimilarProducts(productId)
+      // Fetch product details
+      const productResponse = await fetch(`/api/products/${productId}`);
+      if (!productResponse.ok) {
+        notFound(); // If product not found, trigger Next.js notFound
+        return;
+      }
+      const fetchedProduct = await productResponse.json();
+
+      // Fetch categories
+      const categoriesResponse = await fetch("/api/categories");
+      const fetchedCategories = categoriesResponse.ok ? await categoriesResponse.json() : [];
+
+      // Fetch similar products
+      const similarProductsResponse = await fetch(`/api/products/similar/${productId}`);
+      const fetchedSimilarProducts = similarProductsResponse.ok ? await similarProductsResponse.json() : [];
+
       const fetchedProductAccordions = await getProductDetailAccordions(productId);
 
       setProduct(fetchedProduct)
@@ -80,7 +94,7 @@ export default function ProductPage({  }: ProductPageProps) { // Removed params 
       setSimilarProducts(fetchedSimilarProducts)
       setProductAccordions(fetchedProductAccordions)
       if (fetchedProduct) {
-        setMainImage(fetchedProduct.image || "/placeholder.svg")
+        setMainImage(getPublicImageUrl(fetchedProduct.image || "placeholder.svg", "Product_Images"))
 
         // Fetch all product images using the new centralized function
         const allImages = await getProductImages(productId);
@@ -190,46 +204,31 @@ export default function ProductPage({  }: ProductPageProps) { // Removed params 
   };
 
   // Event handler for adding to cart
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!product) return;
 
-    // Create the item to add, ensuring it matches Omit<CartItem, "quantity">
-    const itemToAdd: Omit<CartItem, "quantity"> = {
-      id: product.id,
+    // Create the item to add, ensuring it matches Omit<CartItem, "quantity" | "id"> from context
+    const itemToAdd: Omit<CartItem, "quantity" | "id"> & { id?: string; quantity?: number } = {
+      product_id: product.id,
       name: product.name,
       price: product.price,
       image: product.image,
       brand: product.brand,
+      hoverImage: product.hoverImage, // Ensure hoverImage is passed
     };
 
-    const existingCartItem = cartItems.find(item => item.id === product.id);
-
-    if (existingCartItem) {
-      // If item exists in cart, update its quantity by adding the new quantity
-      const newQuantity = existingCartItem.quantity + quantity;
-      updateCartQuantity(product.id, newQuantity);
-      toast.success(`Updated Cart`, {
-        description: `${quantity} more of ${product.name} added to your cart. Total: ${newQuantity}.`,
-        duration: 3000,
-      });
-    } else {
-      // If it's a new item, add it to cart (initially quantity 1),
-      // then update to the desired quantity if it's more than 1.
-      addToCart(itemToAdd);
-      if (quantity > 1) {
-        updateCartQuantity(product.id, quantity);
-      }
-      toast.success(`Added to Cart`, {
-        description: `${quantity} x ${product.name} has been added to your cart.`,
-        duration: 3000,
-      });
-    }
+    // Directly call addToCart with the desired quantity
+    await addToCart({ ...itemToAdd, quantity: quantity });
+    toast.success(`Added to Cart`, {
+      description: `${quantity} x ${product.name} has been added to your cart.`,
+      duration: 3000,
+    });
 
     setQuantity(1); // Reset quantity after adding to cart
   };
 
   // Event handler for toggling wishlist
-  const handleToggleWishlist = () => {
+  const handleToggleWishlist = async () => {
     if (!product) return;
 
     const wishlistItem: WishlistItem = {
@@ -240,16 +239,17 @@ export default function ProductPage({  }: ProductPageProps) { // Removed params 
       brand: product.brand,
       rating: product.rating,
       reviewCount: product.reviewCount,
+      hoverImage: product.hoverImage, // Ensure hoverImage is passed
     };
 
     if (isInWishlist(product.id)) {
-      removeFromWishlist(product.id);
+      await removeFromWishlist(product.id);
       toast.info(`Removed from Wishlist`, {
         description: `${product.name} has been removed from your wishlist.`,
         duration: 3000,
       });
     } else {
-      addToWishlist(wishlistItem);
+      await addToWishlist(wishlistItem);
       toast.success(`Added to Wishlist`, {
         description: `${product.name} has been added to your wishlist.`,
         duration: 3000,
@@ -268,10 +268,12 @@ export default function ProductPage({  }: ProductPageProps) { // Removed params 
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            {category && (
+            {product?.category_id && (
               <>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href={`/category/${category.slug}`}>{category.name}</BreadcrumbLink>
+                  <BreadcrumbLink href={`/category/${categories.find(cat => cat.id === product.category_id)?.slug}`}>
+                    {categories.find(cat => cat.id === product.category_id)?.name}
+                  </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
               </>
@@ -287,7 +289,7 @@ export default function ProductPage({  }: ProductPageProps) { // Removed params 
           <div className="space-y-4">
             <div className="relative">
               <Image
-                src={mainImage || "/placeholder.svg"}
+                src={mainImage}
                 alt={product.name}
                 width={600}
                 height={600}
@@ -295,7 +297,7 @@ export default function ProductPage({  }: ProductPageProps) { // Removed params 
               />
               {product.detailImageOverlay && (
                 <Image
-                  src={product.detailImageOverlay || "/placeholder.svg"}
+                  src={getPublicImageUrl(product.detailImageOverlay || "placeholder.svg", "Product_Images")}
                   alt="Product details overlay"
                   width={300}
                   height={100}

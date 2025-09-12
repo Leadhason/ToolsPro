@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 function NavigationMenu({
   className,
   children,
-  viewport = true,
+  viewport = true, // Keep this prop for internal logic if needed by radix
   ...props
 }: React.ComponentProps<typeof NavigationMenuPrimitive.Root> & {
   viewport?: boolean
@@ -24,7 +24,7 @@ function NavigationMenu({
       {...props}
     >
       {children}
-      {viewport && <NavigationMenuViewport />}
+      {viewport && <NavigationMenuContentWrapper />}
     </NavigationMenuPrimitive.Root>
   )
 }
@@ -99,7 +99,7 @@ function NavigationMenuContent({
   )
 }
 
-function NavigationMenuViewport({
+function NavigationMenuContentWrapper({
   className,
   ...props
 }: React.ComponentProps<typeof NavigationMenuPrimitive.Viewport>) {
@@ -163,6 +163,6 @@ export {
   NavigationMenuTrigger,
   NavigationMenuLink,
   NavigationMenuIndicator,
-  NavigationMenuViewport,
+  NavigationMenuContentWrapper, // Renamed export
   navigationMenuTriggerStyle,
 }

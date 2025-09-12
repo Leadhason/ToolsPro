@@ -1,5 +1,6 @@
 import Image from "next/image"
 import type { Category } from "@/lib/data"
+import { getPublicImageUrl } from "@/lib/supabase/image-utils"; // Import getPublicImageUrl
 
 interface CategoryHeroProps {
   category: Category
@@ -21,7 +22,7 @@ export default function CategoryHero({ category }: CategoryHeroProps) {
           <div className="lg:w-1/3 h-full flex justify-end">
             {category.bannerImage && (
               <Image
-                src={category.bannerImage || "/placeholder.svg"}
+                src={getPublicImageUrl(category.bannerImage || "placeholder.svg", "Category_Images")}
                 alt={category.name}
                 width={500}
                 height={350}

@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { getPublicImageUrl } from "@/lib/supabase/image-utils"; // Import getPublicImageUrl
 
 export default function HeroSection() {
   return (
     <section
       className="relative text-white min-h-screen flex items-center justify-center"
       style={{
-        backgroundImage: "url('/Hero-image.jpg')",
+        backgroundImage: `url(${getPublicImageUrl("Hero-image.jpg", "Hero_Images")})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

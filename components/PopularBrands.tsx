@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { getBrands } from "@/lib/data"
+import { getPublicImageUrl } from "@/lib/supabase/image-utils"; // Import getPublicImageUrl
 
 export default async function PopularBrands() {
   const brands = await getBrands()
@@ -15,7 +16,7 @@ export default async function PopularBrands() {
               className="bg-white p-3 sm:p-4 rounded-lg shadow-none transition-shadow"
             >
               <Image
-                src={brand.logo || "/placeholder.svg"}
+                src={getPublicImageUrl(brand.logo || "placeholder.svg", "Brand_Logo_Images")}
                 alt={brand.name}
                 width={120}
                 height={60}

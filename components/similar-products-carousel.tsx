@@ -80,22 +80,22 @@ export default function SimilarProductsCarousel({ products }: SimilarProductsCar
             ))}
           </Swiper>
           {/* Custom Navigation Buttons for Swiper */}
-          <Button
+              <Button
             ref={prevRef} // Assign ref here
-            variant="ghost"
-            size="icon"
+                variant="ghost"
+                size="icon"
             className="swiper-button-prev absolute left-0 top-1/2 -translate-y-1/2  rounded-full bg-transparent hover:bg-transparent z-10"
             aria-label="Previous product"
-          >
-          </Button>
-          <Button
+              >
+              </Button>
+              <Button
             ref={nextRef} // Assign ref here
-            variant="ghost"
-            size="icon"
+                variant="ghost"
+                size="icon"
             className="swiper-button-next absolute right-0 top-1/2 -translate-y-1/2 rounded-full bg-transparent hover:bg-transparent z-10"
             aria-label="Next product"
-          >
-          </Button>
+              >
+              </Button>
         </div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { Facebook, Instagram, Twitter, Linkedin } from "lucide-react"
+import { getPublicImageUrl } from "@/lib/supabase/image-utils"; // Import getPublicImageUrl
 
 export default function Footer() {
   return (
@@ -22,7 +23,7 @@ export default function Footer() {
               <div className="flex items-center justify-center gap-1 bg-white border border-gray-300 rounded-md p-2 mb-6">
                 <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
                   <img 
-                    src="/EDMAX.png" 
+                    src={getPublicImageUrl("EDMAX.png", "Logo_Images")} 
                     alt="EDMAX Logo" 
                     className="h-12 w-auto"
                   />

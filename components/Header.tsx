@@ -24,19 +24,33 @@ import {
 import { useCart } from "@/context/cart-context"
 import { useWishlist } from "@/context/wishlist-context"
 import { useRouter, useSearchParams } from "next/navigation"; // Imported useRouter and useSearchParams
-import { useProductFilters } from "@/context/filter-context"; // Imported useProductFilters
+import { useFilter } from "@/context/filter-context"; // Imported useProductFilters
+import { createClient } from "@/lib/supabase/client"; // Import Supabase client
+import type { User } from "@supabase/supabase-js"; // Import User type
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"; // Import Avatar components
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"; // Import DropdownMenu components
 
 import { CartSidebar } from "./cart-sidebar"
 import { Category } from "@/lib/data"; // Import Category interface
+import { getPublicImageUrl } from "@/lib/supabase/image-utils"; // Import getPublicImageUrl
 
 
 export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false)
   const [searchInputValue, setSearchInputValue] = useState(""); // Local state for search input
+  const [user, setUser] = useState<User | null>(null); // State to hold user session
 
   const router = useRouter();
   const searchParams = useSearchParams();
+  const supabase = createClient(); // Initialize Supabase client
 
   const { itemCount: cartItemCount } = useCart()
   const { itemCount: wishlistItemCount } = useWishlist()
@@ -45,7 +59,27 @@ export default function Header() {
     updateFilter,
     allCategories,
     allProducts
-  } = useProductFilters();
+  } = useFilter();
+
+  // Fetch user session on component mount
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
+
+    // Listen for auth state changes
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user || null);
+      }
+    );
+
+    return () => {
+      authListener.subscription?.unsubscribe();
+    };
+  }, [supabase.auth]);
 
   // Sync local search input with context search query
   useEffect(() => {
@@ -79,6 +113,11 @@ export default function Header() {
     updateFilter("currentCategorySlug", "all-products"); // Go to generic all products page
     updateFilter("activeCategoryIds", []); // Clear active categories
     router.push(`/category/all-products?tags=${encodeURIComponent(tag)}`);
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/signin"); // Redirect to sign-in page after logout
   };
 
   const getChildCategories = (parentId: string | null) => {
@@ -152,7 +191,7 @@ export default function Header() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-1 -ml-4">
               <Image 
-                src="/EDMAX.png" 
+                src={getPublicImageUrl("EDMAX.png", "Logo_Images")} 
                 alt="EDMAX Logo" 
                 width={100}
                 height={100}
@@ -243,11 +282,34 @@ export default function Header() {
                 </Button>
               </Link>
 
-              <Link href="/signin" className="hidden sm:flex">
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="default" className="relative rounded-full bg-gray-100 cursor-pointer">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={user.user_metadata?.avatar_url || ""} alt={user.email || "User Avatar"} />
+                        <AvatarFallback>{user.email?.charAt(0)?.toUpperCase() || "U"}</AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => router.push("/order-history")}>
+                      Shopping History
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleLogout}>
+                      Log out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Link href="/signin" className="hidden sm:flex">
                 <Button variant="ghost" className="rounded-full border text-sm font-light cursor-pointer hover:bg-black hover:text-white px-6">
                   Login
                 </Button>
               </Link>
+              )}
             </div>
           </div>
 
@@ -299,24 +361,24 @@ export default function Header() {
                                   onClick={() => handleCategoryClick(childCategory.id)}
                                 >
                                   {childCategory.name}
-                                </h3>
-                                <div className="space-y-2">
+                              </h3>
+                              <div className="space-y-2">
                                   {getChildCategories(childCategory.id).map(grandchildCategory => (
-                                    <Link
+                                <Link
                                       key={grandchildCategory.id}
                                       href={`/category/${grandchildCategory.slug}`}
                                       className="block text-xs text-gray-600 hover:text-red-600" /* Reverted font size */
                                       onClick={() => handleCategoryClick(grandchildCategory.id)}
                                     >
                                       {grandchildCategory.name}
-                                    </Link>
+                                </Link>
                                   ))}
-                                </div>
+                            </div>
                               </div>
                             ))}
-                          </div>
-                        </NavigationMenuContent>
-                      </NavigationMenuItem>
+                        </div>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
                     ))}
                   </NavigationMenuList>
                 </NavigationMenu>

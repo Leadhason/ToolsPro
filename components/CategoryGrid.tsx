@@ -1,6 +1,7 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { getPublicImageUrl } from "@/lib/supabase/image-utils"; // Import getPublicImageUrl
 
 const categoryCards = [
   {
@@ -60,7 +61,7 @@ export default function CategoryGrid() {
           <div className="lg:row-span-2 relative group overflow-hidden rounded-lg cursor-pointer">
             <Link href={categoryCards[0].href}>
               <Image
-                src={categoryCards[0].image || "/placeholder.svg"}
+                src={getPublicImageUrl(categoryCards[0].image || "placeholder.svg", "Category_Images")}
                 alt={categoryCards[0].title}
                 width={600}
                 height={800}
@@ -88,7 +89,7 @@ export default function CategoryGrid() {
             <div key={card.id} className="relative group overflow-hidden rounded-lg cursor-pointer">
               <Link href={card.href}>
                 <Image
-                  src={card.image || "/placeholder.svg"}
+                  src={getPublicImageUrl(card.image || "placeholder.svg", "Category_Images")}
                   alt={card.title}
                   width={600}
                   height={400}

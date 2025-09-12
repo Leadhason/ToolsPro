@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { getPublicImageUrl } from "@/lib/supabase/image-utils"; // Import getPublicImageUrl
 
 export default function PaymentMethodsSection() {
   return (
@@ -9,36 +10,36 @@ export default function PaymentMethodsSection() {
       </p>
       <div className="flex flex-wrap gap-4 items-center">
         <Image
-          src="/payment-methods/cash-on-delivery.png"
+          src={getPublicImageUrl("cash-on-delivery.png", "Payment_Methods_Images")}
           alt="Cash on Delivery"
           width={60}
           height={30}
           className="object-contain"
         />
         <Image
-          src="/payment-methods/mtn-mobile-money.png"
+          src={getPublicImageUrl("mtn-mobile-money.png", "Payment_Methods_Images")}
           alt="MTN Mobile Money"
           width={60}
           height={30}
           className="h-6 object-contain"
         />
         <Image
-          src="/payment-methods/vodafone-cash.png"
+          src={getPublicImageUrl("vodafone-cash.png", "Payment_Methods_Images")}
           alt="Vodafone Cash"
           width={60}
           height={30}
           className="object-contain"
         />
         <Image
-          src="/payment-methods/airtel-tigo.png"
+          src={getPublicImageUrl("airtel-tigo.png", "Payment_Methods_Images")}
           alt="AirtelTigo"
           width={60}
           height={30}
           className="object-contain"
         />
-        <Image src="/payment-methods/visa.png" alt="Visa" width={60} height={30} className="object-contain" />
+        <Image src={getPublicImageUrl("visa.png", "Payment_Methods_Images")} alt="Visa" width={60} height={30} className="object-contain" />
         <Image
-          src="/payment-methods/mastercard.png"
+          src={getPublicImageUrl("mastercard.png", "Payment_Methods_Images")}
           alt="Mastercard"
           width={60}
           height={30}

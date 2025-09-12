@@ -7,9 +7,11 @@ import Image from "next/image"
 import Link from "next/link"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
+import { useRouter } from "next/navigation"
 
 export default function CartPage() {
   const { items, total, updateQuantity, removeFromCart } = useCart()
+  const router = useRouter()
 
   const freeShippingThreshold = 500
   const progressPercentage = Math.min((total / freeShippingThreshold) * 100, 100)
@@ -45,7 +47,9 @@ export default function CartPage() {
         {/* Free shipping progress */}
         {total < freeShippingThreshold && (
           <div className="mb-8 p-4 bg-green-50 rounded-lg">
-            <p className="text-xs font-light text-green-800 mb-2">Your order is eligible for free shipping!</p>
+            <p className="text-xs font-light text-green-800 mb-2">
+              You are GH₵{(freeShippingThreshold - total).toFixed(2)} away from FREE shipping!
+            </p>
             <div className="w-full bg-green-200 rounded-full h-2">
               <div
                 className="bg-green-600 h-2 rounded-full transition-all duration-300"
@@ -69,7 +73,7 @@ export default function CartPage() {
             {items.map((item) => (
               <div key={item.id} className="flex gap-4 p-4 border rounded-lg">
                 <Image
-                  src={item.image || "/placeholder.svg"}
+                  src={item.image}
                   alt={item.name}
                   width={100}
                   height={100}
@@ -135,7 +139,12 @@ export default function CartPage() {
                 <p>Taxes, discounts and shipping calculated at checkout.</p>
               </div>
 
-              <Button className="w-full bg-gray-800 hover:bg-gray-900 mb-3">Checkout</Button>
+              <Button
+                className="w-full bg-gray-800 hover:bg-gray-900 mb-3"
+                onClick={() => router.push("/checkout")}
+              >
+                Checkout
+              </Button>
 
               <Link href="/">
                 <Button variant="outline" className="w-full bg-transparent">

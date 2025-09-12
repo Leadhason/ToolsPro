@@ -15,14 +15,15 @@ export default function WishlistPage() {
   const { items, removeFromWishlist } = useWishlist()
   const { addToCart } = useCart()
 
-  const handleAddToCart = (item: any) => {
-    addToCart({
-      id: item.id,
+  const handleAddToCart = async (item: any) => {
+    await addToCart({
+      product_id: item.id, // Wishlist item ID is product ID
       name: item.name,
       price: item.price,
       image: item.image,
       brand: item.brand,
-    })
+      hoverImage: item.hoverImage, // Pass hoverImage if available
+    });
     toast.success(`${item.name} added to cart!`);
   }
 
@@ -61,8 +62,8 @@ export default function WishlistPage() {
                 variant="ghost"
                 size="icon"
                 className="absolute top-2 right-2 z-10 bg-white rounded-full shadow-md"
-                onClick={() => {
-                  removeFromWishlist(item.id);
+                onClick={async () => {
+                  await removeFromWishlist(item.id);
                   toast.info(`${item.name} removed from wishlist.`);
                 }}
               >
@@ -71,7 +72,7 @@ export default function WishlistPage() {
 
               <Link href={`/product/${item.id}`}>
                 <Image
-                  src={item.image || "/placeholder.svg"}
+                  src={item.image}
                   alt={item.name}
                   width={300}
                   height={200}
@@ -110,8 +111,8 @@ export default function WishlistPage() {
                   <Button
                     variant="outline"
                     className="w-full bg-transparent text-sm font-light cursor-pointer"
-                    onClick={() => {
-                      removeFromWishlist(item.id);
+                    onClick={async () => {
+                      await removeFromWishlist(item.id);
                       toast.info(`${item.name} removed from wishlist.`);
                     }}
                   >

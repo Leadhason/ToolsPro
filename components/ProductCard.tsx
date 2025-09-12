@@ -9,11 +9,11 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import type { Product } from "@/lib/data"
-import { products } from "@/lib/data" // Import products array
 import { useState } from "react"
 import { useCart } from "@/context/cart-context"
 import { useWishlist } from "@/context/wishlist-context"
 import { toast } from "sonner"; // Import toast from sonner
+import { getPublicImageUrl } from "@/lib/supabase/image-utils"; // Import getPublicImageUrl
 
 interface ProductCardProps {
   product: Product
@@ -32,18 +32,34 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    addToCart(product)
+    addToCart({
+      product_id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      brand: product.brand,
+      hoverImage: product.hoverImage, // Pass hoverImage if available
+    });
     toast.success(`${product.name} added to cart!`);
   }
 
-  const handleWishlistToggle = (e: React.MouseEvent) => {
+  const handleWishlistToggle = async (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
     if (isWishlisted) {
-      removeFromWishlist(product.id)
+      await removeFromWishlist(product.id)
       toast.info(`${product.name} removed from wishlist.`);
     } else {
-      addToWishlist(product)
+      await addToWishlist({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        brand: product.brand,
+        rating: product.rating,
+        reviewCount: product.reviewCount,
+        hoverImage: product.hoverImage,
+      })
       toast.success(`${product.name} added to wishlist!`);
     }
   }
@@ -57,13 +73,6 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
     }).format(price)
   }
 
-  // Function to get a fallback image if product.image is a placeholder or missing
-  const getFallbackImage = (productId: string, index: number) => {
-    const productIndex = products.findIndex(p => p.id === productId);
-    const fallbackImageIndex = (productIndex !== -1 ? productIndex : index) % products.length;
-    return products[fallbackImageIndex]?.image || "/placeholder.svg";
-  };
-
   if (viewMode === "list") {
     return (
       <div className="flex items-center gap-6 p-6 bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all duration-200">
@@ -71,7 +80,7 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
         <div className="relative w-24 h-24 flex-shrink-0">
           <Link href={`/product/${product.id}`}>
             <Image
-              src={product.image && !product.image.includes("placeholder.svg") ? product.image : getFallbackImage(product.id, 0)}
+              src={getPublicImageUrl(product.image, "Product_Images")}
               alt={product.name}
               fill
               className="object-cover rounded-lg"
@@ -79,14 +88,14 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
             />
           </Link>
           {/* Badges Container */}
-          {(product.isNew || product.discount) && (
+          {(product.tags.includes("new-arrival") || (product.discount && product.tags.includes("discount"))) && (
             <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
-          {product.isNew && (
+              {product.tags.includes("new-arrival") && (
                 <Badge className="bg-green-500 text-white text-xs font-medium px-2 py-1">
               New
             </Badge>
           )}
-          {product.discount && (
+              {product.discount && product.tags.includes("discount") && (
                 <Badge className="bg-red-500 text-white text-xs font-medium px-2 py-1">
               -{product.discount}%
             </Badge>
@@ -212,7 +221,7 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
 
         <Link href={`/product/${product.id}`}>
           <Image
-            src={isHovered && product.hoverImage ? product.hoverImage : (product.image && !product.image.includes("placeholder.svg") ? product.image : getFallbackImage(product.id, 0))}
+            src={isHovered && product.hoverImage ? getPublicImageUrl(product.hoverImage, "Product_Images") : getPublicImageUrl(product.image, "Product_Images")}
             alt={product.name}
             width={300}
             height={300}
@@ -221,12 +230,12 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
           />
         </Link>
         {/* Badges Container */}
-        {(product.discount || product.isNew) && (
+        {(product.tags.includes("new-arrival") || (product.discount && product.tags.includes("discount"))) && (
           <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
-        {product.discount && (
+            {product.discount && product.tags.includes("discount") && (
               <Badge className="bg-red-500 text-white text-xs">-{product.discount}%</Badge>
             )}
-            {product.isNew && <Badge className="bg-green-500 text-white text-xs">New</Badge>}
+            {product.tags.includes("new-arrival") && <Badge className="bg-green-500 text-white text-xs">New</Badge>}
           </div>
         )}
       </div>

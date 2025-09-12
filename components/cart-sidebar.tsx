@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { useCart } from "@/context/cart-context"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"; // Import useRouter
 
 interface CartSidebarProps {
   isOpen: boolean
@@ -53,7 +54,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
               {total < freeShippingThreshold && (
                 <div className="p-4 bg-green-50 border-b">
                   <p className="text-[10px] font-light text-center text-green-800 mb-2">
-                    Your order is eligible for free shipping!
+                    Add GH₵{remainingForFreeShipping.toFixed(2)} more for free shipping
                   </p>
                   <div className="w-full bg-green-200 rounded-full h-2">
                     <div
@@ -62,7 +63,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                     />
                   </div>
                   <p className="text-[10px] font-light text-center text-green-700 mt-1">
-                    Add GH₵{remainingForFreeShipping.toFixed(2)} more for free shipping
+                    You are GH₵{remainingForFreeShipping.toFixed(2)} away from FREE shipping!
                   </p>
                 </div>
               )}
@@ -81,7 +82,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                   <div key={item.id} className="flex gap-4 p-3">
                     <div className="relative">
                       <Image
-                        src={item.image || "/placeholder.svg?height=80&width=80&query=product"}
+                        src={item.image}
                         alt={item.name}
                         width={80}
                         height={80}
@@ -135,7 +136,11 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                 </div>
 
                 <div className="space-y-2">
-                  <Button className="w-full bg-gray-800 text-xs font-light hover:bg-gray-900">
+                  <Button className="w-full bg-gray-800 text-xs font-light hover:bg-gray-900"
+                    onClick={() => {
+                      router.push("/checkout");
+                      onClose();
+                    }}>
                     Checkout - GH₵{total.toFixed(2)}
                   </Button>
                 </div>

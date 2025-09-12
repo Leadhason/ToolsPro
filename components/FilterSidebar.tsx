@@ -146,14 +146,14 @@ export default function FilterSidebar({ className }: FilterSidebarProps) {
   );
 
   return (
-    <div className={`bg-white p-6 rounded-none h-full overflow-y-auto scrollbar-hide sticky top-4 ${className || ''}`}>
+    <div className={`bg-white p-6 rounded-none border-r border-gray-200 h-full overflow-y-auto scrollbar-hide sticky top-4 ${className || ''}`}>
       <div className="flex items-center justify-between mb-4">
         {hasActiveFilters && (
           <Button
             variant="ghost"
             size="sm"
             onClick={handleReset} // Use handleReset
-            className="text-md font-light text-blue-600 hover:text-blue-700 p-0 h-auto"
+            className="text-sm underline font-light text-blue-600 hover:text-blue-700 p-0 h-auto"
           >
             Clear all
           </Button>

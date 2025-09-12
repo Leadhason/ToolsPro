@@ -1,3 +1,6 @@
+import { getPublicImageUrl } from "./supabase/image-utils";
+import { getBaseUrl } from "@/lib/utils/get-base-url"; // Import getBaseUrl
+
 export interface Product {
   id: string
   name: string
@@ -15,6 +18,7 @@ export interface Product {
   tags: string[]; // Added for filtering by 'new-arrival', 'best-seller', 'discount'
   colors?: string[]
   detailImageOverlay?: string // New: for product detail page image overlay
+  stock_quantity?: number // Added stock_quantity
 }
 
 export interface Category {
@@ -22,9 +26,9 @@ export interface Category {
   name: string
   slug: string
   description: string
-  image: string
+  image?: string // Made optional as it might be in storage
   parentId?: string | null; // Added for hierarchy, null for root categories
-  bannerImage?: string // New: for category hero banner
+  bannerImage?: string // Made optional as it might be in storage
   bannerDescription?: string // New: for category hero banner
 }
 
@@ -65,9 +69,9 @@ export const categories: Category[] = [
     name: "Tools",
     slug: "tools",
     description: "Hand & Power Tools",
-    image: "/category-images/construction-worker-image-2.png",
+    image: "construction-worker-image-2.png",
     parentId: null,
-    bannerImage: "/category-images/mechanic-image.png",
+    bannerImage: "mechanic-image.png",
     bannerDescription:
       "Explore a comprehensive range of hand and power tools for every project, from DIY home repairs to professional construction. Find drills, saws, wrenches, and more from top brands.",
   },
@@ -76,7 +80,7 @@ export const categories: Category[] = [
     name: "Hand Tools",
     slug: "hand-tools",
     description: "Wrenches, Screwdrivers & More",
-    image: "/category-images/man-with-wrench.png", // Placeholder image, replace with actual
+    image: "man-with-wrench.png",
     parentId: "tools",
   },
   {
@@ -84,7 +88,7 @@ export const categories: Category[] = [
     name: "Power Tools",
     slug: "power-tools",
     description: "Drills, Saws & Sanders",
-    image: "/category-images/man-with-drill.png", // Placeholder image, replace with actual
+    image: "man-with-drill.png",
     parentId: "tools",
   },
   {
@@ -92,7 +96,7 @@ export const categories: Category[] = [
     name: "Measuring Tools",
     slug: "measuring-tools",
     description: "Tapes, Levels & Calipers",
-    image: "/category-images/measuring-tape.png", // Placeholder image, replace with actual
+    image: "measuring-tape.png",
     parentId: "tools",
   },
   {
@@ -100,9 +104,9 @@ export const categories: Category[] = [
     name: "Outdoor Equipment",
     slug: "outdoor-equipment",
     description: "Water Pumps, Generators & More",
-    image: "/category-images/man-and-woman.png",
+    image: "man-and-woman.png",
     parentId: null,
-    bannerImage: "/category-images/man-and-woman-painting.png",
+    bannerImage: "man-and-woman-painting.png",
     bannerDescription:
       "Equip yourself for any outdoor task with our robust selection of generators, water pumps, and garden tools. Power your projects and maintain your landscape with ease.",
   },
@@ -111,7 +115,7 @@ export const categories: Category[] = [
     name: "Generators",
     slug: "generators",
     description: "Portable & Standby Generators",
-    image: "/category-images/generator.png", // Placeholder image, replace with actual
+    image: "generator.png",
     parentId: "outdoor-equipment",
   },
   {
@@ -119,7 +123,7 @@ export const categories: Category[] = [
     name: "Water Pumps",
     slug: "water-pumps",
     description: "Submersible, Peripheral & Centrifugal Pumps",
-    image: "/category-images/water-pump.png", // Placeholder image, replace with actual
+    image: "water-pump.png",
     parentId: "outdoor-equipment",
   },
   {
@@ -127,7 +131,7 @@ export const categories: Category[] = [
     name: "Garden Tools",
     slug: "garden-tools",
     description: "Trimmers, Mowers & Shears",
-    image: "/category-images/garden-tools.png", // Placeholder image, replace with actual
+    image: "garden-tools.png",
     parentId: "outdoor-equipment",
   },
   {
@@ -135,9 +139,9 @@ export const categories: Category[] = [
     name: "Building Materials",
     slug: "building-materials",
     description: "Plumbing, Electricals & More",
-    image: "/category-images/construction-worker-image-1.png",
+    image: "construction-worker-image-1.png",
     parentId: null,
-    bannerImage: "/category-images/construction-worker-image-1.png",
+    bannerImage: "construction-worker-image-1.png",
     bannerDescription:
       "Build strong and reliable structures with our high-quality building materials. From plumbing and electrical supplies to essential hardware, we have everything you need for your construction projects.",
   },
@@ -146,7 +150,7 @@ export const categories: Category[] = [
     name: "Plumbing",
     slug: "plumbing",
     description: "Pipes, Fittings & Fixtures",
-    image: "/category-images/plumbing.png", // Placeholder image, replace with actual
+    image: "plumbing.png",
     parentId: "building-materials",
   },
   {
@@ -154,7 +158,7 @@ export const categories: Category[] = [
     name: "Electrical",
     slug: "electrical",
     description: "Wires, Switches & Sockets",
-    image: "/category-images/electrical.png", // Placeholder image, replace with actual
+    image: "electrical.png",
     parentId: "building-materials",
   },
   {
@@ -162,7 +166,7 @@ export const categories: Category[] = [
     name: "Hardware",
     slug: "hardware",
     description: "Fasteners, Hinges & Brackets",
-    image: "/category-images/hardware.png", // Placeholder image, replace with actual
+    image: "hardware.png",
     parentId: "building-materials",
   },
   {
@@ -170,9 +174,9 @@ export const categories: Category[] = [
     name: "Home Essentials & Decor",
     slug: "home-essentials",
     description: "Bath, Kitchen, Lighting & More",
-    image: "/category-images/in kitchen.png",
+    image: "in kitchen.png",
     parentId: null,
-    bannerImage: "/category-images/construction-worker-image-2.png",
+    bannerImage: "construction-worker-image-2.png",
     bannerDescription:
       "Transform your living space with our collection of home essentials and decor. Discover stylish and functional items for your kitchen, bathroom, and lighting needs to create the perfect ambiance.",
   },
@@ -181,7 +185,7 @@ export const categories: Category[] = [
     name: "Kitchen",
     slug: "kitchen",
     description: "Appliances, Cookware & Utensils",
-    image: "/category-images/kitchen.png", // Placeholder image, replace with actual
+    image: "kitchen.png",
     parentId: "home-essentials",
   },
   {
@@ -189,7 +193,7 @@ export const categories: Category[] = [
     name: "Bathroom",
     slug: "bathroom",
     description: "Fixtures, Accessories & Storage",
-    image: "/category-images/bathroom.png", // Placeholder image, replace with actual
+    image: "bathroom.png",
     parentId: "home-essentials",
   },
   {
@@ -197,7 +201,7 @@ export const categories: Category[] = [
     name: "Lighting",
     slug: "lighting",
     description: "Lamps, Bulbs & Fixtures",
-    image: "/category-images/lighting.png", // Placeholder image, replace with actual
+    image: "lighting.png",
     parentId: "home-essentials",
   },
 ];
@@ -209,67 +213,72 @@ export const products: Product[] = [
     name: "Ingco Peripheral Water Pumps - 0.5HP, 0.75HP & 1HP - VPM Series",
     description: "High-quality peripheral water pump for residential use",
     price: 670.0,
-    image: "/products/image-1.jpeg",
-    hoverImage: "/products/image-2.jpeg", // Added hover image
+    image: "image-1.jpeg",
+    hoverImage: "image-2.jpeg",
     categoryId: "water-pumps",
     brand: "Ingco",
     rating: 4.5,
     reviewCount: 12,
     inStock: true,
     tags: ["new-arrival", "best-seller"],
+    stock_quantity: 100,
   },
   {
     id: "2",
     name: "Ingco Industrial Heavy Duty Brass Padlock",
     description: "Durable brass padlock for industrial applications",
     price: 220.0,
-    image: "/products/image-2.jpeg",
-    hoverImage: "/products/image-1.jpeg", // Added hover image
+    image: "image-2.jpeg",
+    hoverImage: "image-1.jpeg",
     categoryId: "hand-tools",
     brand: "Ingco",
     inStock: true,
     tags: [],
+    stock_quantity: 50,
   },
   {
     id: "3",
     name: "Ingco Gasoline Grass Trimmer & Bush Cutter 2HP - GBC543421",
     description: "Powerful grass trimmer for lawn maintenance",
     price: 2030.0,
-    image: "/products/image-3.jpeg",
-    hoverImage: "/products/image-4.jpeg", // Added hover image
+    image: "image-3.jpeg",
+    hoverImage: "image-4.jpeg",
     categoryId: "garden-tools",
     brand: "Ingco",
     rating: 4.0,
     reviewCount: 8,
     inStock: true,
     tags: ["best-seller"],
+    stock_quantity: 20,
   },
   {
     id: "4",
     name: "Ingco Safety Helmets – Durable PVC Protection (Yellow, Blue, White, Red)",
     description: "Professional safety helmets in multiple colors",
     price: 50.0,
-    image: "/products/image-4.jpeg",
-    hoverImage: "/products/image-5.jpeg", // Added hover image
+    image: "image-4.jpeg",
+    hoverImage: "image-5.jpeg",
     categoryId: "tools", // Assuming safety helmets fall under general tools or a specific safety category
     brand: "Ingco",
     colors: ["yellow", "blue", "white", "red"],
     inStock: true,
     tags: [],
+    stock_quantity: 15,
   },
   {
     id: "5",
     name: "Ingco Knitted & PVC Dots Gloves - Size 10 (XL) – HGVK05",
     description: "Comfortable work gloves with PVC dots for grip",
     price: 7.0,
-    image: "/products/image-5.jpeg",
-    hoverImage: "/products/image-3.jpeg", // Added hover image
+    image: "image-5.jpeg",
+    hoverImage: "image-3.jpeg",
     categoryId: "tools",
     brand: "Ingco",
     rating: 5.0,
     reviewCount: 15,
     inStock: true,
     tags: ["new-arrival"],
+    stock_quantity: 30,
   },
   // Total Tools
   {
@@ -277,64 +286,69 @@ export const products: Product[] = [
     name: "Total Gasoline Generator 9.0KW - TP190006",
     description: "Powerful gasoline generator for backup power",
     price: 13750.0,
-    image: "/products/image-6.jpeg",
-    hoverImage: "/products/image-7.jpeg", // Added hover image
+    image: "image-6.jpeg",
+    hoverImage: "image-7.jpeg",
     categoryId: "generators",
     brand: "Total Tools",
     inStock: true,
     tags: ["best-seller"],
+    stock_quantity: 8,
   },
   {
     id: "7",
     name: "Total Rotary Hammer 650W SDS-Plus - TH306236",
     description: "Professional rotary hammer for drilling",
     price: 820.0,
-    image: "/products/image-7.jpeg",
-    hoverImage: "/products/image-8.jpeg", // Added hover image
+    image: "image-7.jpeg",
+    hoverImage: "image-8.jpeg",
     categoryId: "power-tools",
     brand: "Total Tools",
     rating: 4.5,
     reviewCount: 6,
     inStock: true,
     tags: ["new-arrival"],
+    stock_quantity: 12,
   },
   {
     id: "8",
     name: "Total High Pressure Washer 1400W - TGT11316",
     description: "High-pressure washer for cleaning tasks",
     price: 1090.0,
-    image: "/products/image-8.jpeg",
-    hoverImage: "/products/image-9.jpeg", // Added hover image
+    image: "image-8.jpeg",
+    hoverImage: "image-9.jpeg",
     categoryId: "outdoor-equipment", // General outdoor equipment
     brand: "Total Tools",
     rating: 4.0,
     reviewCount: 4,
     inStock: true,
     tags: [],
+    stock_quantity: 25,
   },
   {
     id: "9",
     name: "Total Wire Cup Twist Brush",
     description: "Wire brush for surface preparation",
     price: 30.0,
-    image: "/products/image-9.jpeg",
-    hoverImage: "/products/image-9.jpeg", // Added hover image
+    image: "image-9.jpeg",
+    hoverImage: "image-9.jpeg",
     categoryId: "hand-tools", // Assuming this is a hand tool
     brand: "Total Tools",
     inStock: true,
     tags: [],
+    stock_quantity: 40,
   },
   {
     id: "10",
     name: "Total Latex Gloves - TSP13102",
     description: "Protective latex gloves for various tasks",
     price: 20.0,
-    image: "/products/image-9.jpeg", // Using existing image from sync
-    hoverImage: "/products/image-9.jpeg", // Added hover image
+    image: "image-9.jpeg", // Using existing image from sync
+    hoverImage: "image-9.jpeg", // Added hover image
     categoryId: "tools",
     brand: "Total Tools",
     inStock: true,
     tags: [],
+    stock_quantity: 60,
   },
   // Home Appliances
   {
@@ -344,12 +358,13 @@ export const products: Product[] = [
     price: 510.0,
     originalPrice: 800.0,
     discount: 36,
-    image: "/products/image-3.jpeg",
-    hoverImage: "/products/image-6.jpeg", // Added hover image
+    image: "image-3.jpeg",
+    hoverImage: "image-6.jpeg", // Added hover image
     categoryId: "kitchen",
     brand: "Decakila",
     tags: ["new-arrival", "discount"], // Is new and has discount
     inStock: true,
+    stock_quantity: 10,
   },
   {
     id: "12",
@@ -358,14 +373,15 @@ export const products: Product[] = [
     price: 2400.0,
     originalPrice: 3444.0,
     discount: 30,
-    image: "/products/image-6.jpeg",
-    hoverImage: "/products/image-7.jpeg", // Added hover image
+    image: "image-6.jpeg",
+    hoverImage: "image-7.jpeg", // Added hover image
     categoryId: "bathroom",
     brand: "Ariston",
     rating: 4.5,
     reviewCount: 8,
     inStock: true,
     tags: ["discount"],
+    stock_quantity: 15,
   },
   {
     id: "13",
@@ -374,12 +390,13 @@ export const products: Product[] = [
     price: 28000.0,
     originalPrice: 33600.0,
     discount: 17,
-    image: "/products/image-7.jpeg",
-    hoverImage: "/products/image-1.jpeg", // Added hover image
+    image: "image-7.jpeg",
+    hoverImage: "image-1.jpeg", // Added hover image
     categoryId: "bathroom",
     brand: "Ariston",
     inStock: true,
     tags: ["best-seller", "discount"],
+    stock_quantity: 8,
   },
   {
     id: "14",
@@ -388,14 +405,15 @@ export const products: Product[] = [
     price: 90.0,
     originalPrice: 130.0,
     discount: 31,
-    image: "/products/image-1.jpeg",
-    hoverImage: "/products/image-2.jpeg", // Added hover image
+    image: "image-1.jpeg",
+    hoverImage: "image-2.jpeg", // Added hover image
     categoryId: "kitchen",
     brand: "Decakila",
     rating: 4.2,
     reviewCount: 18,
     inStock: true,
     tags: ["discount"],
+    stock_quantity: 20,
   },
   // Karcher Products
   {
@@ -403,26 +421,28 @@ export const products: Product[] = [
     name: "Karcher Stone And Paving Cleaner 5L - RM 623",
     description: "Professional stone and paving cleaner",
     price: 370.0,
-    image: "/products/image-2.jpeg",
-    hoverImage: "/products/image-3.jpeg", // Added hover image
+    image: "image-2.jpeg",
+    hoverImage: "image-3.jpeg", // Added hover image
     categoryId: "outdoor-equipment",
     brand: "Karcher",
     rating: 4.8,
     reviewCount: 12,
     inStock: true,
     tags: [],
+    stock_quantity: 10,
   },
   {
     id: "16",
     name: "Karcher K3 High pressure Washer 1600W 120 Bar",
     description: "High-pressure washer for home use",
     price: 4000.0,
-    image: "/products/image-3.jpeg",
-    hoverImage: "/products/image-4.jpeg", // Added hover image
+    image: "image-3.jpeg",
+    hoverImage: "image-4.jpeg", // Added hover image
     categoryId: "outdoor-equipment",
     brand: "Karcher",
     inStock: true,
     tags: ["best-seller"],
+    stock_quantity: 12,
   },
   // Building Essentials (New additions)
   {
@@ -430,60 +450,65 @@ export const products: Product[] = [
     name: "Schneider 3 Pin Rounded 15AMPS Plug Top",
     description: "High-quality electrical plug for home use",
     price: 50.0,
-    image: "/products/image-1.jpeg", // Replaced placeholder
-    hoverImage: "/products/image-2.jpeg", // Replaced placeholder
+    image: "image-1.jpeg", // Replaced placeholder
+    hoverImage: "image-2.jpeg", // Replaced placeholder
     categoryId: "electrical",
     brand: "Schneider",
     inStock: false,
     tags: ["new-arrival"],
+    stock_quantity: 50,
   },
   {
     id: "18",
     name: "Black Metal Old Wood Cuboid Island Chandelier Ceiling Light 44E27 - L800mm",
     description: "Elegant chandelier for modern homes",
     price: 4300.0,
-    image: "/products/image-3.jpeg", // Replaced placeholder
-    hoverImage: "/products/image-4.jpeg", // Replaced placeholder
+    image: "image-3.jpeg", // Replaced placeholder
+    hoverImage: "image-4.jpeg", // Replaced placeholder
     categoryId: "lighting",
     brand: "Generic",
     inStock: true,
     tags: [],
+    stock_quantity: 25,
   },
   {
     id: "19",
     name: "Tanaro Dark Grey Vintage E27 Outdoor Wall Lantern - 40W",
     description: "Vintage outdoor wall lantern",
     price: 420.0,
-    image: "/products/image-19.jpeg",
-    hoverImage: "/products/image-1.jpeg", // Added hover image
+    image: "image-19.jpeg",
+    hoverImage: "image-1.jpeg", // Added hover image
     categoryId: "lighting",
     brand: "Tanaro",
     inStock: false,
     tags: ["new-arrival"],
+    stock_quantity: 10,
   },
   {
     id: "20",
     name: "Bosch Series 4 Semi-Integrated Dish Washer 60cm - SMI63D05GC",
     description: "Efficient dishwasher for modern kitchens",
     price: 16700.0,
-    image: "/products/image-5.jpeg", // Replaced placeholder
-    hoverImage: "/products/image-6.jpeg", // Replaced placeholder
+    image: "image-5.jpeg", // Replaced placeholder
+    hoverImage: "image-6.jpeg", // Replaced placeholder
     categoryId: "kitchen",
     brand: "Bosch",
     inStock: true,
     tags: ["best-seller"],
+    stock_quantity: 15,
   },
   {
     id: "21",
     name: "Multi-Arm 13 Globe Dimpled Ceiling Light Elegant Gold",
     description: "Elegant multi-arm ceiling light",
     price: 2800.0,
-    image: "/products/image-7.jpeg", // Replaced placeholder
-    hoverImage: "/products/image-8.jpeg", // Replaced placeholder
+    image: "image-7.jpeg", // Replaced placeholder
+    hoverImage: "image-8.jpeg", // Replaced placeholder
     categoryId: "lighting",
     brand: "Generic",
     inStock: true,
     tags: [],
+    stock_quantity: 20,
   },
   // Karcher Additional Products (New additions)
   {
@@ -491,36 +516,39 @@ export const products: Product[] = [
     name: "Karcher Cordless Battery Powered Vacuum Cleaner Premium OurFamily- VC 6",
     description: "Cordless vacuum cleaner for home use",
     price: 11000.0,
-    image: "/products/image-9.jpeg", // Replaced placeholder
-    hoverImage: "/products/imqge-9.jpeg", // Replaced placeholder (using typo image for variety)
+    image: "image-9.jpeg", // Replaced placeholder
+    hoverImage: "imqge-9.jpeg", // Assuming this typo is intentional from mock data for variety
     categoryId: "home-essentials", // Assuming this is a general home essential
     brand: "Karcher",
     inStock: true,
     tags: ["new-arrival"],
+    stock_quantity: 8,
   },
   {
     id: "23",
     name: "Karcher Car Shampoo RM 619, 5L",
     description: "Professional car shampoo",
     price: 290.0,
-    image: "/products/timage-10.png", // Replaced placeholder
-    hoverImage: "/products/image-1.jpeg", // Replaced placeholder (cycling)
+    image: "timage-10.png", // Assuming this is intentional from mock data
+    hoverImage: "image-1.jpeg",
     categoryId: "outdoor-equipment", // Part of outdoor cleaning
     brand: "Karcher",
     inStock: true,
     tags: [],
+    stock_quantity: 30,
   },
   {
     id: "24",
     name: "Karcher Hose Set With Hose Hanger, 15 M",
     description: "Complete hose set with hanger",
     price: 920.0,
-    image: "/products/image-2.jpeg", // Replaced placeholder (cycling)
-    hoverImage: "/products/image-3.jpeg", // Replaced placeholder (cycling)
+    image: "image-2.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "image-3.jpeg", // Replaced placeholder (cycling)
     categoryId: "garden-tools", // Garden related
     brand: "Karcher",
     inStock: true,
     tags: [],
+    stock_quantity: 40,
   },
   // Lighting Products (New additions)
   {
@@ -528,66 +556,71 @@ export const products: Product[] = [
     name: "Ingco Waterproof Rechargeable LED Flashlight 460 Lumens with 6 Light Modes – HCFL1865051",
     description: "Professional LED flashlight with multiple modes",
     price: 380.0,
-    image: "/products/image-4.jpeg", // Replaced placeholder (cycling)
-    hoverImage: "/products/image-5.jpeg", // Replaced placeholder (cycling)
+    image: "image-4.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "image-5.jpeg", // Replaced placeholder (cycling)
     categoryId: "lighting",
     brand: "Ingco",
     rating: 4.5,
     reviewCount: 8,
     inStock: true,
     tags: ["new-arrival"],
+    stock_quantity: 20,
   },
   {
     id: "26",
     name: "C-Torch 3W White & Warm Spotlight",
     description: "Compact LED spotlight",
     price: 100.0,
-    image: "/products/image-6.jpeg", // Replaced placeholder (cycling)
-    hoverImage: "/products/image-7.jpeg", // Replaced placeholder (cycling)
+    image: "image-6.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "image-7.jpeg", // Replaced placeholder (cycling)
     categoryId: "lighting",
     brand: "C-Torch",
     rating: 4.0,
     reviewCount: 5,
     inStock: true,
     tags: [],
+    stock_quantity: 15,
   },
   {
     id: "27",
     name: "Artu Black And Gold Outdoor Garden Pathway Lamp Post - 3 X 40W",
     description: "Elegant outdoor pathway lamp",
     price: 2900.0,
-    image: "/products/image-8.jpeg", // Replaced placeholder (cycling)
-    hoverImage: "/products/image-9.jpeg", // Replaced placeholder (cycling)
+    image: "image-8.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "image-9.jpeg", // Replaced placeholder (cycling)
     categoryId: "lighting",
     brand: "Artu",
     inStock: true,
     tags: ["best-seller"],
+    stock_quantity: 10,
   },
   {
     id: "28",
     name: "C-Torch Round Surface Mount Led Panel Light",
     description: "Modern LED panel light",
     price: 180.0,
-    image: "/products/imqge-9.jpeg", // Replaced placeholder (cycling)
-    hoverImage: "/products/timage-10.png", // Replaced placeholder (cycling)
+    image: "image-9.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "image-10.png", // Replaced placeholder (cycling)
     categoryId: "lighting",
     brand: "C-Torch",
     inStock: true,
     tags: [],
+    stock_quantity: 20,
   },
   {
     id: "29",
     name: "Ingco Round LED Panel Light – 8W & 24W with Daylight Color – HDL1005081 & HDL2225241",
     description: "Round LED panel with daylight color",
     price: 40.0,
-    image: "/products/image-1.jpeg", // Replaced placeholder (cycling)
-    hoverImage: "/products/image-2.jpeg", // Replaced placeholder (cycling)
+    image: "image-1.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "image-2.jpeg", // Replaced placeholder (cycling)
     categoryId: "lighting",
     brand: "Ingco",
     rating: 4.2,
     reviewCount: 12,
     inStock: true,
     tags: ["new-arrival"],
+    stock_quantity: 15,
   },
   // New Arrivals (New additions) - already updated with tags
   {
@@ -597,24 +630,26 @@ export const products: Product[] = [
     price: 420.0,
     originalPrice: 650.0,
     discount: 35,
-    image: "/products/image-3.jpeg", // Replaced placeholder (cycling)
-    hoverImage: "/products/image-4.jpeg", // Replaced placeholder (cycling)
+    image: "image-3.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "image-4.jpeg", // Replaced placeholder (cycling)
     categoryId: "power-tools",
     brand: "Ingco",
     tags: ["new-arrival", "discount", "best-seller"], // Is new and has discount
     inStock: true,
+    stock_quantity: 10,
   },
   {
     id: "31",
     name: "Ingco Cordless Spray Gun - CSGL12004",
     description: "Cordless spray gun for painting",
     price: 510.0,
-    image: "/products/image-5.jpeg", // Replaced placeholder (cycling)
-    hoverImage: "/products/image-6.jpeg", // Replaced placeholder (cycling)
+    image: "image-5.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "image-6.jpeg", // Replaced placeholder (cycling)
     categoryId: "power-tools",
     brand: "Ingco",
-    tags: ["new-arrival"],
     inStock: true,
+    tags: ["new-arrival"],
+    stock_quantity: 12,
   },
   {
     id: "32",
@@ -623,96 +658,104 @@ export const products: Product[] = [
     price: 70.0,
     originalPrice: 160.0,
     discount: 56,
-    image: "/products/image-7.jpeg", // Replaced placeholder (cycling)
-    hoverImage: "/products/image-8.jpeg", // Replaced placeholder (cycling)
+    image: "image-7.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "image-8.jpeg", // Replaced placeholder (cycling)
     categoryId: "electrical",
     brand: "Ingco",
     inStock: true,
     tags: ["discount"],
+    stock_quantity: 20,
   },
   {
     id: "33",
     name: "Wadfow PH2+PH2 65mm Impact Screwdriver Bit Set - WSV3K62",
     description: "Impact screwdriver bit set",
     price: 10.0,
-    image: "/products/image-9.jpeg", // Replaced placeholder (cycling)
-    hoverImage: "/products/imqge-9.jpeg", // Replaced placeholder (cycling)
+    image: "image-9.jpeg", // Replaced placeholder (cycling)
+    hoverImage: "imqge-9.jpeg", // Assuming this typo is intentional from mock data for variety
     categoryId: "hand-tools", // Assuming screwdrivers are hand tools
     brand: "Wadfow",
-    tags: ["new-arrival"],
     inStock: true,
+    tags: ["new-arrival"],
+    stock_quantity: 30,
   },
   {
     id: "34",
     name: "Wadfow 31 Pieces Precision Screwdriver Set - WSS1J31",
     description: "Precision screwdriver set",
     price: 40.0,
-    image: "/products/timage-10.png", // Replaced placeholder (cycling)
-    hoverImage: "/products/image-1.jpeg", // Replaced placeholder (cycling)
+    image: "timage-10.png",
+    hoverImage: "image-1.jpeg",
     categoryId: "hand-tools",
     brand: "Wadfow",
     inStock: true,
     tags: ["best-seller"],
+    stock_quantity: 40,
   },
   {
     id: "35",
     name: "Total High Pressure Washer 2500W - TGT11246",
     description: "Powerful high pressure washer with induction motor",
     price: 3320.0,
-    image: "/products/timage-10.png",
-    detailImageOverlay: "/product-details/total-pressure-washer-overlay.png", // Specific overlay image
+    image: "timage-10.png",
+    detailImageOverlay: "total-pressure-washer-overlay.png",
     categoryId: "water-pumps",
     brand: "Total Tools",
     rating: 4.5,
     reviewCount: 896,
     inStock: true,
     tags: ["best-seller"],
+    stock_quantity: 10,
   },
   {
     id: "36",
     name: "Total 5m Quick Connect High-Pressure Hose - TGTHPH526",
     description: "5-meter quick connect high-pressure hose",
     price: 140.0,
-    image: "/products/image-2.jpeg", // Replaced placeholder (cycling)
+    image: "image-2.jpeg",
     categoryId: "water-pumps",
     brand: "Total Tools",
     inStock: true,
     tags: [],
+    stock_quantity: 50,
   },
   {
     id: "37",
     name: "Total Gasoline High Pressure Washer 282Bar 8.5HP - TGT250306",
     description: "Gasoline high pressure washer for heavy duty use",
     price: 10000.0,
-    image: "/products/image-3.jpeg", // Replaced placeholder (cycling)
+    image: "image-3.jpeg",
     categoryId: "water-pumps",
     brand: "Total Tools",
     inStock: true,
     tags: ["new-arrival", "discount"],
     discount: 15,
+    stock_quantity: 8,
   },
   {
     id: "38",
     name: "Silverline High Pressure Washer 2100W 165Bar - 943676",
     description: "High pressure washer with powerful motor",
     price: 7700.0,
-    image: "/products/image-4.jpeg", // Replaced placeholder (cycling)
+    image: "image-4.jpeg",
     categoryId: "water-pumps",
     brand: "Silverline",
     inStock: true,
     tags: [],
+    stock_quantity: 15,
   },
   {
     id: "39",
     name: "Total Li-ion Cordless High Pressure Washer 24.8 Bar 20V - TPWLI20084",
     description: "Cordless high pressure washer for portable cleaning",
     price: 1500.0,
-    image: "/products/image-5.jpeg", // Replaced placeholder (cycling)
+    image: "image-5.jpeg",
     categoryId: "water-pumps",
     brand: "Total Tools",
     inStock: true,
     tags: ["best-seller", "discount"],
     discount: 10,
+    stock_quantity: 10,
   },
 ];
 
@@ -726,7 +769,7 @@ const reviews: Review[] = [
     author: "Ruth Ann",
     verified: true,
     content: "Great kettle, heats water quickly and efficiently.",
-    productImage: products.find(p => p.name === "Decakila 1.8L Stainless Steel Electric Kettle 1500W - KEKT031M")?.image || "/placeholder.svg",
+    productImage: getPublicImageUrl("image-1.jpeg"), // Use direct image filename from storage
     supplyMasterReply: {
       content:
         "Hi Ruth Ann, thank you for taking the time to leave a review for our Decakila 1.8L Stainless Steel Electric Kettle. We are excited to hear that you had a positive experience with us and that our delivery was fast. We strive to provide efficient and timely service to all of our customers. Thank you for choosing EDMAX! Have a great day!",
@@ -741,7 +784,7 @@ const reviews: Review[] = [
     author: "OWUSU RICHMOND",
     verified: true,
     content: "Nice\nBut yet to use",
-    productImage: products.find(p => p.name === "Decakila Triple Burner Gas Stove - KMGS009B")?.image || "/placeholder.svg",
+    productImage: getPublicImageUrl("image-3.jpeg"), // Use direct image filename from storage
     supplyMasterReply: {
       content:
         "Thank you for your review, Osei! We\'re glad to hear that you find our Decakila Double Hot Plate to be very nice and good for cooking. Happy cooking!",
@@ -756,7 +799,7 @@ const reviews: Review[] = [
     author: "Rollie Khay",
     verified: true,
     content: "Safety goggles\nFantastic PPE that help me during working",
-    productImage: products.find(p => p.name === "Wadlow Safety Goggles - WSG2801")?.image || "/placeholder.svg",
+    productImage: getPublicImageUrl("image-4.jpeg"), // Use direct image filename from storage
     supplyMasterReply: {
       content:
         "Hi Rollie! Thank you for your positive review of our Wadlow Safety Goggles. We\'re so glad to hear that they have been a great help to you during your work. Your safety is our top priority and we\'re happy to provide you with reliable PPE. Thank you for choosing EDMAX! Stay safe.",
@@ -771,7 +814,7 @@ const reviews: Review[] = [
     author: "Michael Kwofie Keelson",
     verified: true,
     content: "Good\nDelivery was fast",
-    productImage: products.find(p => p.name === "Akfix Waterguard Acrylic Waterproofing Membrane - EM600")?.image || "/placeholder.svg",
+    productImage: getPublicImageUrl("image-1.jpeg"), // Use direct image filename from storage
     supplyMasterReply: {
       content:
         "Hi Michael, thank you for taking the time to leave a review for our Akfix Waterguard Acrylic Waterproofing Membrane. We are excited to hear that you had a positive experience with us and that our delivery was fast. We strive to provide efficient and timely service to all of our customers. Thank you for choosing EDMAX! Have a great day!",
@@ -786,7 +829,7 @@ const reviews: Review[] = [
     author: "Osei Evans",
     verified: true,
     content: "Very nice and very good for cooking",
-    productImage: products.find(p => p.name === "Decakila Double Hot Plate 2000W - KECC002B")?.image || "/placeholder.svg",
+    productImage: getPublicImageUrl("image-5.jpeg"), // Use direct image filename from storage
     supplyMasterReply: {
       content:
         "Thank you for your review, Osei! We\'re glad to hear that you find our Decakila Double Hot Plate to be very nice and good for cooking. Happy cooking!",
@@ -801,9 +844,9 @@ const reviews: Review[] = [
     author: "LERA KATIMBA",
     verified: true,
     content: "Kumtel Digital Scale 260x260mm - HDB 02 HDB 03",
-    productImage: products.find(p => p.name === "Kumtel Digital Scale 260x260mm - HDB 02 HDB 03")?.image || "/placeholder.svg",
+    productImage: getPublicImageUrl("image-6.jpeg"), // Use direct image filename from storage
   },
-]
+];
 
 // New interface for product detail accordion content
 export interface ProductAccordionDetail {
@@ -850,8 +893,11 @@ export async function getProductDetailAccordions(productId: string): Promise<Pro
 }
 
 export async function getReviews(): Promise<Review[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate API delay
-  return reviews;
+  const response = await fetch(`${getBaseUrl()}/api/reviews`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch reviews');
+  }
+  return response.json();
 }
 
 // New interface for contact help cards
@@ -1026,112 +1072,116 @@ export async function getCategoryCards(): Promise<CategoryCard[]> {
 
 // API functions
 export async function getProducts(): Promise<Product[]> {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  return products
+  const response = await fetch(`${getBaseUrl()}/api/products`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch products');
+  }
+  return response.json();
 }
 
 export async function getProductsByCategory(categoryId: string): Promise<Product[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate API delay
-  return products.filter((product) => product.categoryId === categoryId);
+  const response = await fetch(`${getBaseUrl()}/api/products?categorySlug=${categoryId}`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch products for category ${categoryId}`);
+  }
+  return response.json();
 }
 
 export async function getProductsByBrand(brand: string): Promise<Product[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  return products.filter((product) => product.brand.toLowerCase() === brand.toLowerCase())
+  const response = await fetch(`${getBaseUrl()}/api/products?brand=${brand}`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch products for brand ${brand}`);
+  }
+  return response.json();
 }
 
 export async function getProduct(id: string): Promise<Product | null> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  return products.find((product) => product.id === id) || null
+  const response = await fetch(`${getBaseUrl()}/api/products/${id}`);
+  if (!response.ok) {
+    if (response.status === 404) return null;
+    throw new Error(`Failed to fetch product with ID ${id}`);
+  }
+  return response.json();
 }
 
 export async function getCategories(): Promise<Category[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  return categories
+  const response = await fetch(`${getBaseUrl()}/api/categories`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch categories');
+  }
+  return response.json();
 }
 
 export async function getBrands(): Promise<Brand[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  return brands
+  const response = await fetch(`${getBaseUrl()}/api/brands`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch brands');
+  }
+  return response.json();
 }
 
 export async function getNewArrivals(): Promise<Product[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate API delay
-  return products.filter((product) => product.tags.includes("new-arrival"));
+  const response = await fetch(`${getBaseUrl()}/api/products?tags=new-arrival`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch new arrivals');
+  }
+  return response.json();
 }
 
 export async function getProductsByTag(tag: string): Promise<Product[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate API delay
-  return products.filter((product) => product.tags.includes(tag));
+  const response = await fetch(`${getBaseUrl()}/api/products?tags=${tag}`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch products by tag ${tag}`);
+  }
+  return response.json();
 }
 
 export async function getBuildingEssentials(): Promise<Product[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  return products
-    .filter((product) => product.categoryId === "building-materials" || product.categoryId === "home-essentials")
-    .slice(0, 5)
+  // This function needs to fetch from the API. We can either make multiple API calls
+  // or modify the API to accept multiple category IDs. For now, let's fetch all products
+  // and filter, similar to the original mock, but use the API to get all products.
+  // A better solution would be to enhance the /api/products endpoint to accept multiple category IDs.
+  const response = await fetch(`${getBaseUrl()}/api/products?categorySlug=building-materials&categorySlug=home-essentials`); // Pass multiple category slugs if API supports it
+  if (!response.ok) {
+    throw new Error('Failed to fetch building essentials');
+  }
+  const allProducts = await response.json();
+  return allProducts.slice(0, 5);
 }
 
 export async function getLightingProducts(): Promise<Product[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  return products.filter(
-    (product) =>
-      product.name.toLowerCase().includes("light") ||
-      product.name.toLowerCase().includes("led") ||
-      product.name.toLowerCase().includes("lamp") ||
-      product.name.toLowerCase().includes("torch"),
-  )
+  const response = await fetch(`${getBaseUrl()}/api/products?searchQuery=light&searchQuery=led&searchQuery=lamp&searchQuery=torch`); // Example: pass multiple search queries
+  if (!response.ok) {
+    throw new Error('Failed to fetch lighting products');
+  }
+  return response.json();
 }
 
 export async function getSimilarProducts(productId: string): Promise<Product[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  const currentProduct = products.find((p) => p.id === productId)
-  if (!currentProduct) return []
-
-  // Return products from the same category, excluding the current product
-  return products.filter((p) => p.categoryId === currentProduct.categoryId && p.id !== productId).slice(0, 5) // Limit to 5 similar products
+  const response = await fetch(`${getBaseUrl()}/api/products/similar/${productId}`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch similar products for ${productId}`);
+  }
+  return response.json();
 }
 
 // New function to get all images for a product, replacing placeholders with actual images
 export async function getProductImages(productId: string): Promise<string[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate API delay
-  const product = products.find(p => p.id === productId);
-
-  if (!product) {
+  const productResponse = await fetch(`${getBaseUrl()}/api/products/${productId}`);
+  if (!productResponse.ok) {
+    console.error(`Failed to fetch product for images: ${productId}`);
     return [];
   }
+  const product = await productResponse.json();
 
-  const allImages: string[] = [];
-  const availableImages = products.filter(p => !p.image.includes("placeholder.svg")).map(p => p.image);
-  let imageIndex = 0;
-
-  const getNextAvailableImage = () => {
-    if (availableImages.length === 0) return "/placeholder.svg"; // Fallback if no real images exist
-    const image = availableImages[imageIndex % availableImages.length];
-    imageIndex++;
-    return image;
-  };
-
-  // Add main image, with fallback
-  allImages.push(product.image && !product.image.includes("placeholder.svg") ? product.image : getNextAvailableImage());
-
-  // Add hover image, with fallback
+  const images: string[] = [];
+  if (product.image) {
+    images.push(getPublicImageUrl(product.image));
+  }
   if (product.hoverImage) {
-    allImages.push(product.hoverImage && !product.hoverImage.includes("placeholder.svg") ? product.hoverImage : getNextAvailableImage());
+    images.push(getPublicImageUrl(product.hoverImage));
   }
-
-  // Add additional images, ensuring they are not placeholders and cycle through available images
-  for (let i = 0; i < 3; i++) { // Add up to 3 additional unique images
-    let newImage = getNextAvailableImage();
-    // Ensure unique images for additional slots, avoid duplicates with main/hover
-    while (allImages.includes(newImage) && availableImages.length > allImages.length) {
-      newImage = getNextAvailableImage();
-    }
-    if (!allImages.includes(newImage)) {
-      allImages.push(newImage);
-    }
-  }
-
-  return allImages.filter(Boolean); // Filter out any potential empty strings
+  // If your product in the database has an array of additional images, you would fetch and map them here.
+  // For now, if only main and hover are available, we will return those.
+  return images;
 }

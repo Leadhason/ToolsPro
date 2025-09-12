@@ -5,7 +5,7 @@ import { Suspense } from "react"
 import "./globals.css"
 import { CartProvider } from "@/context/cart-context"
 import { WishlistProvider } from "@/context/wishlist-context"
-import { ProductFilterProvider } from "@/context/filter-context"
+import { FilterProvider } from "@/context/filter-context";
 import { CompareProvider } from "@/context/compare-context"; 
 import { Toaster } from "@/components/ui/sonner"; 
 
@@ -14,8 +14,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "EDMAX - Tools and Power Technologies",
-  description: "Shop Ghana's largest selection of tools and building materials with fast delivery",
-    generator: 'v0.dev'
+  description: "Shop Ghana's largest selection of tools and building materials with fast delivery"
 }
 
 export default function RootLayout({
@@ -29,18 +28,18 @@ export default function RootLayout({
         <title>EDMAX - Tools and Power Technologies</title>
         <meta
           name="description"
-          content="EDMAX is Ghana's leading supplier of quality building materials and power technologies"
+          content="EDMAX is Ghana's leading supplier of quality bulding and hardware tools and power technologies"
         />
       </head>
       <body className={inter.className}>
         <Suspense fallback={<div className="text-center">Loading...</div>}>
-          <ProductFilterProvider>
+          <FilterProvider>
             <CartProvider>
               <WishlistProvider>
                 <CompareProvider>{children}</CompareProvider>
               </WishlistProvider>
             </CartProvider>
-          </ProductFilterProvider>
+          </FilterProvider>
         </Suspense>
         <Toaster />
       </body>

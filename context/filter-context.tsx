@@ -6,7 +6,7 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation"
 import { Product, Category, getProducts, getCategories } from "@/lib/data" // Removed 'type' for getProducts and getCategories
 
 // Filter state interface
-export interface ProductFilterState {
+export interface FilterState {
   // Search
   searchQuery: string;
 
@@ -19,29 +19,29 @@ export interface ProductFilterState {
 
   // Tag filtering (replaces showNewOnly)
   activeTags: string[]; // E.g., ["new-arrival", "best-seller", "discount"]
-
+  
   // Brand filtering
   selectedBrands: string[]; // Renamed from 'brands'
-
+  
   // Availability filtering
   availability: string[]; // ["in-stock", "out-of-stock"]
-
+  
   // Rating filtering
   minRating: number;
-
+  
   // Sorting
   sortBy: string; // "featured" | "price-low-high" | "price-high-low" | "newest" | "rating" | "alphabetical"
-
+  
   // View mode
   viewMode: "grid" | "list";
 
 }
 
 // Product Filter context type
-interface ProductFilterContextType {
+interface FilterContextType {
   // Current filter state
-  filters: ProductFilterState;
-
+  filters: FilterState;
+  
   // Filtered products
   filteredProducts: Product[];
 
@@ -52,18 +52,18 @@ interface ProductFilterContextType {
   minPriceOverall: number;
   maxPriceOverall: number;
 
-
+  
   // Loading state
   isLoading: boolean;
-
+  
   // Actions
-  updateFilter: <K extends keyof ProductFilterState>(key: K, value: ProductFilterState[K]) => void;
+  updateFilter: <K extends keyof FilterState>(key: K, value: FilterState[K]) => void;
   clearFilters: () => void;
-  resetFilter: <K extends keyof ProductFilterState>(key: K) => void;
+  resetFilter: <K extends keyof FilterState>(key: K) => void;
   setProducts: (products: Product[]) => void;
   // New action to set all initial data (products and categories)
   setAllData: (products: Product[], categories: Category[]) => void;
-
+  
   // Filter counts (for UI display)
   getFilterCounts: () => {
     availability: { [key: string]: number };
@@ -75,17 +75,17 @@ interface ProductFilterContextType {
 }
 
 // Filter actions
-type ProductFilterAction =
-  | { type: "UPDATE_FILTER"; key: keyof ProductFilterState; value: any }
+type FilterAction =
+  | { type: "UPDATE_FILTER"; key: keyof FilterState; value: any }
   | { type: "CLEAR_FILTERS" }
-  | { type: "RESET_FILTER"; key: keyof ProductFilterState }
+  | { type: "RESET_FILTER"; key: keyof FilterState }
   | { type: "SET_LOADING"; loading: boolean }
   | { type: "SET_PRODUCTS"; products: Product[] }
   | { type: "SET_ALL_DATA"; products: Product[]; categories: Category[] } // New action
   | { type: "INIT_FROM_URL"; params: URLSearchParams; allCategories: Category[] }; // Pass allCategories for hierarchical logic
 
 // Initial filter state
-const initialState: ProductFilterState = {
+const initialState: FilterState = {
   searchQuery: "",
   priceRange: [0, 300000], // Default max price, will be updated dynamically
   activeCategoryIds: [],
@@ -99,7 +99,7 @@ const initialState: ProductFilterState = {
 };
 
 // Extended state for reducer (includes products, categories, loading)
-interface ExtendedProductFilterState extends ProductFilterState {
+interface ExtendedFilterState extends FilterState {
   allProducts: Product[];
   allCategories: Category[];
   availableBrands: string[];
@@ -109,7 +109,7 @@ interface ExtendedProductFilterState extends ProductFilterState {
 }
 
 // Initial extended state to ensure all numeric properties are defined.
-const initialExtendedState: ExtendedProductFilterState = {
+const initialExtendedState: ExtendedFilterState = {
   ...initialState,
   allProducts: [],
   allCategories: [],
@@ -136,14 +136,14 @@ const getDescendantCategoryIds = (categoryId: string, allCategories: Category[])
 };
 
 // Filter reducer
-function filterReducer(state: ExtendedProductFilterState, action: ProductFilterAction): ExtendedProductFilterState {
+function filterReducer(state: ExtendedFilterState, action: FilterAction): ExtendedFilterState {
   switch (action.type) {
     case "UPDATE_FILTER":
       return {
         ...state,
         [action.key]: action.value,
       };
-
+    
     case "CLEAR_FILTERS":
       return {
         ...initialExtendedState, // Use initialExtendedState to reset all extended properties
@@ -152,20 +152,20 @@ function filterReducer(state: ExtendedProductFilterState, action: ProductFilterA
         // The rest will reset to initialExtendedState defaults
         // minPriceOverall and maxPriceOverall from initialExtendedState will be used here.
       };
-
+    
     case "RESET_FILTER":
       // For individual filter reset, use initialExtendedState for the specific key
       return {
         ...state,
         [action.key]: initialExtendedState[action.key],
       };
-
+    
     case "SET_LOADING":
       return {
         ...state,
         isLoading: action.loading,
       };
-
+    
     case "SET_PRODUCTS": // This action might not be heavily used after initial data load
       return {
         ...state,
@@ -191,7 +191,7 @@ function filterReducer(state: ExtendedProductFilterState, action: ProductFilterA
         priceRange: [minPriceOverall, maxPriceOverall],
         isLoading: false,
       };
-
+    
     case "INIT_FROM_URL":
       const params = action.params;
       const categoriesFromUrl = action.allCategories; // Use categories passed from action
@@ -222,14 +222,14 @@ function filterReducer(state: ExtendedProductFilterState, action: ProductFilterA
         sortBy: params.get("sortBy") || initialExtendedState.sortBy,
         viewMode: (params.get("viewMode") as "grid" | "list") || initialExtendedState.viewMode,
       };
-
+    
     default:
       return state;
   }
 }
 
 // Filter logic function
-function applyFilters(products: Product[], filters: ProductFilterState, allCategories: Category[]): Product[] {
+function applyFilters(products: Product[], filters: FilterState, allCategories: Category[]): Product[] {
   let filtered = [...products];
 
   // 1. Apply search query
@@ -314,10 +314,10 @@ function applyFilters(products: Product[], filters: ProductFilterState, allCateg
 }
 
 // Create context
-const ProductFilterContext = createContext<ProductFilterContextType | undefined>(undefined);
+const FilterContext = createContext<FilterContextType | undefined>(undefined);
 
 // Product Filter provider component
-export function ProductFilterProvider({ children }: { children: React.ReactNode }) {
+export function FilterProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -343,7 +343,7 @@ export function ProductFilterProvider({ children }: { children: React.ReactNode 
     }
   }, [searchParams, state.allCategories]);
 
-  // Update URL when filters change (debounced)
+    // Update URL when filters change (debounced)
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       const params = new URLSearchParams();
@@ -387,7 +387,7 @@ export function ProductFilterProvider({ children }: { children: React.ReactNode 
   ]);
 
   // Action functions (memoized)
-  const updateFilter = useCallback(<K extends keyof ProductFilterState>(key: K, value: ProductFilterState[K]) => {
+  const updateFilter = useCallback(<K extends keyof FilterState>(key: K, value: FilterState[K]) => {
     dispatch({ type: "SET_LOADING", loading: true });
     dispatch({ type: "UPDATE_FILTER", key, value });
     // Loading will be set to false after a short delay to show visual feedback
@@ -402,7 +402,7 @@ export function ProductFilterProvider({ children }: { children: React.ReactNode 
     router.replace(pathname, { scroll: false });
   }, [pathname, router]);
 
-  const resetFilter = useCallback(<K extends keyof ProductFilterState>(key: K) => {
+  const resetFilter = useCallback(<K extends keyof FilterState>(key: K) => {
     dispatch({ type: "RESET_FILTER", key });
   }, []);
 
@@ -426,7 +426,7 @@ export function ProductFilterProvider({ children }: { children: React.ReactNode 
         activeCategoryIds.includes(product.categoryId)
       );
     }
-
+    
     return {
       availability: {
         "in-stock": productsForCounts.filter(p => p.inStock).length,
@@ -441,13 +441,13 @@ export function ProductFilterProvider({ children }: { children: React.ReactNode 
     };
   }, [state.allProducts, state.allCategories, state.activeCategoryIds]); // Depend on activeCategoryIds
 
-  // Apply filters to get filtered products (memoized)
+    // Apply filters to get filtered products (memoized)
   const filteredProducts = useMemo(() => {
     return applyFilters(state.allProducts, state, state.allCategories);
   }, [state.allProducts, state.allCategories, state.searchQuery, state.priceRange, state.activeCategoryIds, state.currentCategorySlug, state.activeTags, state.selectedBrands, state.availability, state.minRating, state.sortBy]);
 
   // Context value (memoized)
-  const contextValue = useMemo((): ProductFilterContextType => ({
+  const contextValue = useMemo((): FilterContextType => ({
     filters: state,
     filteredProducts,
     allProducts: state.allProducts,
@@ -465,20 +465,20 @@ export function ProductFilterProvider({ children }: { children: React.ReactNode 
     getDescendantCategoryIds, // Expose helper
   }), [state, filteredProducts, updateFilter, clearFilters, resetFilter, setProducts, setAllData, getFilterCounts]);
 
-  return <ProductFilterContext.Provider value={contextValue}>{children}</ProductFilterContext.Provider>;
+  return <FilterContext.Provider value={contextValue}>{children}</FilterContext.Provider>;
 }
 
 // Hook to use filter context
-export function useProductFilters() {
-  const context = useContext(ProductFilterContext);
+export function useFilter() {
+  const context = useContext(FilterContext);
   if (context === undefined) {
-    throw new Error("useProductFilters must be used within a ProductFilterProvider");
+    throw new Error("useFilter must be used within a FilterProvider");
   }
   return context;
 }
 
 // Utility function to create URL with filters (for navigation)
-export function createFilterUrl(baseUrl: string, filters: Partial<ProductFilterState>): string {
+export function createFilterUrl(baseUrl: string, filters: Partial<FilterState>): string {
   const params = new URLSearchParams();
 
   if (filters.searchQuery) params.set("search", filters.searchQuery);
