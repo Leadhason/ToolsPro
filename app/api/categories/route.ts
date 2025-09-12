@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (req: NextRequest) => {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data, error } = await supabase.from('categories').select('*').order('name', { ascending: true });
 
