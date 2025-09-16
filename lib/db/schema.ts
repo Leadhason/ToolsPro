@@ -215,7 +215,7 @@ export const wishlistRelations = relations(wishlist, ({ one }) => ({
   }),
   product: one(products, {
     fields: [wishlist.productId],
-    references: [wishlist.id],
+    references: [products.id],
   }),
 }));
 

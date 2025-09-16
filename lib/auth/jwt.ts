@@ -23,7 +23,12 @@ export async function signJWT(payload: UserPayload, expiresIn: string = "15m") {
 export async function verifyJWT(token: string): Promise<UserPayload | null> {
   try {
     const { payload } = await jwtVerify(token, secret);
-    return payload as UserPayload;
+    return {
+      id: payload.id as string,
+      email: payload.email as string,
+      name: payload.name as string,
+      role: payload.role as string,
+    };
   } catch (error) {
     return null;
   }

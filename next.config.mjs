@@ -13,12 +13,6 @@ const nextConfig = {
   experimental: {
     allowedRevalidateHeaderKeys: [],
   },
-  // Allow cross-origin requests from Replit domains
-  allowedDevOrigins: [
-    '*.replit.dev',
-    '*.replit.com',
-    '*.replit.app',
-  ],
   // Configure development server for Replit
   async rewrites() {
     return []

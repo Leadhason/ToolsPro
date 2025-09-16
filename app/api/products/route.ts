@@ -1,91 +1,101 @@
 
-import { createClient } from '@/lib/supabase/server';
+import { db } from '@/lib/db/client';
+import { products, categories, brands } from '@/lib/db/schema';
 import { NextRequest, NextResponse } from 'next/server';
+import { eq, and, gte, lte, ilike, desc, asc } from 'drizzle-orm';
 
 export const GET = async (req: NextRequest) => {
-  const supabase = await createClient();
-  const searchParams = req.nextUrl.searchParams;
+  try {
+    const searchParams = req.nextUrl.searchParams;
 
-  const categorySlug = searchParams.get('categorySlug');
-  const brand = searchParams.get('brand');
-  const tags = searchParams.getAll('tags');
-  const minPrice = searchParams.get('minPrice');
-  const maxPrice = searchParams.get('maxPrice');
-  const searchQuery = searchParams.get('searchQuery');
-  const sortBy = searchParams.get('sortBy');
-  const limit = parseInt(searchParams.get('limit') || '10', 10);
-  const offset = parseInt(searchParams.get('offset') || '0', 10);
+    const categorySlug = searchParams.get('categorySlug');
+    const brand = searchParams.get('brand');
+    const tags = searchParams.getAll('tags');
+    const minPrice = searchParams.get('minPrice');
+    const maxPrice = searchParams.get('maxPrice');
+    const searchQuery = searchParams.get('searchQuery');
+    const sortBy = searchParams.get('sortBy');
+    const limit = parseInt(searchParams.get('limit') || '50', 10);
+    const offset = parseInt(searchParams.get('offset') || '0', 10);
 
-  let query = supabase.from('products').select('*');
+    // Build the where conditions
+    const conditions = [eq(products.isActive, true)];
 
-  if (categorySlug && categorySlug !== 'all-products') {
-    // Assuming you have a way to get category ID from slug, e.g., another query
-    const { data: categoryData, error: categoryError } = await supabase
-      .from('categories')
-      .select('id')
-      .eq('slug', categorySlug)
-      .single();
-
-    if (categoryError || !categoryData) {
-      console.error('Error fetching category:', categoryError);
-      return NextResponse.json({ error: 'Category not found' }, { status: 404 });
+    if (categorySlug && categorySlug !== 'all-products') {
+      // Get category by slug first
+      const category = await db.select().from(categories).where(eq(categories.slug, categorySlug)).limit(1);
+      if (category.length === 0) {
+        return NextResponse.json({ error: 'Category not found' }, { status: 404 });
+      }
+      conditions.push(eq(products.categoryId, category[0].id));
     }
-    query = query.eq('category_id', categoryData.id);
-  }
 
-  if (brand) {
-    query = query.eq('brand', brand);
-  }
+    if (brand) {
+      // Get brand by name first
+      const brandData = await db.select().from(brands).where(eq(brands.name, brand)).limit(1);
+      if (brandData.length > 0) {
+        conditions.push(eq(products.brandId, brandData[0].id));
+      }
+    }
 
-  if (tags.length > 0) {
-    query = query.contains('tags', tags);
-  }
+    if (minPrice) {
+      conditions.push(gte(products.price, minPrice));
+    }
 
-  if (minPrice) {
-    query = query.gte('price', parseFloat(minPrice));
-  }
+    if (maxPrice) {
+      conditions.push(lte(products.price, maxPrice));
+    }
 
-  if (maxPrice) {
-    query = query.lte('price', parseFloat(maxPrice));
-  }
+    if (searchQuery) {
+      conditions.push(ilike(products.name, `%${searchQuery}%`));
+    }
 
-  if (searchQuery) {
-    query = query.ilike('name', `%${searchQuery}%`);
-  }
+    // Build and execute the query
+    let query = db.select().from(products)
+      .leftJoin(categories, eq(products.categoryId, categories.id))
+      .leftJoin(brands, eq(products.brandId, brands.id))
+      .where(and(...conditions));
 
-  // Sorting logic
-  switch (sortBy) {
-    case 'price-asc':
-      query = query.order('price', { ascending: true });
-      break;
-    case 'price-desc':
-      query = query.order('price', { ascending: false });
-      break;
-    case 'rating-desc':
-      query = query.order('rating', { ascending: false }).order('review_count', { ascending: false });
-      break;
-    case 'newest':
-      query = query.order('created_at', { ascending: false });
-      break;
-    default:
-      query = query.order('created_at', { ascending: false }); // Default sort
-  }
+    // Apply sorting
+    switch (sortBy) {
+      case 'price-asc':
+        query = query.orderBy(asc(products.price));
+        break;
+      case 'price-desc':
+        query = query.orderBy(desc(products.price));
+        break;
+      case 'newest':
+        query = query.orderBy(desc(products.createdAt));
+        break;
+      default:
+        query = query.orderBy(desc(products.createdAt));
+    }
 
-  query = query.range(offset, offset + limit - 1);
+    // Apply pagination
+    query = query.limit(limit).offset(offset);
+    
+    const result = await query;
 
-  const { data, error } = await query;
+    // Transform the result to match expected format
+    const transformedResult = result.map(row => ({
+      ...row.products,
+      category: row.categories,
+      brand: row.brands
+    }));
 
-  if (error) {
+    // Apply tags filter if provided (post-query filtering for simplicity)
+    if (tags.length > 0) {
+      const filteredResult = transformedResult.filter(product => 
+        tags.some(tag => product.tags?.includes(tag))
+      );
+      return NextResponse.json(filteredResult);
+    }
+
+    console.log('Successfully fetched products. Number of products:', transformedResult?.length);
+    
+    return NextResponse.json(transformedResult);
+  } catch (error) {
     console.error('Error fetching products:', error);
-    console.error('Supabase query error details:', error.details);
-    console.error('Supabase query error hint:', error.hint);
-    console.error('Supabase query error code:', error.code);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
   }
-
-  console.log('Successfully fetched products. Number of products:', data?.length);
-  // Optionally log a sample of the data if it's not too large
-  // console.log('Sample product data:', data ? data.slice(0, 2) : 'No data');
-
-  return NextResponse.json(data);
 };

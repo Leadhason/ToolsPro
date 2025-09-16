@@ -1,20 +1,17 @@
 
-import { createClient } from '@/lib/supabase/server';
+import { db } from '@/lib/db/client';
+import { brands } from '@/lib/db/schema';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (req: NextRequest) => {
-  const supabase = await createClient();
-
-  // Fetch all unique brands from the products table
-  const { data, error } = await supabase.from('products').select('brand');
-
-  if (error) {
+  try {
+    const result = await db.select().from(brands);
+    
+    console.log('Successfully fetched brands. Number of brands:', result?.length);
+    
+    return NextResponse.json(result);
+  } catch (error) {
     console.error('Error fetching brands:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to fetch brands' }, { status: 500 });
   }
-
-  // Extract unique brand names into a simple array of strings
-  const uniqueBrands = [...new Set(data.map((item: any) => item.brand).filter(Boolean))];
-
-  return NextResponse.json(uniqueBrands);
 };
