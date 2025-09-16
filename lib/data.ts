@@ -35,7 +35,11 @@ export interface Category {
 export interface Brand {
   id: string
   name: string
-  logo: string
+  slug: string
+  description?: string
+  logoUrl: string | null
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface Review {

@@ -16,7 +16,7 @@ export default async function PopularBrands() {
               className="bg-white p-3 sm:p-4 rounded-lg shadow-none transition-shadow"
             >
               <Image
-                src={getPublicImageUrl(brand.logo || "placeholder.svg", "Brand_Logo_Images")}
+                src={getPublicImageUrl(brand.logoUrl || "placeholder.svg", "Brand_Logo_Images")}
                 alt={brand.name}
                 width={120}
                 height={60}
