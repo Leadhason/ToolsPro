@@ -138,7 +138,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                 <div className="space-y-2">
                   <Button className="w-full bg-gray-800 text-xs font-light hover:bg-gray-900"
                     onClick={() => {
-                      router.push("/checkout");
+                      window.location.href = "/checkout";
                       onClose();
                     }}>
                     Checkout - GH₵{total.toFixed(2)}

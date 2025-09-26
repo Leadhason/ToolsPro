@@ -4,7 +4,7 @@ import { Filter, LayoutGrid, List, ToggleLeft, ChevronDown, SlidersHorizontal } 
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Switch } from "@/components/ui/switch"
-import { useProductFilters } from "@/context/filter-context"; // Renamed import
+import { useFilter } from "@/context/filter-context";
 import { useCompare } from "@/context/compare-context"; // Import useCompare hook
 
 interface TopControlsProps {
@@ -15,7 +15,7 @@ interface TopControlsProps {
 }
 
 export default function TopControls({ onMobileFilterToggle, onFilterToggle, showFilters = true, productCount }: TopControlsProps) {
-  const { filters, updateFilter, filteredProducts } = useProductFilters()
+  const { filters, updateFilter, filteredProducts } = useFilter()
   const { isCompareEnabled, toggleCompare } = useCompare(); // Get isCompareEnabled and toggleCompare from context
   
   // Use filtered product count if not provided
@@ -99,7 +99,7 @@ export default function TopControls({ onMobileFilterToggle, onFilterToggle, show
           <Switch 
             checked={isCompareEnabled}
             onCheckedChange={toggleCompare}
-            className="data-[state=checked]:bg-[#003561]" // Updated to brand color
+            className="data-[state=checked]:bg-black" // Updated to brand color
           />
         </div>
 

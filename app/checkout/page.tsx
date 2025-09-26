@@ -195,7 +195,7 @@ export default function CheckoutPage() {
         return (
           <form onSubmit={handlePaymentSubmit} className="space-y-6">
             <h2 className="text-xl font-semibold mb-4">Payment Method</h2>
-            <PaymentMethodsSection selectedPaymentMethod={paymentMethod} onSelectPaymentMethod={setPaymentMethod} />
+            <PaymentMethodsSection />
             <div className="flex justify-between gap-4">
               <Button
                 type="button"

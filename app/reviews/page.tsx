@@ -203,7 +203,7 @@ export default function ReviewsPage() {
                 Cancel review
               </Button>
               <Button 
-                className="bg-[#003561] hover:bg-[#00274d] text-white px-8 py-2 text-sm font-light"
+                className="bg-black hover:bg-gray-800 text-white px-8 py-2 text-sm font-light"
                 onClick={() => {
                   // Handle submit logic here
                   console.log("Review submitted!");

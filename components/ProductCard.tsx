@@ -305,7 +305,7 @@ export default function ProductCard({ product, showCompare = false, viewMode = "
           ) : (
             <Button
               variant="outline"
-              className="w-full text-sm font-light bg-transparent h-8 sm:h-9 hover:bg-[#003561] hover:text-white"
+              className="w-full text-sm font-light bg-transparent h-8 sm:h-9 hover:bg-black hover:text-white"
               onClick={handleAddToCart}
             >
               Add to cart

@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
-import { useProductFilters } from "@/context/filter-context"; // Corrected import
+import { useFilter } from "@/context/filter-context";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { Category } from "@/lib/data"; // Import Category
@@ -28,7 +28,7 @@ export default function FilterSidebar({ className }: FilterSidebarProps) {
     minPriceOverall,
     maxPriceOverall,
     getDescendantCategoryIds, // Destructure from useProductFilters
-  } = useProductFilters();
+  } = useFilter();
   const counts = getFilterCounts();
 
   // Local state for price range to handle slider interaction smoothly

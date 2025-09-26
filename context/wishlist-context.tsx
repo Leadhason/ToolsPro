@@ -2,8 +2,6 @@
 
 import type React from "react"
 import { createContext, useContext, useReducer, useEffect, useState, useCallback } from "react"
-import { createClient } from "@/lib/supabase/client";
-import { type User } from "@supabase/supabase-js";
 
 export interface WishlistItem {
   id: string; // product_id from backend
@@ -82,81 +80,63 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
     items: [],
     itemCount: 0,
   });
-  const [user, setUser] = useState<User | null>(null);
-  const supabase = createClient();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  // Auth state change listener
+  // Check auth status
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-    });
-
-    supabase.auth.getUser().then(({ data: { user: currentUser } }) => {
-      setUser(currentUser);
-    });
-
-    return () => {
-      subscription?.unsubscribe();
-    };
-  }, [supabase]);
-
-  // Function to fetch wishlist from backend
-  const fetchWishlist = useCallback(async () => {
-    if (user) {
+    const checkAuth = async () => {
       try {
-        const response = await fetch("/api/wishlist");
-        if (response.ok) {
-          const data = await response.json();
-          // Transform backend wishlist items to match frontend WishlistItem interface
-          const transformedItems: WishlistItem[] = data.map((item: any) => ({
-            id: item.product_id,
-            name: item.products.name,
-            price: item.products.price,
-            image: item.products.image,
-            brand: item.products.brand,
-            rating: item.products.rating,
-            reviewCount: item.products.review_count,
-            hoverImage: item.products.hoverImage,
-          }));
-          dispatch({ type: "SET_WISHLIST", payload: transformedItems });
-        } else {
-          console.error("Failed to fetch authenticated wishlist");
-        }
+        const response = await fetch('/api/auth/me');
+        setIsAuthenticated(response.ok);
       } catch (error) {
-        console.error("Error fetching authenticated wishlist:", error);
+        setIsAuthenticated(false);
       }
-    } else {
-      // For guest users, load from localStorage
-      const savedWishlist = localStorage.getItem("wishlist");
+    };
+
+    checkAuth();
+    
+    // Listen for auth changes from other parts of the app
+    const handleAuthChange = () => checkAuth();
+    window.addEventListener('auth-change', handleAuthChange);
+    
+    return () => {
+      window.removeEventListener('auth-change', handleAuthChange);
+    };
+  }, []);
+
+  // Function to load wishlist from localStorage only
+  const loadWishlist = useCallback(() => {
+    const savedWishlist = localStorage.getItem("wishlist");
     if (savedWishlist) {
       try {
-          const wishlistItems = JSON.parse(savedWishlist);
-          dispatch({ type: "SET_WISHLIST", payload: wishlistItems });
+        const wishlistItems = JSON.parse(savedWishlist);
+        dispatch({ type: "SET_WISHLIST", payload: wishlistItems });
       } catch (error) {
-          console.error("Error loading guest wishlist from localStorage:", error);
-        }
+        console.error("Error loading wishlist from localStorage:", error);
       }
+    } else {
+      dispatch({ type: "SET_WISHLIST", payload: [] });
     }
-  }, [user]);
+  }, []);
 
-  // Load wishlist on initial mount and when user changes
+  // Load wishlist on initial mount
   useEffect(() => {
-    fetchWishlist();
-  }, [fetchWishlist]);
+    loadWishlist();
+  }, [loadWishlist]);
 
   // Save guest wishlist to localStorage whenever it changes (only if no user)
   useEffect(() => {
-    if (!user) {
+    if (!isAuthenticated) {
       localStorage.setItem("wishlist", JSON.stringify(state.items));
-    } else if (user && localStorage.getItem("wishlist")) {
+    } else if (isAuthenticated && localStorage.getItem("wishlist")) {
       // Clear guest wishlist from localStorage after merging (or once authenticated wishlist is loaded)
       localStorage.removeItem("wishlist");
     }
-  }, [state.items, user]);
+  }, [state.items, isAuthenticated]);
 
   // Merge guest wishlist with authenticated wishlist on login
   useEffect(() => {
-    if (user) {
+    if (isAuthenticated) {
       const savedGuestWishlist = localStorage.getItem("wishlist");
       if (savedGuestWishlist) {
         try {
@@ -172,74 +152,23 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
         }
       }
     }
-  }, [user]); // Depend on user to ensure merge happens on login
+  }, [isAuthenticated]); // Depend on auth state to ensure merge happens on login
 
-  const addToWishlist = useCallback(async (item: Omit<WishlistItem, "id"> & { id: string }) => {
-    if (user) {
-      try {
-        const response = await fetch("/api/wishlist", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ productId: item.id }),
-        });
-
-        if (response.ok || response.status === 200) { // 200 if already in wishlist
-          fetchWishlist(); // Re-fetch wishlist to ensure state is synchronized with backend
-        } else {
-          console.error("Failed to add item to authenticated wishlist");
-        }
-      } catch (error) {
-        console.error("Error adding item to authenticated wishlist:", error);
-      }
-    } else {
-      // For guest users, update local state directly and sync to localStorage
-      dispatch({ type: "ADD_ITEM", payload: item });
-    }
-  }, [user, fetchWishlist]);
+  const addToWishlist = useCallback(async (item: WishlistItem) => {
+    // Always use localStorage since wishlist API is removed
+    dispatch({ type: "ADD_ITEM", payload: item });
+  }, []);
 
   const removeFromWishlist = useCallback(async (id: string) => {
-    if (user) {
-      try {
-        const response = await fetch(`/api/wishlist/${id}`, {
-          method: "DELETE",
-        });
-        if (response.ok) {
-          fetchWishlist(); // Re-fetch wishlist to ensure state is synchronized with backend
-        } else {
-          console.error("Failed to remove item from authenticated wishlist");
-        }
-      } catch (error) {
-        console.error("Error removing item from authenticated wishlist:", error);
-      }
-    } else {
-      // For guest users, update local state directly and sync to localStorage
-      dispatch({ type: "REMOVE_ITEM", payload: id });
-    }
-  }, [user, fetchWishlist]);
+    // Always use localStorage since wishlist API is removed
+    dispatch({ type: "REMOVE_ITEM", payload: id });
+  }, []);
 
   const clearWishlist = useCallback(async () => {
-    if (user) {
-      try {
-        // As a workaround, we can fetch the wishlist items and delete them one by one.
-        const response = await fetch("/api/wishlist");
-        if (response.ok) {
-          const data = await response.json();
-          for (const item of data) {
-            await removeFromWishlist(item.id); // Use the existing removeFromWishlist logic
-          }
-        } else {
-          console.error("Failed to fetch wishlist for clearing");
-        }
-        fetchWishlist(); // Re-fetch to confirm empty wishlist
-      } catch (error) {
-        console.error("Error clearing authenticated wishlist:", error);
-      }
-    } else {
-      // For guest users, clear local state and localStorage
-      dispatch({ type: "CLEAR_WISHLIST" });
-      localStorage.removeItem("wishlist");
-    }
-  }, [user, fetchWishlist, removeFromWishlist]);
+    // Always use localStorage since wishlist API is removed
+    dispatch({ type: "CLEAR_WISHLIST" });
+    localStorage.removeItem("wishlist");
+  }, []);
 
   const isInWishlist = useCallback((id: string) => {
     return state.items.some((item) => item.id === id);

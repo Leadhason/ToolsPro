@@ -1,11 +1,9 @@
-import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import React from 'react';
+import { getUser } from "@/lib/auth/jwt";
 
 export default async function OrderHistoryPage() {
-  const supabase = await createClient();
-
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getUser();
 
   if (!user) {
     return redirect('/signin');

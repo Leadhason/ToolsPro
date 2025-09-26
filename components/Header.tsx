@@ -6,10 +6,7 @@ import Image from "next/image"
 import { useState, useEffect } from "react" // Added useEffect
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Truck } from "lucide-react"
-import { Package } from "lucide-react"
-import { CreditCard } from "lucide-react"
-import { Headset } from "lucide-react"
+import { Truck, Package, CreditCard, Headset, User } from "lucide-react"
 import {
   Sheet, SheetContent, SheetTrigger
 } from "@/components/ui/sheet"
@@ -25,8 +22,6 @@ import { useCart } from "@/context/cart-context"
 import { useWishlist } from "@/context/wishlist-context"
 import { useRouter, useSearchParams } from "next/navigation"; // Imported useRouter and useSearchParams
 import { useFilter } from "@/context/filter-context"; // Imported useProductFilters
-import { createClient } from "@/lib/supabase/client"; // Import Supabase client
-import type { User } from "@supabase/supabase-js"; // Import User type
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"; // Import Avatar components
 import {
   DropdownMenu,
@@ -46,11 +41,10 @@ export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false)
   const [searchInputValue, setSearchInputValue] = useState(""); // Local state for search input
-  const [user, setUser] = useState<User | null>(null); // State to hold user session
+  const [user, setUser] = useState<{ email: string; name?: string } | null>(null); // State to hold user session
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const supabase = createClient(); // Initialize Supabase client
 
   const { itemCount: cartItemCount } = useCart()
   const { itemCount: wishlistItemCount } = useWishlist()
@@ -61,25 +55,24 @@ export default function Header() {
     allProducts
   } = useFilter();
 
-  // Fetch user session on component mount
+  // Check for user session from JWT token
   useEffect(() => {
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-    };
-    getUser();
-
-    // Listen for auth state changes
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user || null);
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/me');
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData);
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        setUser(null);
       }
-    );
-
-    return () => {
-      authListener.subscription?.unsubscribe();
     };
-  }, [supabase.auth]);
+    checkAuth();
+  }, []);
 
   // Sync local search input with context search query
   useEffect(() => {
@@ -116,8 +109,13 @@ export default function Header() {
   };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push("/signin"); // Redirect to sign-in page after logout
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      setUser(null);
+      router.push("/signin"); // Redirect to sign-in page after logout
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   const getChildCategories = (parentId: string | null) => {
@@ -191,7 +189,7 @@ export default function Header() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-1 -ml-4">
               <Image 
-                src={getPublicImageUrl("EDMAX.png", "Logo_Images")} 
+                src="/EDMAX.png"
                 alt="EDMAX Logo" 
                 width={100}
                 height={100}
@@ -204,10 +202,10 @@ export default function Header() {
             </Link>
 
             {/* Search - Desktop */}
-            <div className="hidden lg:flex flex-1 max-w-4xl mx-4 bg-white p-1 rounded-md">
+            <div className="hidden lg:flex flex-1 max-w-4xl mx-4 bg-white rounded-none p-1 border border-gray-300">
               <div className="flex w-full">
                 <select
-                  className="border-none outline-none rounded-l-md px-3 bg-gray-100 text-xs min-w-[120px]"
+                  className="border-none outline-none rounded-none px-3 bg-transparent  text-xs min-w-[120px]"
                   onChange={(e) => {
                     const selectedSlug = e.target.value;
                     if (selectedSlug) {
@@ -227,11 +225,11 @@ export default function Header() {
                     <option key={cat.id} value={cat.slug}>{cat.name}</option>
                   ))}
                 </select>
-                <div className="lg:flex flex-1 mx-[2px] bg-gray-100 p-1 rounded-r-md">
-                  <div className="relative flex-1 ">
+                <div className="lg:flex flex-1 mx-[2px] bg-transparent rounded-none border-l">
+                  <div className="relative flex-1">
                     <Input
                       placeholder="Search by name or brand"
-                      className="rounded-none border-none outline-none pr-10 shadow-none"
+                      className="rounded-none bg-transparent border-none outline-none pr-10 text-black shadow-none"
                       value={searchInputValue}
                       onChange={(e) => setSearchInputValue(e.target.value)}
                       onKeyDown={(e) => {
@@ -241,10 +239,10 @@ export default function Header() {
                       }}
                     />
                   </div>
-                  <Button className="bg-transparent text-black mr-5 shadow-none">
+                  <Button className="bg-transparent hover:bg-transparent cursor-pointer text-black mr-5 shadow-none">
                     <Camera className="h-4 w-4" />
                   </Button>
-                  <Button className="bg-transparent text-black shadow-none" onClick={handleSearch}>
+                  <Button className="bg-transparent hover:bg-transparent cursor-pointer text-black shadow-none" onClick={handleSearch}>
                     <Search className="h-4 w-4" />
                   </Button>
                 </div>
@@ -261,10 +259,10 @@ export default function Header() {
               <Button
                 variant="ghost"
                 size="default"
-                className="relative rounded-full bg-gray-100 cursor-pointer"
+                className="relative bg-transparent cursor-pointer"
                 onClick={() => setIsCartSidebarOpen(true)}
               >
-                <ShoppingCart className="h-8 w-8" />
+                <ShoppingCart className="h-10 w-10 font-light" />
                 {cartItemCount > 0 && (
                   <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
                     {cartItemCount}
@@ -272,7 +270,7 @@ export default function Header() {
                 )}
               </Button>
               <Link href="/wishlist">
-                <Button variant="ghost" size="default" className="relative rounded-full bg-gray-100 cursor-pointer">
+                <Button variant="ghost" size="default" className="relative bg-transparent cursor-pointer">
                   <Heart className="h-8 w-8 " />
                   {wishlistItemCount > 0 && (
                     <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
@@ -287,7 +285,7 @@ export default function Header() {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="default" className="relative rounded-full bg-gray-100 cursor-pointer">
                       <Avatar className="h-8 w-8">
-                        <AvatarImage src={user.user_metadata?.avatar_url || ""} alt={user.email || "User Avatar"} />
+                        <AvatarImage src="" alt={user.email || "User Avatar"} />
                         <AvatarFallback>{user.email?.charAt(0)?.toUpperCase() || "U"}</AvatarFallback>
                       </Avatar>
                     </Button>
@@ -305,8 +303,8 @@ export default function Header() {
                 </DropdownMenu>
               ) : (
                 <Link href="/signin" className="hidden sm:flex">
-                <Button variant="ghost" className="rounded-full border text-sm font-light cursor-pointer hover:bg-black hover:text-white px-6">
-                  Login
+                <Button variant="ghost" className="rounded-none p-5 border text-sm font-light cursor-pointer hover:bg-black hover:text-white px-6">
+                  <User className="inline mr-1 h-4 w-4" /> Login
                 </Button>
               </Link>
               )}
@@ -393,7 +391,7 @@ export default function Header() {
                     Reviews
                   </Link>
                   <Link href="/contact">
-                    <Button className="bg-[#003561] hover:bg-[#00274d] rounded-full font-light text-sm cursor-pointer ml-4">
+                    <Button className="bg-black hover:bg-gray-800 rounded-none font-semibold p-5 text-sm cursor-pointer ml-4">
                     Contact Us
                   </Button>
                   </Link>
@@ -465,33 +463,33 @@ export default function Header() {
       </div>
 
       {/* Promo bar - Responsive */}
-      <div className="bg-[#003561] text-white py-2 mt-2">
+      <div className="bg-black text-white py-2 mt-2">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center lg:justify-between w-full">
             <div className="flex items-center gap-8 text-xs sm:gap-6 lg:gap-12 justify-between w-full">
               <div className="flex items-center gap-1 sm:gap-2 whitespace-nowrap">
                 <div className="bg-transparent rounded-full flex items-center justify-center flex-shrink-0">
-                  <Truck className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[#E86514]" />
+                  <Truck className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" />
                 </div>
                 <span className="hidden sm:inline">Free Accra delivery over GH₵200</span>
                 <span className="sm:hidden">Free delivery GH₵200+</span>
               </div>
               <div className="flex items-center gap-1 sm:gap-2 whitespace-nowrap">
                 <div className="bg-transparent rounded-full flex items-center justify-center flex-shrink-0">
-                  <CreditCard className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[#E86514]" />
+                  <CreditCard className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" />
                 </div>
                 <span>Pay on Delivery</span>
               </div>
               <div className="flex items-center gap-1 sm:gap-2 whitespace-nowrap">
                 <div className="bg-transparent rounded-full flex items-center justify-center flex-shrink-0">
-                  <Package className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[#E86514]" />
+                  <Package className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" />
                 </div>
                 <span className="hidden lg:inline">Delivery within 48-Hours</span>
                 <span className="lg:hidden">48hr Delivery</span>
               </div>
               <div className="hidden md:flex items-center gap-1 sm:gap-2 whitespace-nowrap">
                 <div className="bg-transparent rounded-full flex items-center justify-center flex-shrink-0">
-                  <Headset className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[#E86514]" />
+                  <Headset className="w-5 h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" />
                 </div>
                 <span className="hidden lg:inline">Weekend orders process on Mondays</span>
                 <span className="lg:hidden">Weekend orders Mon</span>

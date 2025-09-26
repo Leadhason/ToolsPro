@@ -4,7 +4,7 @@ interface PromoBannerProps {
   bgColor?: string
 }
 
-export default function PromoBanner({ title, description, bgColor = "bg-[#003561]" }: PromoBannerProps) {
+export default function PromoBanner({ title, description, bgColor = "bg-black" }: PromoBannerProps) {
   return (
     <section className={`${bgColor} text-white py-4`}>
       <div className="container mx-auto px-4 text-center">

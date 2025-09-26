@@ -8,7 +8,7 @@ interface CategoryHeroProps {
 
 export default function CategoryHero({ category }: CategoryHeroProps) {
   return (
-    <section className="relative my-10 bg-[#003561] py-2 sm:py-4 lg:py-6 overflow-hidden mx-8 rounded-2xl">
+    <section className="relative my-10 bg-black py-2 sm:py-4 lg:py-6 overflow-hidden mx-8 rounded-2xl">
       <div className="container mx-auto px-4 relative">
         <div className="flex flex-col lg:flex-row justify-between items-center gap-8  lg:gap-16">
           <div className="lg:w-2/3 text-center lg:text-left">

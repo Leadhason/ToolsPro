@@ -2,8 +2,6 @@
 
 import type React from "react"
 import { createContext, useContext, useReducer, useEffect, useState, useCallback } from "react"
-import { createClient } from "@/lib/supabase/client";
-import { type User } from "@supabase/supabase-js";
 
 export interface CartItem {
   id: string; // cart_item_id from backend
@@ -129,197 +127,75 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     itemCount: 0,
     cartId: null,
   });
-  const [user, setUser] = useState<User | null>(null);
-  const supabase = createClient();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  // Auth state change listener
+  // Check auth status
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-    });
-
-    supabase.auth.getUser().then(({ data: { user: currentUser } }) => {
-      setUser(currentUser);
-    });
-
-    return () => {
-      subscription?.unsubscribe();
-    };
-  }, [supabase]);
-
-  // Function to fetch cart from backend
-  const fetchCart = useCallback(async () => {
-    if (user) {
+    const checkAuth = async () => {
       try {
-        const response = await fetch("/api/cart");
-        if (response.ok) {
-          const data = await response.json();
-          // Transform backend cart items to match frontend CartItem interface
-          const transformedItems: CartItem[] = data.items.map((item: any) => ({
-            id: item.id,
-            product_id: item.product_id,
-            name: item.products.name,
-            price: item.products.price,
-            image: item.products.image,
-            brand: item.products.brand,
-            quantity: item.quantity,
-            hoverImage: item.products.hoverImage,
-          }));
-          dispatch({ type: "SET_CART", payload: { cartId: data.cartId, items: transformedItems } });
-        } else if (response.status === 404) {
-          // Cart not found for user, initialize empty cart
-          dispatch({ type: "SET_CART", payload: { cartId: null, items: [] } });
-        } else {
-          console.error("Failed to fetch authenticated cart");
-        }
+        const response = await fetch('/api/auth/me');
+        setIsAuthenticated(response.ok);
       } catch (error) {
-        console.error("Error fetching authenticated cart:", error);
+        setIsAuthenticated(false);
       }
-    } else {
-      // For guest users, load from localStorage
-      const savedCart = localStorage.getItem("cart");
-      if (savedCart) {
-        try {
-          const cartItems = JSON.parse(savedCart);
-          dispatch({ type: "SET_CART", payload: { cartId: null, items: cartItems } });
-        } catch (error) {
-          console.error("Error loading guest cart from localStorage:", error);
-        }
-      }
-    }
-  }, [user]);
+    };
 
-  // Load cart on initial mount and when user changes
-  useEffect(() => {
-    fetchCart();
-  }, [fetchCart]);
+    checkAuth();
+    
+    // Listen for auth changes from other parts of the app
+    const handleAuthChange = () => checkAuth();
+    window.addEventListener('auth-change', handleAuthChange);
+    
+    return () => {
+      window.removeEventListener('auth-change', handleAuthChange);
+    };
+  }, []);
 
-  // Save guest cart to localStorage whenever it changes (only if no user)
-  useEffect(() => {
-    if (!user) {
-      localStorage.setItem("cart", JSON.stringify(state.items));
-    } else if (user && localStorage.getItem("cart")) {
-      // Clear guest cart from localStorage after merging (or once authenticated cart is loaded)
-      localStorage.removeItem("cart");
-    }
-  }, [state.items, user]);
-
-  // Merge guest cart with authenticated cart on login
-  useEffect(() => {
-    if (user) {
-      const savedGuestCart = localStorage.getItem("cart");
-      if (savedGuestCart) {
-        try {
-          const guestItems: CartItem[] = JSON.parse(savedGuestCart);
-          if (guestItems.length > 0) {
-            // Iterate and add each guest item to the backend cart
-            guestItems.forEach(async (guestItem) => {
-              await addToCart(guestItem); // This will call the backend API
-            });
-            // Clear guest cart from local storage after merging
-            localStorage.removeItem("cart");
-          }
-        } catch (error) {
-          console.error("Error parsing guest cart from localStorage for merging:", error);
-        }
+  // Function to load cart from localStorage only (simplified)
+  const loadCart = useCallback(() => {
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      try {
+        const cartItems = JSON.parse(savedCart);
+        dispatch({ type: "SET_CART", payload: { cartId: null, items: cartItems } });
+      } catch (error) {
+        console.error("Error loading cart from localStorage:", error);
       }
     }
-  }, [user, state.cartId]); // Depend on user and cartId to ensure merge happens after cart is loaded
+  }, []);
+
+  // Load cart on initial mount
+  useEffect(() => {
+    loadCart();
+  }, [loadCart]);
+
+  // Save cart to localStorage whenever it changes (simplified)
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(state.items));
+  }, [state.items]);
+
+  // No merging needed since we only use localStorage
 
   const addToCart = useCallback(async (item: Omit<CartItem, "quantity" | "id"> & { id?: string; quantity?: number }) => {
-    if (user) {
-      try {
-        const response = await fetch("/api/cart", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ productId: item.product_id, quantity: item.quantity || 1 }),
-        });
-
-        if (response.ok) {
-          const updatedItem = await response.json();
-          // Re-fetch cart to ensure state is synchronized with backend
-          fetchCart();
-        } else {
-          console.error("Failed to add item to authenticated cart");
-        }
-      } catch (error) {
-        console.error("Error adding item to authenticated cart:", error);
-      }
-    } else {
-      // For guest users, update local state directly and sync to localStorage
-      dispatch({ type: "ADD_ITEM", payload: item });
-    }
-  }, [user, fetchCart]);
+    // Always use localStorage since cart API is removed
+    dispatch({ type: "ADD_ITEM", payload: item });
+  }, []);
 
   const removeFromCart = useCallback(async (id: string) => {
-    if (user) {
-      try {
-        const response = await fetch(`/api/cart/${id}`, {
-          method: "DELETE",
-        });
-        if (response.ok) {
-          fetchCart(); // Re-fetch cart to ensure state is synchronized with backend
-        } else {
-          console.error("Failed to remove item from authenticated cart");
-        }
-      } catch (error) {
-        console.error("Error removing item from authenticated cart:", error);
-      }
-    } else {
-      // For guest users, update local state directly and sync to localStorage
-      dispatch({ type: "REMOVE_ITEM", payload: id });
-    }
-  }, [user, fetchCart]);
+    // Always use localStorage since cart API is removed
+    dispatch({ type: "REMOVE_ITEM", payload: id });
+  }, []);
 
   const updateQuantity = useCallback(async (id: string, quantity: number) => {
-    if (user) {
-      try {
-        const response = await fetch(`/api/cart/${id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ quantity }),
-        });
-        if (response.ok) {
-          fetchCart(); // Re-fetch cart to ensure state is synchronized with backend
-        } else {
-          console.error("Failed to update item quantity in authenticated cart");
-        }
-      } catch (error) {
-        console.error("Error updating item quantity in authenticated cart:", error);
-      }
-    } else {
-      // For guest users, update local state directly and sync to localStorage
-      dispatch({ type: "UPDATE_QUANTITY", payload: { id, quantity } });
-    }
-  }, [user, fetchCart]);
+    // Always use localStorage since cart API is removed
+    dispatch({ type: "UPDATE_QUANTITY", payload: { id, quantity } });
+  }, []);
 
   const clearCart = useCallback(async () => {
-    if (user && state.cartId) {
-      try {
-        // Note: Backend /api/cart currently does not have a CLEAR_ALL endpoint.
-        // This would require a DELETE /api/cart operation to clear all items for a user.
-        // For now, iterate and delete all items or await a backend endpoint.
-
-        // As a workaround, we can fetch the cart items and delete them one by one.
-        const response = await fetch("/api/cart");
-        if (response.ok) {
-          const data = await response.json();
-          for (const item of data.items) {
-            await removeFromCart(item.id); // Use the existing removeFromCart logic
-          }
-        } else {
-          console.error("Failed to fetch cart for clearing");
-        }
-        fetchCart(); // Re-fetch to confirm empty cart
-      } catch (error) {
-        console.error("Error clearing authenticated cart:", error);
-      }
-    } else {
-      // For guest users, clear local state and localStorage
-      dispatch({ type: "CLEAR_CART" });
-      localStorage.removeItem("cart");
-    }
-  }, [user, state.cartId, fetchCart, removeFromCart]);
+    // Always use localStorage since cart API is removed
+    dispatch({ type: "CLEAR_CART" });
+    localStorage.removeItem("cart");
+  }, []);
 
   return (
     <CartContext.Provider

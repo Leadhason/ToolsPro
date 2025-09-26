@@ -5,7 +5,7 @@ import type { Product, Category } from "@/lib/data"; // Added Category import
 import TopControls from "@/components/TopControls"
 import ProductGrid from "@/components/ProductGrid"
 import FilterSidebar from "@/components/FilterSidebar"
-import { useProductFilters } from "@/context/filter-context"; // Renamed import
+import { useFilter } from "@/context/filter-context";
 import { useSearchParams } from "next/navigation"; // Import useSearchParams
 
 interface CategoryPageContentProps {
@@ -22,7 +22,7 @@ export default function CategoryPageContent({ products }: CategoryPageContentPro
     minPriceOverall,
     maxPriceOverall,
     filteredProducts, // Destructure filteredProducts
-  } = useProductFilters();
+  } = useFilter();
   const [showFilters, setShowFilters] = useState(true)
 
   // Set all initial data (products and categories) in filter context once

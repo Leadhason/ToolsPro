@@ -38,8 +38,9 @@ export interface Brand {
   slug: string
   description?: string
   logoUrl: string | null
-  createdAt: Date
-  updatedAt: Date
+  logo?: string // For backward compatibility with existing mock data
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 export interface Review {
@@ -59,12 +60,12 @@ export interface Review {
 
 // Mock data
 export const brands: Brand[] = [
-  { id: "1", name: "Honeywell", logo: "/brands/honeywell.png" },
-  { id: "2", name: "Mercado", logo: "/brands/logo.svg" },
-  { id: "3", name: "Cuentas", logo: "/brands/ipsum.svg" },
-  { id: "4", name: "Trendyol", logo: "/brands/trendyol.svg" },
-  { id: "5", name: "LogoIpsum", logo: "/brands/logoipsum.svg" },
-  { id: "6", name: "Logoip", logo: "/brands/logoip.svg" },
+  { id: "1", name: "Honeywell", slug: "honeywell", logoUrl: "/brands/honeywell.png", logo: "/brands/honeywell.png" },
+  { id: "2", name: "Mercado", slug: "mercado", logoUrl: "/brands/logo.svg", logo: "/brands/logo.svg" },
+  { id: "3", name: "Cuentas", slug: "cuentas", logoUrl: "/brands/ipsum.svg", logo: "/brands/ipsum.svg" },
+  { id: "4", name: "Trendyol", slug: "trendyol", logoUrl: "/brands/trendyol.svg", logo: "/brands/trendyol.svg" },
+  { id: "5", name: "LogoIpsum", slug: "logoipsum", logoUrl: "/brands/logoipsum.svg", logo: "/brands/logoipsum.svg" },
+  { id: "6", name: "Logoip", slug: "logoip", logoUrl: "/brands/logoip.svg", logo: "/brands/logoip.svg" },
 ]
 
 export const categories: Category[] = [
@@ -897,11 +898,8 @@ export async function getProductDetailAccordions(productId: string): Promise<Pro
 }
 
 export async function getReviews(): Promise<Review[]> {
-  const response = await fetch(`${getBaseUrl()}/api/reviews`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch reviews');
-  }
-  return response.json();
+  // Return empty array since reviews API is removed
+  return [];
 }
 
 // New interface for contact help cards
@@ -1076,97 +1074,159 @@ export async function getCategoryCards(): Promise<CategoryCard[]> {
 
 // API functions
 export async function getProducts(): Promise<Product[]> {
-  const response = await fetch(`${getBaseUrl()}/api/products`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch products');
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/products`);
+    if (response.ok) {
+      return response.json();
+    }
+  } catch (error) {
+    console.warn('API fetch failed, falling back to mock data:', error);
   }
-  return response.json();
+  // Fallback to mock data
+  return products;
 }
 
 export async function getProductsByCategory(categoryId: string): Promise<Product[]> {
-  const response = await fetch(`${getBaseUrl()}/api/products?categorySlug=${categoryId}`);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch products for category ${categoryId}`);
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/products?categorySlug=${categoryId}`);
+    if (response.ok) {
+      return response.json();
+    }
+  } catch (error) {
+    console.warn('API fetch failed, falling back to mock data:', error);
   }
-  return response.json();
+  // Fallback to mock data
+  return products.filter(p => p.categoryId === categoryId);
 }
 
 export async function getProductsByBrand(brand: string): Promise<Product[]> {
-  const response = await fetch(`${getBaseUrl()}/api/products?brand=${brand}`);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch products for brand ${brand}`);
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/products?brand=${brand}`);
+    if (response.ok) {
+      return response.json();
+    }
+  } catch (error) {
+    console.warn('API fetch failed, falling back to mock data:', error);
   }
-  return response.json();
+  // Fallback to mock data
+  return products.filter(p => p.brand === brand);
 }
 
 export async function getProduct(id: string): Promise<Product | null> {
-  const response = await fetch(`${getBaseUrl()}/api/products/${id}`);
-  if (!response.ok) {
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/products/${id}`);
+    if (response.ok) {
+      return response.json();
+    }
     if (response.status === 404) return null;
-    throw new Error(`Failed to fetch product with ID ${id}`);
+  } catch (error) {
+    console.warn('API fetch failed, falling back to mock data:', error);
   }
-  return response.json();
+  // Fallback to mock data
+  return products.find(p => p.id === id) || null;
 }
 
 export async function getCategories(): Promise<Category[]> {
-  const response = await fetch(`${getBaseUrl()}/api/categories`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch categories');
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/categories`);
+    if (response.ok) {
+      return response.json();
+    }
+  } catch (error) {
+    console.warn('API fetch failed, falling back to mock data:', error);
   }
-  return response.json();
+  // Fallback to mock data
+  return categories;
 }
 
 export async function getBrands(): Promise<Brand[]> {
-  const response = await fetch(`${getBaseUrl()}/api/brands`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch brands');
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/brands`);
+    if (response.ok) {
+      return response.json();
+    }
+  } catch (error) {
+    console.warn('API fetch failed, falling back to mock data:', error);
   }
-  return response.json();
+  // Fallback to mock data
+  return brands;
 }
 
 export async function getNewArrivals(): Promise<Product[]> {
-  const response = await fetch(`${getBaseUrl()}/api/products?tags=new-arrival`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch new arrivals');
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/products?tags=new-arrival`);
+    if (response.ok) {
+      return response.json();
+    }
+  } catch (error) {
+    console.warn('API fetch failed, falling back to mock data:', error);
   }
-  return response.json();
+  // Fallback to mock data
+  return products.filter(p => p.tags.includes('new-arrival'));
 }
 
 export async function getProductsByTag(tag: string): Promise<Product[]> {
-  const response = await fetch(`${getBaseUrl()}/api/products?tags=${tag}`);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch products by tag ${tag}`);
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/products?tags=${tag}`);
+    if (response.ok) {
+      return response.json();
+    }
+  } catch (error) {
+    console.warn('API fetch failed, falling back to mock data:', error);
   }
-  return response.json();
+  // Fallback to mock data
+  return products.filter(p => p.tags.includes(tag));
 }
 
 export async function getBuildingEssentials(): Promise<Product[]> {
-  // This function needs to fetch from the API. We can either make multiple API calls
-  // or modify the API to accept multiple category IDs. For now, let's fetch all products
-  // and filter, similar to the original mock, but use the API to get all products.
-  // A better solution would be to enhance the /api/products endpoint to accept multiple category IDs.
-  const response = await fetch(`${getBaseUrl()}/api/products?categorySlug=building-materials&categorySlug=home-essentials`); // Pass multiple category slugs if API supports it
-  if (!response.ok) {
-    throw new Error('Failed to fetch building essentials');
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/products?categorySlug=building-materials&categorySlug=home-essentials`);
+    if (response.ok) {
+      const allProducts = await response.json();
+      return allProducts.slice(0, 5);
+    }
+  } catch (error) {
+    console.warn('API fetch failed, falling back to mock data:', error);
   }
-  const allProducts = await response.json();
-  return allProducts.slice(0, 5);
+  // Fallback to mock data
+  return products.filter(p => 
+    p.categoryId === 'building-materials' || p.categoryId === 'home-essentials'
+  ).slice(0, 5);
 }
 
 export async function getLightingProducts(): Promise<Product[]> {
-  const response = await fetch(`${getBaseUrl()}/api/products?searchQuery=light&searchQuery=led&searchQuery=lamp&searchQuery=torch`); // Example: pass multiple search queries
-  if (!response.ok) {
-    throw new Error('Failed to fetch lighting products');
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/products?searchQuery=light&searchQuery=led&searchQuery=lamp&searchQuery=torch`);
+    if (response.ok) {
+      return response.json();
+    }
+  } catch (error) {
+    console.warn('API fetch failed, falling back to mock data:', error);
   }
-  return response.json();
+  // Fallback to mock data
+  return products.filter(p => 
+    p.name.toLowerCase().includes('light') || 
+    p.name.toLowerCase().includes('led') || 
+    p.name.toLowerCase().includes('lamp') ||
+    p.name.toLowerCase().includes('torch')
+  );
 }
 
 export async function getSimilarProducts(productId: string): Promise<Product[]> {
-  const response = await fetch(`${getBaseUrl()}/api/products/similar/${productId}`);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch similar products for ${productId}`);
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/products/similar/${productId}`);
+    if (response.ok) {
+      return response.json();
+    }
+  } catch (error) {
+    console.warn('API fetch failed, falling back to mock data:', error);
   }
-  return response.json();
+  // Fallback to mock data
+  const currentProduct = products.find(p => p.id === productId);
+  if (currentProduct) {
+    return products.filter(p => p.categoryId === currentProduct.categoryId && p.id !== productId).slice(0, 4);
+  }
+  return products.slice(0, 4);
 }
 
 // New function to get all images for a product, replacing placeholders with actual images
